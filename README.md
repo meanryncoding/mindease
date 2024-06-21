@@ -1,6 +1,6 @@
 ![Logo](https://github.com/Asyraf-wa/recrud/blob/main/webroot/img/ReCRUD.jpg)
 
-Re-CRUD enable the developer to create the fundamental web application functions, create, read, update and delete including the other features such as searching, reporting, audit trail and others. Re-CRUD is based on the CakePHP framework with integrated useful plugins.
+Re-CRUD 2.X enable the developer to create the fundamental web application functions, create, read, update and delete including the other features such as searching, reporting, audit trail and others. Re-CRUD is based on the CakePHP framework with integrated useful plugins.
 
 ## 🚀 Authors
 
