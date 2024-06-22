@@ -47,20 +47,20 @@ echo $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/
 		</div>
 		<div class="row px-2 mb-4">
 			<div class="col-md-3 border rounded-start pt-3 pb-3 bg-body-tertiary">
-				<span class="fs-3">325 <i class="fa-solid fa-caret-up text-primary"></i></span><br />
-				Container Size
+				<span class="fs-3"><?php echo $total_user; ?> <i class="fa-solid fa-caret-up text-primary"></i></span><br />
+				Total Registered Users
 			</div>
 			<div class="col-md-3 border pt-3 pb-3 bg-body-tertiary">
-				<span class="fs-3">325 <i class="fa-solid fa-caret-up text-primary"></i></span><br />
-				Container Size
+				<span class="fs-3"><?php echo $total_contact; ?> <i class="fa-solid fa-caret-up text-primary"></i></span><br />
+				Total Contacts
 			</div>
 			<div class="col-md-3 border pt-3 pb-3 bg-body-tertiary">
-				<span class="fs-3">325 <i class="fa-solid fa-caret-up text-primary"></i></span><br />
-				Container Size
+				<span class="fs-3"><?php echo $total_auditlog; ?> <i class="fa-solid fa-caret-up text-primary"></i></span><br />
+				Total Logged Audit
 			</div>
 			<div class="col-md-3 border rounded-end pt-3 pb-3 bg-body-tertiary">
-				<span class="fs-3">325 <i class="fa-solid fa-caret-up text-primary"></i></span><br />
-				Container Size
+				<span class="fs-3"><?php echo $total_todo; ?> <i class="fa-solid fa-caret-up text-primary"></i></span><br />
+				Total To Do Task
 			</div>
 		</div>
 
@@ -320,14 +320,24 @@ echo $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/
 	</div>
 	<div class="col-md-3">
 
+		<div class="card bg-body-tertiary border-0 shadow mb-4">
+			<div class="card-body text-body-secondary">
+				<div class="card-title mb-0">Search</div>
+				<div class="tricolor_line mb-3"></div>
+
+			</div>
+		</div>
+
 		<div class="card gradient-border mb-3">
 			<div class="card-body">
+				<div class="card-title mb-0">Search</div>
+				<div class="tricolor_line mb-3"></div>
 
 			</div>
 		</div>
 
 		<div class="card bg-gold-full fs-5 fw-bold px-3 py-2 mb-3 rounded-0">
-			Hello, <?php echo $this->Identity->get('fullname'); 
+			Hello, <?php echo $this->Identity->get('fullname');
 					?>,
 			<?php
 			date_default_timezone_set("Asia/Kuala_Lumpur");
@@ -379,6 +389,14 @@ echo $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/
 			</div>
 		</div>
 
+		<div class="card bg-body-tertiary border-0 shadow mb-4">
+			<div class="card-body text-body-secondary">
+				<div class="card-title mb-0">Scan</div>
+				<div class="tricolor_line mb-3"></div>
+
+			</div>
+		</div>
+
 		<div class="row py-2 pt-5">
 			<div class="col-8 fs-5 fw-medium text-body-secondary">
 				<i class="fa-solid fa-qrcode text-primary"></i> Scan
@@ -387,6 +405,7 @@ echo $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/
 				<button type="button" class="btn btn-primary btn-xs">Small</button>
 			</div>
 		</div>
+
 		<div class="card border-0">
 			<div class="card-body">
 				<div id="qr" align="center"></div>
@@ -423,16 +442,12 @@ echo $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/
 			</div>
 		</div>
 
-
-		<div class="row py-2 pt-5">
-			<div class="col-12 fs-5 fw-medium text-body-secondary">
-				<i class="fa-solid fa-link text-primary"></i> Useful Links
-			</div>
-		</div>
-		<div class="card mb-3">
+		<div class="card bg-body-tertiary border-0 shadow mb-4">
 			<div class="card-body text-body-secondary">
+				<div class="card-title mb-0">Useful Links</div>
+				<div class="tricolor_line mb-3"></div>
 				<div class="table-responsive">
-					<table class="table table-sm table-borderless">
+					<table class="table table-sm table-borderless mb-4 table_transparent table-hover">
 						<tr>
 							<td><i class="far fa-bookmark" style="color: var(--bs-blue);"></i> <?php echo $this->Html->link('Re-CRUD repository', 'https://github.com/Asyraf-wa', ['target' => '_blank', 'class' => 'reference']); ?></td>
 						</tr>
