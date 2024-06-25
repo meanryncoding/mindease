@@ -19,8 +19,6 @@
 <div class="line mb-4"></div>
 <!--/Header-->
 
-
-
 <div class="row">
 	<div class="col-md-3 border-end">
 		<div class="card shadow border-0 gradient-border bg-body-tertiary mb-4">
