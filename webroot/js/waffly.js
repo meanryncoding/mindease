@@ -107,7 +107,7 @@
                 obj +=
                     '<div class="waffly_value" style="color:' +
                     settings.graph_value_color +
-                    ';font-size:2.5em;font-weight:bold;margin:.5em 0 .25em;text-align:center">' +
+                    ';font-size:1.5em;font-weight:normal;margin:0em;text-align:center">' +
                     settings.graph_value +
                     "</div>";
 
