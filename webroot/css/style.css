@@ -955,3 +955,45 @@ a.reference:active {
     object-fit: cover;
     margin-right: 10px;
 }
+
+/* Waffle Chart */
+/* .my_chart {
+    border: 1px solid #ccc;
+    font: 1em "comic sans ms", serif;
+    width: 200px;
+}
+
+.my_chart .waffly {
+    padding: 2em;
+}
+
+.my_chart .waffly_dots {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.my_chart .waffly_dot {
+    display: inline-block;
+    background: url(imgs/casas.png) right top no-repeat;
+    height: 16px;
+    margin-right: 6px;
+    width: 16px;
+}
+
+.my_chart .waffly_dot.sel {
+    background-position: left top;
+}
+
+.my_chart .waffly_value {
+    color: #f46508;
+    font-size: 2em;
+    margin-bottom: 0.5em;
+    text-align: center;
+}
+
+.my_chart .waffly_title {
+    margin-top: 1em;
+    text-align: center;
+}
+ */
