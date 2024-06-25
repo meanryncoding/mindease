@@ -65,27 +65,29 @@ echo $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/
 			</div>
 		</div>
 
+
+
 		<div class="row">
 			<div class="col-md-3 ps-5">
-				<div class="users" data-waffly-title="Total Active Users" data-waffly-value="25%">
+				<div class="users" data-waffly-title="Total Active Users" data-waffly-value="<?php echo $user_percent; ?>%">
 					<div class="title">Total Active Users</div>
 					<meter class="users" value="50" max="100"></meter>
 				</div>
 			</div>
 			<div class="col-md-3 ps-5">
-				<div class="todo" data-waffly-title="Total Pending To Do Task" data-waffly-value="55%">
+				<div class="todo" data-waffly-title="Total Pending To Do Task" data-waffly-value="<?php echo $pending_todo_percent; ?>%">
 					<div class="title">Total Pending To Do Task</div>
 					<meter class="todo" value="50" max="100"></meter>
 				</div>
 			</div>
 			<div class="col-md-3 ps-5">
-				<div class="contact" data-waffly-title="Total Pending Contact" data-waffly-value="100%">
+				<div class="contact" data-waffly-title="Total Pending Contact" data-waffly-value="<?php echo $pending_contact_percent; ?>%">
 					<div class="title">Total Pending Contact</div>
 					<meter class="contact" value="50" max="100"></meter>
 				</div>
 			</div>
 			<div class="col-md-3 ps-5">
-				<div class="faq" data-waffly-title="Total Active FAQ" data-waffly-value="81%">
+				<div class="faq" data-waffly-title="Total Active FAQ" data-waffly-value="<?php echo $pending_faq_percent; ?>%">
 					<div class="title">Total Active FAQ</div>
 					<meter class="faq" value="50" max="100"></meter>
 				</div>
@@ -103,7 +105,7 @@ echo $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/
 					dot_gap: 3,
 					dot_radius: '3px',
 					graph_color: '#e9c46a',
-					graph_title_color: '#555',
+					//graph_title_color: '#555',
 					graph_value_color: '#e9c46a',
 					dot_opacity: .2,
 					graph_reverse: true,
@@ -115,7 +117,7 @@ echo $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/
 					dot_gap: 3,
 					dot_radius: '3px',
 					graph_color: '#c8b6ff',
-					graph_title_color: '#555',
+					//graph_title_color: '#555',
 					graph_value_color: '#c8b6ff',
 					dot_opacity: .2,
 					graph_reverse: true,
@@ -127,7 +129,7 @@ echo $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/
 					dot_gap: 3,
 					dot_radius: '3px',
 					graph_color: '#ffafcc',
-					graph_title_color: '#555',
+					//graph_title_color: '#555',
 					graph_value_color: '#ffafcc',
 					dot_opacity: .2,
 					graph_reverse: true,
@@ -139,7 +141,7 @@ echo $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/
 					dot_gap: 3,
 					dot_radius: '3px',
 					graph_color: '#a2d2ff',
-					graph_title_color: '#555',
+					//graph_title_color: '#555',
 					graph_value_color: '#a2d2ff',
 					dot_opacity: .2,
 					graph_reverse: true,
