@@ -16,7 +16,7 @@
                     style_override: false,
                     default_color: "",
                     graph_font: "arial, sans-serif",
-                    graph_title_color: "#666",
+                    //graph_title_color: "#666",
                     graph_value_color: "#05c",
                     graph_color: "#05c",
                     graph_margin: "0px",
