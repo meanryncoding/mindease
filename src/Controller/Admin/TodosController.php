@@ -44,6 +44,14 @@ class TodosController extends AppController
         $query = $this->Todos->find('search', search: $this->request->getQueryParams());
         //$todos = $this->paginate($todos);
 
+        $tasksByDate = $this->Todos->find('all', [
+            'fields' => [
+                'DATE(created) AS date_created',
+                'COUNT(*) AS total_tasks'
+            ],
+            'group' => ['DATE(created)']
+        ]);
+
         $todos_pending = $this->Todos->find('all')
             ->where([
                 'status' => 'Pending',
@@ -77,7 +85,7 @@ class TodosController extends AppController
             ->limit(5);
 
         $users = $this->Todos->Users->find('list', ['limit' => 200])->all();
-        $this->set(compact('todos_pending', 'todos_progress', 'todos_completed', 'todos_canceled', 'users'), $this->paginate($query));
+        $this->set(compact('todos_pending', 'todos_progress', 'todos_completed', 'todos_canceled', 'users', 'tasksByDate'), $this->paginate($query));
         //$this->set('todos', $this->paginate($query));
     }
 
