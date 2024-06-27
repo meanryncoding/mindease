@@ -49,19 +49,13 @@ $a_name = $this->request->getParam('action');
 
 <body>
 
-    <?php //if($ribbon_status == true): 
-    ?>
-    <?php //echo $this->element('ribbon'); 
-    ?>
-    <?php //endif; 
-    ?>
+    <?php if ($ribbon_status == true) : ?>
+        <?php echo $this->element('ribbon'); ?>
+    <?php endif; ?>
 
-    <?php //if($notification_status == true): 
-    ?>
-    <?php //echo $this->element('notification_bar'); 
-    ?>
-    <?php //endif; 
-    ?>
+    <?php if ($notification_status == true) : ?>
+        <?php echo $this->element('notification_bar'); ?>
+    <?php endif; ?>
 
     <!-- Wrapper -->
     <div class="wrapper text-body-secondary">
