@@ -145,39 +145,39 @@ echo $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/
 		<div class="d-none d-sm-block">
 			<div class="activity-container">
 				<div class="image-container img-one">
-					<img src="https://compote.slate.com/images/17bdccdd-d8c9-44e6-b7f8-96f03ca50b33.jpeg?crop=1560%2C1040%2Cx0%2Cy0&width=1200" alt="code the pixel">
+					<?= $this->Html->image('header/walle-min.jpg', ['alt' => 'Code The Pixel']); ?>
 					<div class="overlay">
 						<h3><a href="https://codethepixel.com/" class="stretched-link header" target="_blank"><b class="logo-small">&lt;/&gt;</b></a></h3>
 					</div>
 				</div>
 				<div class="image-container img-two">
-					<img src="https://realhousemoms.com/wp-content/uploads/Red-Velvet-Cake-Recipe-RECIPE-CARD-500x500.jpg" alt="cakephp">
+					<?= $this->Html->image('header/cake-min.jpg', ['alt' => 'CakePHP']); ?>
 					<div class="overlay">
 						<h3><a href="https://cakephp.org/" class="stretched-link header">CakePHP</a></h3>
 					</div>
 				</div>
 				<div class="image-container img-three">
-					<img src="https://t4.ftcdn.net/jpg/06/42/16/69/360_F_642166904_nc1NJWECzIQraDZU60DbdoT5eLy1OPPb.jpg" alt="recrud">
+					<?= $this->Html->image('header/ghost-min.jpg', ['alt' => 'Re-CRUD']); ?>
 					<div class="overlay">
-						<h3><a href="#" class="stretched-link header">ReCRUD</a></h3>
+						<h3><a href="https://github.com/Asyraf-wa/recrud" class="stretched-link header">ReCRUD</a></h3>
 					</div>
 				</div>
 				<div class="image-container img-four">
-					<img src="https://github.blog/wp-content/uploads/2023/01/1200x640-2.png?fit=1200%2C640" alt="github">
+					<?= $this->Html->image('header/github-min.jpg', ['alt' => 'Github']); ?>
 					<div class="overlay">
-						<h3><a href="#" class="stretched-link header">Github</a></h3>
+						<h3><a href="https://github.com/" class="stretched-link header">Github</a></h3>
 					</div>
 				</div>
 				<div class="image-container img-five">
-					<img src="https://cff2.earth.com/uploads/2023/11/02172105/black-hole_supermassive_1medium.jpg" alt="crud">
+					<?= $this->Html->image('header/bh-min.jpg', ['alt' => 'CRUD']); ?>
 					<div class="overlay">
-						<h3><a href="#" class="stretched-link header">???</a></h3>
+						<h3><a href="#" class="stretched-link header">CRUD</a></h3>
 					</div>
 				</div>
 				<div class="image-container img-six">
-					<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZ7I0FxW09VD2Rza0XNrlU19uYwmoTPt0ZOw&s" alt="bootstrap">
+					<?= $this->Html->image('header/bootstrap-min.jpg', ['alt' => 'Bootstrap']); ?>
 					<div class="overlay">
-						<h3><a href="#" class="stretched-link header">Bootstrap</a></h3>
+						<h3><a href="https://getbootstrap.com/" class="stretched-link header">Bootstrap</a></h3>
 					</div>
 				</div>
 			</div>
