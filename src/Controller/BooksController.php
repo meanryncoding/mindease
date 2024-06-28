@@ -100,7 +100,31 @@ class BooksController extends AppController
         $this->set('november', $this->Books->find()->where(['MONTH(created)' => date('11'), 'YEAR(created)' => date('Y')])->count());
         $this->set('december', $this->Books->find()->where(['MONTH(created)' => date('12'), 'YEAR(created)' => date('Y')])->count());
 
-        $this->set(compact('books'));
+        //count all user activities and group by date for heatmap
+        //$Books = TableRegistry::getTableLocator()->get('UserLogs');
+        $query = $this->Books->find();
+        $query->select([
+            'count' => $query->func()->count('*'),
+            'date' => $query->func()->date_format(['created' => 'identifier', "%m"])
+        ])
+            ->groupBy(['month' => 'MONTH(created)']);
+
+        $results = $query->all()->toArray();
+
+        $totalBookByMonth = [];
+        foreach ($results as $result) {
+            $totalBookByMonth[] = [
+                'month' => $result->date,
+                'count' => $result->count
+            ];
+        }
+
+        $this->set([
+            'results' => $totalBookByMonth,
+            '_serialize' => ['results']
+        ]);
+
+        $this->set(compact('books', 'totalBookByMonth'));
     }
 
     /**

@@ -354,45 +354,184 @@ echo $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/
 			});
 		</script>
 
+		<?php //echo json_encode($totalActivityByMonth); 
+		?>
+		<?php
+		// Decode the JSON data
+		$totalActivityByMonth = json_encode($totalActivityByMonth);
+		$dataArray = json_decode($totalActivityByMonth, true);
 
-		<div id="heatmap-4" class="d-none d-sm-block"></div>
-		<script>
-			var data = ["2024-09-23", "2024-10-23"];
+		// Create an array to hold the formatted results
+		$formattedArray = [];
 
-			$("#heatmap-4").calmosaic(data, {
-				//title: "Cuba",
-				months: 12,
-				lastMonth: 12,
-				tooltips: {
-					show: true
-				},
-				legend: {
-					show: true,
-					align: "right",
-					minLabel: "Less",
-					maxLabel: "More"
-				},
-				labels: {
-					months: true,
-					custom: {
-						monthLabels: "MMM" //"MMM 'YY"
+		// Loop through the data array and add the month and count to the formatted array
+		foreach ($dataArray as $entry) {
+			//$formattedArray[] = $entry['month'];
+			$formattedArray[] = $entry['count'];
+		}
+		$formattedJson = json_encode($formattedArray);
+		//echo $formattedJson;
+
+
+		$formattedMonthArray = [];
+
+		// Loop through the data array and add the month and count to the formatted array
+		foreach ($dataArray as $entry) {
+			//$formattedArray[] = $entry['month'];
+			$formattedMonthArray[] = $entry['month'];
+		}
+		$formattedMonthJson = json_encode($formattedMonthArray);
+		//echo $formattedMonthJson;
+		?>
+
+		<div class="row mb-4">
+			<div class="col-md-4">
+				<div id="chart_line"></div>
+				<script>
+					var options = {
+						chart: {
+							type: 'line',
+							toolbar: {
+								show: false
+							},
+						},
+						stroke: {
+							curve: 'stepline',
+						},
+						series: [{
+							name: 'sales',
+							data: [35, 45, 55, 20, 11, 42, 32, 64, 64, 64, 50, 35]
+						}],
+						xaxis: {
+							categories: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+							min: 0,
+							max: 13
+						},
+						yaxis: {
+							min: 0
+						},
+						markers: {
+							size: 1,
+						},
+						fill: {
+							type: 'solid'
+						}
 					}
-				},
-			});
-		</script>
 
-		<div class="row py-3">
-			<div class="col-8 fs-5 fw-medium text-body-secondary">
-				Re-CRUD
+					var chart = new ApexCharts(document.querySelector("#chart_line"), options);
+
+					chart.render();
+				</script>
 			</div>
-			<div class="col-4 text-end">
-				<button type="button" class="btn btn-xs btn-outline-warning me-2"><i class="fa-brands fa-github"></i> Github</button>
+			<div class="col-md-4">
+				<div id="chart_bar"></div>
+				<script>
+					var options = {
+						chart: {
+							type: 'bar',
+							toolbar: {
+								show: false
+							},
+						},
+						stroke: {
+							curve: 'stepline',
+						},
+						series: [{
+							data: <?php echo $formattedJson; ?>
+						}],
+						xaxis: {
+							categories: <?php echo $formattedMonthJson; ?>,
+						},
+						yaxis: {
+							min: 0
+						},
+						markers: {
+							size: 1,
+						},
+						fill: {
+							type: 'solid'
+						}
+					}
 
+					var chart = new ApexCharts(document.querySelector("#chart_bar"), options);
+
+					chart.render();
+				</script>
+			</div>
+			<div class="col-md-4">
+				<div id="chart_tree"></div>
+				<script>
+					var options = {
+						series: [{
+							name: "Desktops",
+							data: [10, 41, 35, 51, 49, 62, 69, 91, 100]
+						}],
+						chart: {
+							type: 'line',
+							zoom: {
+								enabled: false
+							},
+							toolbar: {
+								show: false
+							},
+						},
+						dataLabels: {
+							enabled: false
+						},
+						stroke: {
+							curve: 'straight'
+						},
+						grid: {
+							row: {
+								colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+								opacity: 0.5
+							},
+						},
+						xaxis: {
+							categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+						}
+					};
+
+					var chart = new ApexCharts(document.querySelector("#chart"), options);
+					chart.render();
+
+
+					window.setInterval(function() {
+						getNewSeries(lastDate, {
+							min: 10,
+							max: 90
+						})
+
+						chart.updateSeries([{
+							data: data
+						}])
+					}, 1000)
+
+					var chart = new ApexCharts(document.querySelector("#chart_tree"), options);
+
+					chart.render();
+				</script>
 			</div>
 		</div>
+
 		<div class="card bg-body-tertiary border-0 shadow mb-4">
-			<div class="card-body">
-				<?= $system_abbr; ?> is a framework that enables the developer to generate comprehensive Create Read Update Delete Search and Report CRUD components using the <?= $system_abbr; ?> generator. The integrated important features in the CRUD operation enable the code automation for generating web application functions such as <span id="js-rotating">create, retrieve, update, delete, search, report, authentication, configurations, contact management, FAQ management</span> and comprehensive form helper features. All you need to do is to set your database, then <?= $system_abbr; ?> them!
+			<div class="card-body text-body-secondary">
+				<div class="card-title mb-0">
+					<div class="row py-3">
+						<div class="col-8 text-body-secondary">
+							Re-CRUD
+						</div>
+						<div class="col-4 text-end">
+							<?= $this->Html->link(
+								'<i class="fa-brands fa-github"></i> Github',
+								'https://github.com/Asyraf-wa/recrud',
+								['class' => 'btn btn-xs btn-outline-warning me-2', 'escapeTitle' => false, 'target' => '_blank', '_full' => true]
+							) ?>
+						</div>
+					</div>
+				</div>
+				<div class="tricolor_line mb-3"></div>
+				<?= $system_abbr; ?> allows developers to construct complete Create Read Update Delete Search and Report CRUD components using the <?= $system_abbr; ?> generator. The integrated features in the <?= $system_abbr; ?> operation enable the code automation for generating web application functions such as <span id="js-rotating">create, retrieve, update, delete, search, report, authentication, configurations, contact management, FAQ management</span> and comprehensive form helper features. All you need to do is to set your database, then <?= $system_abbr; ?> them!
 
 				<script src="https://cdnjs.cloudflare.com/ajax/libs/Morphext/2.4.4/morphext.min.js" integrity="sha256-qG3zvg7/f5CZHwV8IeaQfBY5Hm+M0KR3PMk9lAHp39s=" crossorigin="anonymous"></script>
 				<script>
