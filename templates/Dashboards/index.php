@@ -1,9 +1,9 @@
 <?php
 echo $this->Html->script('qr-code-styling-1-5-0.min.js');
 echo $this->Html->css('animate.min');
-echo $this->Html->css('jquery.calmosaic.css');
+echo $this->Html->css('jquery.CalendarHeatmap');
 echo $this->Html->script('moment.min.js');
-echo $this->Html->script('jquery.calmosaic.min.js');
+echo $this->Html->script('jquery.CalendarHeatmap.min.js');
 echo $this->Html->script('https://cdn.jsdelivr.net/npm/apexcharts');
 echo $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js');
 ?>
@@ -23,9 +23,7 @@ echo $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/
 				<i class="fa-solid fa-bars text-primary"></i>
 			</a>
 			<ul class="dropdown-menu">
-				<li><a class="dropdown-item" href="#">Action</a></li>
-				<li><a class="dropdown-item" href="#">Another action</a></li>
-				<li><a class="dropdown-item" href="#">Something else here</a></li>
+				<li><?= $this->Html->link(__('<i class="fa-solid fa-arrow-right-from-bracket"></i> Logout'), ['controller' => 'users', 'action' => 'logout'], ['class' => 'dropdown-item', 'escapeTitle' => false]) ?></li>
 			</ul>
 		</div>
 
@@ -35,14 +33,167 @@ echo $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/
 
 <div class="row">
 	<div class="col-md-9 border-end">
+		<style>
+			/* ACTIVITIES */
+
+			.activities h1 {
+				margin: 0 0 20px;
+				font-size: 1.4rem;
+				font-weight: 700;
+			}
+
+			.activity-container {
+				display: grid;
+				grid-template-columns: repeat(5, 1fr);
+				grid-template-rows: repeat(2, 150px);
+				column-gap: 10px;
+			}
+
+			.img-one {
+				grid-area: 1 / 1 / 2 / 2;
+			}
+
+			.img-two {
+				grid-area: 2 / 1 / 3 / 2;
+			}
+
+			.img-three {
+				display: block;
+				grid-area: 1 / 2 / 3 / 4;
+			}
+
+			.img-four {
+				grid-area: 1 / 4 / 2 / 5;
+			}
+
+			.img-five {
+				grid-area: 1 / 5 / 2 / 6;
+			}
+
+			.img-six {
+				display: block;
+				grid-area: 2 / 4 / 3 / 6;
+			}
+
+			.image-container {
+				position: relative;
+				margin-bottom: 10px;
+				box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 3px;
+				border-radius: 10px;
+			}
+
+			.image-container img {
+				width: 100%;
+				height: 100%;
+				border-radius: 10px;
+				object-fit: cover;
+			}
+
+			.overlay {
+				position: absolute;
+				display: flex;
+				flex-direction: column;
+				align-items: flex-end;
+				justify-content: flex-end;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background: linear-gradient(180deg,
+						transparent,
+						transparent,
+						rgba(3, 3, 185, 0.5));
+				border-radius: 10px;
+				transition: all 0.6s linear;
+			}
+
+			.image-container:hover .overlay {
+				opacity: 0;
+			}
+
+			.overlay h3 {
+				margin-bottom: 8px;
+				margin-right: 10px;
+				color: #fff;
+			}
+
+			/* LEFT BOTTOM */
+
+			.left-bottom {
+				display: grid;
+				grid-template-columns: 55% 40%;
+				gap: 40px;
+			}
+
+			a.header:link {
+				color: #ffffff;
+				text-decoration: none;
+			}
+
+			a.header:visited {
+				color: #ffffff;
+				text-decoration: none;
+			}
+
+			a.header:hover {
+				color: #ffffff;
+				text-decoration: none;
+			}
+		</style>
+
+
+		<div class="d-none d-sm-block">
+			<div class="activity-container">
+				<div class="image-container img-one">
+					<img src="https://compote.slate.com/images/17bdccdd-d8c9-44e6-b7f8-96f03ca50b33.jpeg?crop=1560%2C1040%2Cx0%2Cy0&width=1200" alt="code the pixel">
+					<div class="overlay">
+						<h3><a href="https://codethepixel.com/" class="stretched-link header" target="_blank"><b class="logo-small">&lt;/&gt;</b></a></h3>
+					</div>
+				</div>
+				<div class="image-container img-two">
+					<img src="https://realhousemoms.com/wp-content/uploads/Red-Velvet-Cake-Recipe-RECIPE-CARD-500x500.jpg" alt="cakephp">
+					<div class="overlay">
+						<h3><a href="https://cakephp.org/" class="stretched-link header">CakePHP</a></h3>
+					</div>
+				</div>
+				<div class="image-container img-three">
+					<img src="https://t4.ftcdn.net/jpg/06/42/16/69/360_F_642166904_nc1NJWECzIQraDZU60DbdoT5eLy1OPPb.jpg" alt="recrud">
+					<div class="overlay">
+						<h3><a href="#" class="stretched-link header">ReCRUD</a></h3>
+					</div>
+				</div>
+				<div class="image-container img-four">
+					<img src="https://github.blog/wp-content/uploads/2023/01/1200x640-2.png?fit=1200%2C640" alt="github">
+					<div class="overlay">
+						<h3><a href="#" class="stretched-link header">Github</a></h3>
+					</div>
+				</div>
+				<div class="image-container img-five">
+					<img src="https://cff2.earth.com/uploads/2023/11/02172105/black-hole_supermassive_1medium.jpg" alt="crud">
+					<div class="overlay">
+						<h3><a href="#" class="stretched-link header">???</a></h3>
+					</div>
+				</div>
+				<div class="image-container img-six">
+					<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZ7I0FxW09VD2Rza0XNrlU19uYwmoTPt0ZOw&s" alt="bootstrap">
+					<div class="overlay">
+						<h3><a href="#" class="stretched-link header">Bootstrap</a></h3>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
 
 		<div class="row py-3">
 			<div class="col-8 fs-5 fw-medium text-body-secondary">
-				Container Statistics
+				Report
 			</div>
 			<div class="col-4 text-end">
-				<button type="button" class="btn btn-xs btn-outline-warning me-2">View All</button>
-				<button type="button" class="btn btn-xs btn-primary">Manage Container</button>
+				<button class="btn btn-xs btn-outline-warning me-2" data-bs-toggle="collapse" href="#chartCollapse" role="button" aria-expanded="true" aria-controls="chartCollapse">
+					Hide Chart
+				</button>
+				<button onClick="window.location.reload();" class="btn btn-xs btn-primary">Refresh</button>
 
 			</div>
 		</div>
@@ -65,119 +216,148 @@ echo $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/
 			</div>
 		</div>
 
+		<div class="collapse show" id="chartCollapse">
+			<div class="row mb-4">
+				<div class="col-md-3 ps-5">
+					<div class="users" data-waffly-title="Total Active Users" data-waffly-value="<?php echo $user_percent; ?>%">
+						<div class="title">Total Active Users</div>
+						<meter class="users" value="50" max="100"></meter>
+					</div>
+				</div>
+				<div class="col-md-3 ps-5">
+					<div class="todo" data-waffly-title="Total Pending To Do Task" data-waffly-value="<?php echo $pending_todo_percent; ?>%">
+						<div class="title">Total Pending To Do Task</div>
+						<meter class="todo" value="50" max="100"></meter>
+					</div>
+				</div>
+				<div class="col-md-3 ps-5">
+					<div class="contact" data-waffly-title="Total Pending Contact" data-waffly-value="<?php echo $pending_contact_percent; ?>%">
+						<div class="title">Total Pending Contact</div>
+						<meter class="contact" value="50" max="100"></meter>
+					</div>
+				</div>
+				<div class="col-md-3 ps-5">
+					<div class="faq" data-waffly-title="Total Active FAQ" data-waffly-value="<?php echo $pending_faq_percent; ?>%">
+						<div class="title">Total Active FAQ</div>
+						<meter class="faq" value="50" max="100"></meter>
+					</div>
+				</div>
+			</div>
 
 
-		<div class="row">
-			<div class="col-md-3 ps-5">
-				<div class="users" data-waffly-title="Total Active Users" data-waffly-value="<?php echo $user_percent; ?>%">
-					<div class="title">Total Active Users</div>
-					<meter class="users" value="50" max="100"></meter>
-				</div>
-			</div>
-			<div class="col-md-3 ps-5">
-				<div class="todo" data-waffly-title="Total Pending To Do Task" data-waffly-value="<?php echo $pending_todo_percent; ?>%">
-					<div class="title">Total Pending To Do Task</div>
-					<meter class="todo" value="50" max="100"></meter>
-				</div>
-			</div>
-			<div class="col-md-3 ps-5">
-				<div class="contact" data-waffly-title="Total Pending Contact" data-waffly-value="<?php echo $pending_contact_percent; ?>%">
-					<div class="title">Total Pending Contact</div>
-					<meter class="contact" value="50" max="100"></meter>
-				</div>
-			</div>
-			<div class="col-md-3 ps-5">
-				<div class="faq" data-waffly-title="Total Active FAQ" data-waffly-value="<?php echo $pending_faq_percent; ?>%">
-					<div class="title">Total Active FAQ</div>
-					<meter class="faq" value="50" max="100"></meter>
-				</div>
-			</div>
+
+
+			<?php echo $this->Html->script('waffly.js'); ?>
+			<script>
+				$(document).ready(function() {
+					$('.users').waffly({
+						graph_width: 200,
+						dot_gap: 3,
+						dot_radius: '3px',
+						graph_color: '#e9c46a',
+						//graph_title_color: '#555',
+						graph_value_color: '#e9c46a',
+						dot_opacity: .2,
+						graph_reverse: true,
+						graph_animate: true,
+					});
+
+					$('.todo').waffly({
+						graph_width: 200,
+						dot_gap: 3,
+						dot_radius: '3px',
+						graph_color: '#c8b6ff',
+						//graph_title_color: '#555',
+						graph_value_color: '#c8b6ff',
+						dot_opacity: .2,
+						graph_reverse: true,
+						graph_animate: true,
+					});
+
+					$('.contact').waffly({
+						graph_width: 200,
+						dot_gap: 3,
+						dot_radius: '3px',
+						graph_color: '#ffafcc',
+						//graph_title_color: '#555',
+						graph_value_color: '#ffafcc',
+						dot_opacity: .2,
+						graph_reverse: true,
+						graph_animate: true,
+					});
+
+					$('.faq').waffly({
+						graph_width: 200,
+						dot_gap: 3,
+						dot_radius: '3px',
+						graph_color: '#a2d2ff',
+						//graph_title_color: '#555',
+						graph_value_color: '#a2d2ff',
+						dot_opacity: .2,
+						graph_reverse: true,
+						graph_animate: true,
+					});
+
+					$('.my_chart').waffly({
+						graph_reverse: false,
+						graph_animate: true,
+						style_override: true,
+						total_dots: 62,
+					});
+				});
+			</script>
 		</div>
 
 
+		<?php //echo json_encode($formattedResults); 
+		?>
 
+		<div class="card bg-body-tertiary border-0 shadow mb-4">
+			<div class="card-body">
+				<div class="card-title mb-0">Activities</div>
+				<div class="tricolor_line mb-4"></div>
+				<div id="heatmap-1"></div>
+			</div>
+		</div>
 
-		<?php echo $this->Html->script('waffly.js'); ?>
 		<script>
-			$(document).ready(function() {
-				$('.users').waffly({
-					graph_width: 200,
-					dot_gap: 3,
-					dot_radius: '3px',
-					graph_color: '#e9c46a',
-					//graph_title_color: '#555',
-					graph_value_color: '#e9c46a',
-					dot_opacity: .2,
-					graph_reverse: true,
-					graph_animate: true,
-				});
-
-				$('.todo').waffly({
-					graph_width: 200,
-					dot_gap: 3,
-					dot_radius: '3px',
-					graph_color: '#c8b6ff',
-					//graph_title_color: '#555',
-					graph_value_color: '#c8b6ff',
-					dot_opacity: .2,
-					graph_reverse: true,
-					graph_animate: true,
-				});
-
-				$('.contact').waffly({
-					graph_width: 200,
-					dot_gap: 3,
-					dot_radius: '3px',
-					graph_color: '#ffafcc',
-					//graph_title_color: '#555',
-					graph_value_color: '#ffafcc',
-					dot_opacity: .2,
-					graph_reverse: true,
-					graph_animate: true,
-				});
-
-				$('.faq').waffly({
-					graph_width: 200,
-					dot_gap: 3,
-					dot_radius: '3px',
-					graph_color: '#a2d2ff',
-					//graph_title_color: '#555',
-					graph_value_color: '#a2d2ff',
-					dot_opacity: .2,
-					graph_reverse: true,
-					graph_animate: true,
-				});
-
-				$('.my_chart').waffly({
-					graph_reverse: false,
-					graph_animate: true,
-					style_override: true,
-					total_dots: 62,
-				});
+			var data = <?php echo json_encode($formattedResults); ?>;
+			$("#heatmap-1").CalendarHeatmap(data, {
+				title: null,
+				months: 12,
+				//weekStartDay: 1,
+				//lastMonth: 1,
+				//lastMonth: "current month",
+				//lastYear: "current year",
+				labels: {
+					days: true,
+					months: true,
+					custom: {
+						weekDayLabels: null,
+						monthLabels: null
+					}
+				},
+				tiles: {
+					shape: "square"
+				},
+				legend: {
+					show: true,
+					align: "right",
+					minLabel: "Less",
+					maxLabel: "More",
+					divider: " to "
+				},
+				tooltips: {
+					show: false,
+					options: {}
+				}
 			});
 		</script>
 
 
-
-		<div class="row py-3">
-			<div class="col-8 fs-5 fw-medium text-body-secondary">
-				Platform Event
-			</div>
-			<div class="col-4 text-end">
-				<button type="button" class="btn btn-xs btn-outline-warning me-2">View All</button>
-				<button type="button" class="btn btn-xs btn-primary">Platform</button>
-
-			</div>
-		</div>
 		<div id="heatmap-4" class="d-none d-sm-block"></div>
 		<script>
-			var data = [{
-				count: 2,
-				date: "2024-01-23"
-			}, {
-				count: 5,
-				date: "2024-02-23"
-			}];
+			var data = ["2024-09-23", "2024-10-23"];
 
 			$("#heatmap-4").calmosaic(data, {
 				//title: "Cuba",
@@ -210,7 +390,7 @@ echo $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/
 
 			</div>
 		</div>
-		<div class="card mb-3 bg-body-tertiary">
+		<div class="card bg-body-tertiary border-0 shadow mb-4">
 			<div class="card-body">
 				<?= $system_abbr; ?> is a framework that enables the developer to generate comprehensive Create Read Update Delete Search and Report CRUD components using the <?= $system_abbr; ?> generator. The integrated important features in the CRUD operation enable the code automation for generating web application functions such as <span id="js-rotating">create, retrieve, update, delete, search, report, authentication, configurations, contact management, FAQ management</span> and comprehensive form helper features. All you need to do is to set your database, then <?= $system_abbr; ?> them!
 
@@ -415,29 +595,65 @@ echo $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/
 
 		<div class="card bg-body-tertiary border-0 shadow mb-4">
 			<div class="card-body text-body-secondary">
-				<div class="card-title mb-0 text-center"></b> <?php echo $this->Identity->get('fullname'); ?></div>
+				<div class="card-title mb-0">Profile</div>
 				<div class="tricolor_line mb-3"></div>
-				<div class="text-center">
-					<?php if ($this->Identity->get('avatar') != NULL) {
-						echo $this->Html->image('../files/Users/avatar/' . $this->Identity->get('slug') . '/' . $this->Identity->get('avatar'), ['class' => 'w-px-40 rounded-circle', 'width' => '100px', 'height' => '100px']);
-					} else
-						echo $this->Html->image('avatar_default.png', ['alt' => 'avatar', 'class' => 'w-px-40 h-auto rounded-circle', 'width' => '100px', 'height' => '100px']); ?>
+				<div class="row">
+					<div class="col-5 text-center">
+						<?php if ($this->Identity->get('avatar') != NULL) {
+							echo $this->Html->image('../files/Users/avatar/' . $this->Identity->get('slug') . '/' . $this->Identity->get('avatar'), ['class' => 'w-px-40 rounded', 'width' => '100px', 'height' => '100px']);
+						} else
+							echo $this->Html->image('avatar_default.png', ['alt' => 'avatar', 'class' => 'w-px-40 h-auto rounded', 'width' => '100px', 'height' => '100px']); ?>
+					</div>
+					<div class="col-7">
+						<?php echo $this->Identity->get('fullname'); ?>
+						<br />
+						<?php if ($this->Identity->get('user_group_id') == 1) {
+							echo 'Administrator';
+						} elseif ($this->Identity->get('user_group_id') == 2) {
+							echo 'Moderator';
+						} elseif ($this->Identity->get('user_group_id') == 3) {
+							echo 'User';
+						} else
+							echo 'Error';
+						?>
+						<br />
+						<div class="mt-4 text-end">
+							<a class="btn btn-outline-warning btn-xs" data-bs-toggle="collapse" href="#collapseActivity" role="button" aria-expanded="false" aria-controls="collapseActivity">
+								Account Activity
+							</a>
+						</div>
+
+
+					</div>
+
 					<br /><br />
-					<b>Logged as:</b> <?php echo $this->Identity->get('fullname'); ?>
-					<br />
-					<b>Last login:</b> <?php echo date('M d, Y (h:i A)', strtotime($this->Identity->get('last_login'))); ?>
-					<br />
-					<b>Role:</b>
-					<?php if ($this->Identity->get('user_group_id') == 1) {
-						echo 'Administrator';
-					} elseif ($this->Identity->get('user_group_id') == 2) {
-						echo 'Moderator';
-					} elseif ($this->Identity->get('user_group_id') == 3) {
-						echo 'User';
-					} else
-						echo 'Error';
-					?>
+
 				</div>
+				<div class="collapse" id="collapseActivity">
+					<div class="table-responsive">
+						<table class="table table-sm table-border mb-0 table_transparent table-hover">
+							<tr>
+								<th>Action</th>
+								<th>Date/Time</th>
+							</tr>
+							<?php foreach ($userLogs as $userLog) : ?>
+								<tr>
+									<td>
+										<?php if ($userLog->action == 'Login') {
+											echo '<span class="badge bg-success">Login</span>';
+										} elseif ($userLog->action == 'Logout') {
+											echo '<span class="badge bg-danger">Logout</span>';
+										} else
+											echo '<span class="badge bg-secondary">Error</span>';
+										?>
+									</td>
+									<td><?php echo date('M d, Y (h:i A)', strtotime($userLog->created)); ?></td>
+								</tr>
+							<?php endforeach; ?>
+						</table>
+					</div>
+				</div>
+
 			</div>
 		</div>
 
