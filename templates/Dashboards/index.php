@@ -732,8 +732,13 @@ echo $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/
 	</div>
 	<div class="col-md-3">
 
-		<div class="card bg-body-tertiary border-0 shadow mb-4">
-			<div class="card-body text-body-secondary">
+		<?php echo $this->Form->create(null, ['valueSources' => 'query', 'url' => ['controller' => '#', 'action' => '#']]); ?>
+		<fieldset>
+			<div class="mb-1"><?php echo $this->Form->control('search', ['required' => false, 'label' => false, 'placeholder' => 'Search...', 'class' => 'form-control border-0 bg-body-tertiary shadow']); ?></div>
+		</fieldset>
+
+		<div class="card gradient-border mb-3">
+			<div class="card-body">
 				<div class="card-title mb-0">Profile</div>
 				<div class="tricolor_line mb-3"></div>
 				<div class="row">
@@ -792,36 +797,90 @@ echo $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/
 						</table>
 					</div>
 				</div>
+			</div>
+		</div>
+
+		<div class="card bg-body-tertiary border-0 shadow mb-4">
+			<div class="card-body text-body-secondary">
+				<div class="card-title mb-0">To Do Task</div>
+				<div class="tricolor_line mb-3"></div>
+				<div class="table-responsive">
+					<table class="table table-sm table-border mb-0 table_transparent table-hover">
+						<?php foreach ($todo_list as $todos) : ?>
+							<tr>
+								<td>
+									<?php if ($todos->status == 'Pending') {
+										echo '<span class="badge rounded-pill text-bg-warning">' . $todos->status . '</span>';
+									} else
+										echo '<span class="badge rounded-pill text-bg-primary">' . $todos->status . '</span>';
+									?>
+								</td>
+								<td>
+									<?php echo $todos->task; ?>
+								</td>
+							</tr>
+						<?php endforeach; ?>
+					</table>
+				</div>
+
+
+
 
 			</div>
 		</div>
 
-		<div class="row">
+		<div class="row text-center">
 			<div class="col-6 pe-1 pb-2">
 				<div class="card bg-body-tertiary border-0 shadow">
 					<div class="card-body text-body-secondary">
-
+						<svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M32.126 56.2559L4.15215 56.2559C4.06812 56.2559 4 56.324 4 56.408C4 60.7423 7.51361 64.2559 11.8479 64.2559H68.1521C72.4864 64.2559 76 60.7423 76 56.408C76 56.324 75.9319 56.2559 75.8479 56.2559L47.874 56.2559C47.4299 57.9811 45.8638 59.2559 44 59.2559H36C34.1362 59.2559 32.5701 57.9811 32.126 56.2559Z" stroke="#C2CCDE" stroke-linecap="round" stroke-linejoin="round" />
+							<path d="M12 56.2559V20.2559C12 18.0467 13.7909 16.2559 16 16.2559L64 16.2559C66.2091 16.2559 68 18.0467 68 20.2559V56.2559" stroke="#C2CCDE" stroke-linecap="round" stroke-linejoin="round" />
+							<path d="M31.743 28.3379L23.8064 35.6001C23.3731 35.9966 23.3731 36.6792 23.8064 37.0756L31.743 44.3379" stroke="#C2CCDE" stroke-linecap="round" stroke-linejoin="round" />
+							<path d="M35.1426 48.3379L44.8569 24.3379" stroke="#C2CCDE" stroke-linecap="round" stroke-linejoin="round" />
+							<path d="M48.2573 28.3379L56.1939 35.6001C56.6272 35.9966 56.6272 36.6792 56.1939 37.0756L48.2573 44.3379" stroke="#C2CCDE" stroke-linecap="round" stroke-linejoin="round" />
+						</svg>
+						<br />
+						Code Automation
 					</div>
 				</div>
 			</div>
 			<div class="col-6 ps-1 pb-2">
 				<div class="card bg-body-tertiary border-0 shadow">
 					<div class="card-body text-body-secondary">
-
+						<svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M32.9966 23C32.9966 29.6274 27.624 35 20.9966 35C14.3692 35 8.99658 29.6274 8.99658 23C8.99658 16.3726 14.3692 11 20.9966 11C27.624 11 32.9966 16.3726 32.9966 23Z" stroke="#C2CCDE" stroke-linecap="round" stroke-linejoin="round" />
+							<path d="M47.097 13.1724L66.896 32.9713" stroke="#C2CCDE" stroke-linecap="round" stroke-linejoin="round" />
+							<path d="M66.896 13.1724L47.097 32.9713" stroke="#C2CCDE" stroke-linecap="round" stroke-linejoin="round" />
+							<path d="M32.5178 56.1374C33.1784 56.5227 33.1784 57.4772 32.5178 57.8626L11.4984 70.1239C10.8327 70.5123 9.99658 70.0321 9.99658 69.2613L9.99658 44.7387C9.99658 43.9679 10.8327 43.4877 11.4984 43.8761L32.5178 56.1374Z" stroke="#C2CCDE" stroke-linecap="round" stroke-linejoin="round" />
+							<path d="M44.9966 46C44.9966 45.4477 45.4443 45 45.9966 45H67.9966C68.5489 45 68.9966 45.4477 68.9966 46V68C68.9966 68.5523 68.5489 69 67.9966 69H45.9966C45.4443 69 44.9966 68.5523 44.9966 68V46Z" stroke="#C2CCDE" stroke-linecap="round" stroke-linejoin="round" />
+						</svg>
+						<br />
+						Bootstrap Ready
 					</div>
 				</div>
 			</div>
 			<div class="col-6 pe-1">
 				<div class="card bg-body-tertiary border-0 shadow mb-4">
 					<div class="card-body text-body-secondary">
-
+						<svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M45.9794 12.754C41.76 11.7491 37.3586 11.7487 33.139 12.7527L32.5499 20.1481C31.3889 20.564 30.2562 21.0866 29.1664 21.7158C28.0766 22.345 27.0577 23.0646 26.117 23.8621L19.4177 20.6745C16.4383 23.8267 14.2379 27.6385 12.9983 31.7951L19.108 36.0027C18.8878 37.2158 18.7741 38.4577 18.7741 39.7158C18.7741 40.9743 18.8879 42.2167 19.1082 43.4302L13.0001 47.6367C14.2407 51.7931 16.4421 55.6047 19.4225 58.7563L26.1181 55.5704C27.0585 56.3676 28.077 57.0869 29.1664 57.7158C30.2562 58.345 31.3888 58.8676 32.5498 59.2835L33.1384 66.6728C37.3584 67.677 41.7602 67.6766 45.98 66.6715L46.5686 59.2832C47.7292 58.8673 48.8615 58.3448 49.951 57.7158C51.0405 57.0868 52.0591 56.3674 52.9996 55.5702L59.6922 58.7546C62.6725 55.6025 64.8737 51.7906 66.1139 47.6338L60.0093 43.4297C60.2296 42.2163 60.3433 40.9742 60.3433 39.7158C60.3433 38.4579 60.2296 37.2162 60.0095 36.0032L66.1157 31.798C64.8765 27.6411 62.6763 23.8288 59.697 20.6762L53.0007 23.8624C52.0599 23.0648 51.0409 22.3451 49.951 21.7158C48.8615 21.0868 47.7291 20.5643 46.5685 20.1484L45.9794 12.754Z" stroke="#C2CCDE" stroke-linecap="round" stroke-linejoin="round" />
+							<path d="M34.3622 30.7155C37.5776 28.8591 41.5391 28.8591 44.7545 30.7155C47.9699 32.572 49.9506 36.0027 49.9506 39.7155C49.9506 43.4284 47.9699 46.8591 44.7545 48.7155C41.5391 50.572 37.5776 50.572 34.3622 48.7155C31.1468 46.8591 29.166 43.4284 29.166 39.7155C29.166 36.0027 31.1468 32.572 34.3622 30.7155Z" stroke="#C2CCDE" stroke-linecap="round" stroke-linejoin="round" />
+						</svg>
+						<br />
+						Ready to Use
 					</div>
 				</div>
 			</div>
 			<div class="col-6 ps-1">
 				<div class="card bg-body-tertiary border-0 shadow mb-4">
 					<div class="card-body text-body-secondary">
-
+						<svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M44 62H36" stroke="#C2CCDE" stroke-linecap="round" stroke-linejoin="round" />
+							<path d="M24 14C24 12.8954 24.8954 12 26 12H54C55.1046 12 56 12.8954 56 14V66C56 67.1046 55.1046 68 54 68H26C24.8954 68 24 67.1046 24 66V14Z" stroke="#C2CCDE" stroke-linecap="round" stroke-linejoin="round" />
+						</svg>
+						<br />
+						Mobile Friendly
 					</div>
 				</div>
 			</div>
@@ -850,18 +909,39 @@ echo $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/
 				<div class="row">
 					<div class="col-2 mt-1">
 						<svg width="40" height="40" viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M12 16C12 13.7909 13.7909 12 16 12H32C34.2091 12 36 13.7909 36 16V32C36 34.2091 34.2091 36 32 36H16C13.7909 36 12 34.2091 12 32V16Z" stroke="#C2CCDE" stroke-linecap="round" />
-							<path d="M44 16C44 13.7909 45.7909 12 48 12H64C66.2091 12 68 13.7909 68 16V32C68 34.2091 66.2091 36 64 36H48C45.7909 36 44 34.2091 44 32V16Z" stroke="#C2CCDE" stroke-linecap="round" />
-							<path d="M12 48C12 45.7909 13.7909 44 16 44H32C34.2091 44 36 45.7909 36 48V64C36 66.2091 34.2091 68 32 68H16C13.7909 68 12 66.2091 12 64V48Z" stroke="#C2CCDE" stroke-linecap="round" />
-							<path d="M44 48C44 45.7909 45.7909 44 48 44H64C66.2091 44 68 45.7909 68 48V64C68 66.2091 66.2091 68 64 68H48C45.7909 68 44 66.2091 44 64V48Z" stroke="#C2CCDE" stroke-linecap="round" />
+							<path d="M24 16H22.8399C18.1069 16 14.4087 20.0865 14.8796 24.796L15.4514 30.5141C15.7817 33.8172 14.0379 36.9811 11.0688 38.4656L8 40L11.0688 41.5344C14.0379 43.0189 15.7817 46.1828 15.4514 49.4859L14.8796 55.204C14.4087 59.9135 18.1069 64 22.8399 64H24" stroke="#C2CCDE" stroke-linecap="round" stroke-linejoin="round" />
+							<path d="M56 16H57.1601C61.8931 16 65.5913 20.0865 65.1204 24.796L64.5486 30.5141C64.2183 33.8172 65.9621 36.9811 68.9312 38.4656L72 40L68.9312 41.5344C65.9621 43.0189 64.2183 46.1828 64.5486 49.4859L65.1204 55.204C65.5913 59.9135 61.8931 64 57.1601 64H56" stroke="#C2CCDE" stroke-linecap="round" stroke-linejoin="round" />
+							<path d="M27.7852 40H28.2852" stroke="#C2CCDE" stroke-linecap="round" stroke-linejoin="round" />
+							<path d="M39.7852 40H40.2852" stroke="#C2CCDE" stroke-linecap="round" stroke-linejoin="round" />
+							<path d="M51.7852 40H52.2852" stroke="#C2CCDE" stroke-linecap="round" stroke-linejoin="round" />
 						</svg>
 					</div>
 					<div class="col-10">
-						<div class="article-title mt-1">CakePHP 4 Soft Delete</div>A soft delete marks a record as no longer active or valid without deleting it from the database.
+						<div class="article-title mt-1">Documentation</div>Access the full Documentation in Document Section.
 					</div>
 				</div>
 			</div>
 		</div>
+
+		<div class="card bg-body-tertiary border-0 shadow mb-4">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-2 mt-1">
+						<svg width="40" height="40" viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M68 40C68 55.464 55.464 68 40 68C24.536 68 12 55.464 12 40C12 24.536 24.536 12 40 12C55.464 12 68 24.536 68 40Z" stroke="#C2CCDE" stroke-linecap="round" stroke-linejoin="round" />
+							<path d="M40 46.3611V45.9808C40 43.1512 41.4911 41.3699 43.9237 39.9246L44.9751 39.3C47.4705 37.8175 49 35.1297 49 32.2271C49 27.6834 45.3166 24 40.7729 24H40C35.0294 24 31 28.0294 31 33V33.5082" stroke="#C2CCDE" stroke-linecap="round" stroke-linejoin="round" />
+							<path d="M40 53.6001V55.2001" stroke="#C2CCDE" stroke-linecap="round" stroke-linejoin="round" />
+						</svg>
+					</div>
+					<div class="col-10">
+						<div class="article-title mt-1">Search</div>
+						Access the full Documentation in Document Section.
+					</div>
+				</div>
+			</div>
+		</div>
+
+
 
 
 		<div class="card bg-body-tertiary border-0 shadow mb-4">
@@ -887,13 +967,7 @@ echo $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/
 			</div>
 		</div>
 
-		<div class="card gradient-border mb-3">
-			<div class="card-body">
-				<div class="card-title mb-0">Search</div>
-				<div class="tricolor_line mb-3"></div>
 
-			</div>
-		</div>
 
 		<div class="card bg-gold-full fs-5 fw-bold px-3 py-2 mb-3 rounded-0">
 			Hello, <?php echo $this->Identity->get('fullname');
