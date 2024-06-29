@@ -955,3 +955,7 @@ a.reference:active {
     object-fit: cover;
     margin-right: 10px;
 }
+
+.article-title {
+    font-weight: 700;
+}
