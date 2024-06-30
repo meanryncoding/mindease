@@ -83,35 +83,34 @@ $a_name = $this->request->getParam('action');
                 <footer class="py-5">
                     <div class="row">
                         <div class="col-6 col-md-2 mb-3">
-                            <h5>Section</h5>
+                            <h5>Internal Links</h5>
                             <ul class="nav flex-column">
-                                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Home</a></li>
-                                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Features</a></li>
-                                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Pricing</a></li>
-                                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">FAQs</a></li>
-                                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">About</a></li>
+                                <li class="nav-item mb-2">
+                                    <?= $this->Html->link(__('Dashboard'), ['controller' => 'Dashboards', 'action' => 'index', 'prefix' => false], ['class' => 'nav-link p-0 text-muted', 'escape' => false]) ?>
+                                </li>
+                                <li class="nav-item mb-2"><?= $this->Html->link(__('Frequently Asked Questions'), ['controller' => 'Faqs', 'action' => 'index', 'prefix' => false], ['class' => 'nav-link p-0 text-muted', 'escape' => false]) ?></li>
+                                <li class="nav-item mb-2"><?= $this->Html->link(__('Contact'), ['controller' => 'Contacts', 'action' => 'add', 'prefix' => false], ['class' => 'nav-link p-0 text-muted', 'escape' => false]) ?></li>
+                                <li class="nav-item mb-2"><?= $this->Html->link(__('Documentation Manual'), ['controller' => 'Pages', 'action' => 'manual', 'prefix' => false], ['class' => 'nav-link p-0 text-muted', 'escape' => false]) ?></li>
                             </ul>
                         </div>
 
                         <div class="col-6 col-md-2 mb-3">
-                            <h5>Section</h5>
+                            <h5>Important Links</h5>
                             <ul class="nav flex-column">
-                                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Home</a></li>
-                                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Features</a></li>
-                                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Pricing</a></li>
-                                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">FAQs</a></li>
-                                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">About</a></li>
+                                <li class="nav-item mb-2"><a href="https://github.com/Asyraf-wa" class="nav-link p-0 text-muted" target="_blank">ReCRUD Github</a></li>
+                                <li class="nav-item mb-2"><a href="https:/codethepixel.com" class="nav-link p-0 text-muted" target="_blank">Code The Pixel</a></li>
+                                <li class="nav-item mb-2"><a href="hhttps://getbootstrap.com/" class="nav-link p-0 text-muted" target="_blank">Bootstrap</a></li>
+                                <li class="nav-item mb-2"><a href="https://cakephp.org/" class="nav-link p-0 text-muted" target="_blank">CakePHP</a></li>
                             </ul>
                         </div>
 
                         <div class="col-6 col-md-2 mb-3">
-                            <h5>Section</h5>
+                            <h5>Others</h5>
                             <ul class="nav flex-column">
-                                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Home</a></li>
-                                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Features</a></li>
-                                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Pricing</a></li>
-                                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">FAQs</a></li>
-                                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">About</a></li>
+                                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Reserved</a></li>
+                                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Reserved</a></li>
+                                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Reserved</a></li>
+                                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Reserved</a></li>
                             </ul>
                         </div>
 
