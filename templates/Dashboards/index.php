@@ -934,93 +934,13 @@ echo $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/
 						</svg>
 					</div>
 					<div class="col-10">
-						<div class="article-title mt-1">Search</div>
-						Access the full Documentation in Document Section.
+						<div class="article-title mt-1">Search</div>Built-in search engine. Customized your search parameter in model.
 					</div>
 				</div>
 			</div>
 		</div>
 
 
-
-
-		<div class="card bg-body-tertiary border-0 shadow mb-4">
-			<div class="card-body text-body-secondary">
-				<div class="card-title mb-0">Search</div>
-				<div class="tricolor_line mb-3"></div>
-				<?php if ($this->Identity->get('avatar') != NULL) {
-					echo $this->Html->image('../files/Users/avatar/' . $this->Identity->get('slug') . '/' . $this->Identity->get('avatar'), ['class' => 'w-px-40 rounded-circle', 'width' => '40px', 'height' => '40px']);
-				} else
-					echo $this->Html->image('avatar_default.png', ['alt' => 'avatar', 'class' => 'w-px-40 h-auto rounded-circle', 'width' => '40px', 'height' => '40px']); ?>
-				<b>Logged as:</b> <?php echo $this->Identity->get('fullname'); ?> |
-				<b>Last login:</b> <?php echo date('M d, Y (h:i A)', strtotime($this->Identity->get('last_login'))); ?> |
-				<b>Role:</b>
-				<?php if ($this->Identity->get('user_group_id') == 1) {
-					echo 'Administrator';
-				} elseif ($this->Identity->get('user_group_id') == 2) {
-					echo 'Moderator';
-				} elseif ($this->Identity->get('user_group_id') == 3) {
-					echo 'User';
-				} else
-					echo 'Error';
-				?>
-			</div>
-		</div>
-
-
-
-		<div class="card bg-gold-full fs-5 fw-bold px-3 py-2 mb-3 rounded-0">
-			Hello, <?php echo $this->Identity->get('fullname');
-					?>,
-			<?php
-			date_default_timezone_set("Asia/Kuala_Lumpur");
-			$h = date('G');
-
-			if ($h >= 5 && $h <= 11) {
-				echo "Good morning";
-			} else if ($h >= 12 && $h <= 15) {
-				echo "Good afternoon";
-			} else {
-				echo "Good evening";
-			}
-			?>.
-		</div>
-
-
-
-
-		<div class="row py-3">
-			<div class="col-8 fs-5 fw-medium text-body-secondary">
-				<i class="fa-solid fa-code-commit fa-rotate-90 text-primary"></i> Activity
-			</div>
-			<div class="col-4 text-end">
-				<div class="dropdown">
-					<button class="btn btn-xs btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-						Dropdown
-					</button>
-					<ul class="dropdown-menu">
-						<li><a class="dropdown-item" href="#">Action</a></li>
-						<li><a class="dropdown-item" href="#">Another action</a></li>
-						<li><a class="dropdown-item" href="#">Something else here</a></li>
-					</ul>
-				</div>
-
-			</div>
-		</div>
-
-
-
-		<div class="card bg-body-tertiary mb-3">
-			<div class="card-body">
-				This is some text within a card body.
-			</div>
-		</div>
-
-		<div class="card text-bg-info mb-4">
-			<div class="card-body">
-				This is some text within a card body.
-			</div>
-		</div>
 
 		<div class="card bg-body-tertiary border-0 shadow mb-4">
 			<div class="card-body text-body-secondary">
