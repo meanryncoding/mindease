@@ -61,6 +61,30 @@
 				</div>
 
 
+				<h4>Audit Logs</h4>
+				<div class="table-responsive">
+					<table class="table table-sm table-hover">
+						<thead>
+							<tr>
+								<th>ID</th>
+								<th>Type</th>
+								<th>Source</th>
+								<th>Timestamp</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php foreach ($user->audit_logs as $log) : ?>
+								<tr>
+									<td><?= h($log->id) ?></td>
+									<td><?= h($log->type) ?></td>
+									<td><?= h($log->source) ?></td>
+									<td><?= h($log->created) ?></td>
+								</tr>
+							<?php endforeach; ?>
+						</tbody>
+					</table>
+				</div>
+
 			</div>
 		</div>
 	</div>

@@ -172,6 +172,10 @@ class UsersTable extends Table
         $this->hasMany('UserLogs', [
             'foreignKey' => 'user_id',
         ]);
+        $this->hasMany('AuditLogs', [
+            'foreignKey' => 'primary_key',
+            'bindingKey' => 'id',
+        ]);
     }
 
     public function validationPassword($validator)

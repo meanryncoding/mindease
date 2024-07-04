@@ -8,7 +8,7 @@
 <div class="line mb-4"></div>
 
 <div class="row mt-3">
-	<div class="col-md-8">
+	<div class="col-md-9">
 		<ul class="nav nav-pills flex-column flex-md-row mb-3">
 			<li class="nav-item">
 				<?= $this->Html->link(__('<i class="fa-solid fa-user-astronaut"></i> Account'), ['action' => 'profile', $user->slug], ['class' => 'nav-link', 'escapeTitle' => false]) ?>
@@ -26,7 +26,7 @@
 				<?php echo $this->Html->link(__('<i class="fa-regular fa-file-pdf"></i> PDF'), ['action' => 'pdf_profile', $user->slug], ['class' => 'nav-link', 'escapeTitle' => false]) ?>
 			</li>
 		</ul>
-		<div class="card shadow mb-4">
+		<div class="card bg-body-tertiary border-0 shadow mb-4">
 			<div class="p-3">
 				<?= $this->Form->create($user, ['type' => 'file']); ?>
 
@@ -56,14 +56,15 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-md-4">
-		<div class="special_card mb-3">
-			<div class="profile-card js-profile-card shadow">
-				<div class="profile-card__img shadow" style="background-color: #dc3545;color: #ffffff;">
-					<i class="fa-solid fa-timeline fa-xl" style="margin-left: 10px;margin-top: 21px;"></i>
-				</div>
-				<div class="card-body small-text pt-0">
-					Please use appropriate profile picture.
+	<div class="col-md-3">
+		<div class="card bg-body-tertiary border-0 shadow mb-4">
+			<div class="card-body">
+				<div class="card-title mb-0">Instruction</div>
+				<div class="tricolor_line mb-3"></div>
+				<div class="card-body">
+					<ul>
+						<li>Use appropriate profile picture.</li>
+					</ul>
 				</div>
 			</div>
 		</div>

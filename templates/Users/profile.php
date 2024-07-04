@@ -134,11 +134,10 @@ echo $this->Html->script('qr-code-styling-1-5-0.min.js');
 </div>
 
 
-<?php foreach ($auditLogs as $auditLog) : ?>
-	<li class="list-group-item text-secondary"><?= h($auditLog->id) ?></li>
-	<?php $info = json_decode($auditLog->meta); ?>
-	<?php echo $info->slug; ?>
-<?php endforeach; ?>
+
+
+
+
 
 
 <script type="text/javascript">
