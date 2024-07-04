@@ -477,8 +477,8 @@ a.article:hover {
     background: -o-linear-gradient(110deg, #fdcd3b 60%, #ffed4b 60%);
     background: -moz-linear-gradient(110deg, #fdcd3b 60%, #ffed4b 60%);
     background: linear-gradient(110deg, #fdcd3b 60%, #ffed4b 60%);
-    border-top-left-radius: 0.5rem;
-    border-top-right-radius: 0.5rem;
+    border-top-left-radius: 0rem;
+    border-top-right-radius: 0rem;
     border-bottom-right-radius: 0rem;
     border-bottom-left-radius: 0rem;
 }
@@ -958,4 +958,43 @@ a.reference:active {
 
 .article-title {
     font-weight: 700;
+}
+
+/* Menu bar */
+.horizontal-tabs {
+    display: flex;
+    align-items: center;
+    overflow-x: auto;
+
+    @media (max-width: 1000px) {
+        scrollbar-width: none;
+        position: relative;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+
+    a.topMenu {
+        display: inline-flex;
+        flex-shrink: 0;
+        align-items: center;
+        height: 48px;
+        padding: 0 0.25rem;
+        color: inherit;
+        border-bottom: 3px solid transparent;
+        text-decoration: none;
+        transition: 0.15s ease;
+
+        &:hover,
+        &:focus,
+        &.active {
+            color: var(--c-accent-primary);
+            border-bottom-color: var(--c-accent-primary);
+        }
+
+        & + * {
+            margin-left: 1rem;
+        }
+    }
 }
