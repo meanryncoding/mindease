@@ -100,5 +100,61 @@ $this->paginate = [
 		$this->set('november', $this->{{ currentModelName }}->find()->where(['MONTH(created)' => date('11'), 'YEAR(created)' => date('Y')])->count());
 		$this->set('december', $this->{{ currentModelName }}->find()->where(['MONTH(created)' => date('12'), 'YEAR(created)' => date('Y')])->count());
 
-        $this->set(compact('{{ pluralName }}'));
+		$query = $this->{{ currentModelName }}->find();
+
+        $expectedMonths = [];
+        for ($i = 11; $i >= 0; $i--) {
+            $expectedMonths[] = date('M-Y', strtotime("-$i months"));
+        }
+
+        $query->select([
+            'count' => $query->func()->count('*'),
+            'date' => $query->func()->date_format(['created' => 'identifier', "%b-%Y"]),
+            'month' => 'MONTH(created)',
+            'year' => 'YEAR(created)'
+        ])
+            ->where([
+                'created >=' => date('Y-m-01', strtotime('-11 months')),
+                'created <=' => date('Y-m-t')
+            ])
+            ->groupBy(['year', 'month'])
+            ->orderBy(['year' => 'ASC', 'month' => 'ASC']);
+
+        $results = $query->all()->toArray();
+
+        $totalByMonth = [];
+        foreach ($expectedMonths as $expectedMonth) {
+            $found = false;
+            $count = 0;
+
+            foreach ($results as $result) {
+                if ($expectedMonth === $result->date) {
+                    $found = true;
+                    $count = $result->count;
+                    break;
+                }
+            }
+
+            $totalByMonth[] = [
+                'month' => $expectedMonth,
+                'count' => $count
+            ];
+        }
+
+        $this->set([
+            'results' => $totalByMonth,
+            '_serialize' => ['results']
+        ]);
+
+        //data as JSON arrays for report chart
+        $totalByMonth = json_encode($totalByMonth);
+        $dataArray = json_decode($totalByMonth, true);
+        $monthArray = [];
+        $countArray = [];
+        foreach ($dataArray as $data) {
+            $monthArray[] = $data['month'];
+            $countArray[] = $data['count'];
+        }
+
+        $this->set(compact('{{ pluralName }}', 'monthArray', 'countArray'));
     }
