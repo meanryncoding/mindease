@@ -4,12 +4,12 @@
 			<div class="my-4 text-center">
 				<h1 class="my-0 page_title">FORGOT PASSWORD</h1>
 			</div>
-
+			<div class="tricolor_line mb-3"></div>
 			<?= $this->Form->create() ?>
-			<?= $this->Form->control('email', ['required' => true, 'class' => 'form-control', 'autocomplete' => 'off']) ?>
+			<?= $this->Form->control('email', ['required' => true, 'class' => 'form-control border-0', 'autocomplete' => 'off']) ?>
 			<div class="text-end">
-				<?= $this->Form->button('Reset', ['type' => 'reset', 'class' => 'btn btn-outline-warning']); ?>
-				<?= $this->Form->button(__('Submit'), ['type' => 'submit', 'class' => 'btn btn-outline-primary']) ?>
+				<?= $this->Form->button('Reset', ['type' => 'reset', 'class' => 'btn btn-outline-warning btn-sm']); ?>
+				<?= $this->Form->button(__('Submit'), ['type' => 'submit', 'class' => 'btn btn-outline-primary btn-sm']) ?>
 				<?= $this->Form->end() ?>
 			</div>
 
@@ -50,7 +50,7 @@
 				) . '' . (''), 'https://gitlab.com/', array('target' => 'blank', 'escape' => false)); ?>
 			</div>
 
-			<br><br>
+			<br />
 			<div class="">
 				<p class="text-center">
 					Leading The CRUD Evolution<br>
