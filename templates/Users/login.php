@@ -9,19 +9,19 @@
 			<div class="my-4 text-center">
 				<h1 class="my-0 page_title">LOGIN</h1>
 			</div>
-
+			<div class="tricolor_line mb-3"></div>
 			<?= $this->Form->create() ?>
 			<div class="row">
 				<div class="col-md-6">
-					<?= $this->Form->control('email', ['required' => true, 'class' => 'form-control', 'autocomplete' => 'off']) ?>
+					<?= $this->Form->control('email', ['required' => true, 'class' => 'form-control border-0', 'autocomplete' => 'off']) ?>
 				</div>
 				<div class="col-md-6">
-					<?= $this->Form->control('password', ['required' => true, 'class' => 'form-control']) ?>
+					<?= $this->Form->control('password', ['required' => true, 'class' => 'form-control border-0']) ?>
 				</div>
 			</div>
 			<div class="text-end">
-				<?= $this->Form->button('Reset', ['type' => 'reset', 'class' => 'btn btn-outline-warning']); ?>
-				<?= $this->Form->button(__('Submit'), ['type' => 'submit', 'class' => 'btn btn-outline-primary']) ?>
+				<?= $this->Form->button('Reset', ['type' => 'reset', 'class' => 'btn btn-outline-warning btn-sm']); ?>
+				<?= $this->Form->button(__('Submit'), ['type' => 'submit', 'class' => 'btn btn-outline-primary btn-sm']) ?>
 				<?= $this->Form->end() ?>
 			</div>
 
@@ -61,10 +61,7 @@
 				) . '' . (''), 'https://gitlab.com/', array('target' => 'blank', 'escape' => false)); ?>
 			</div>
 
-			<br><br>
-			<div class="text-center mb-3">
-				There is a framework called <?= $system_abbr; ?> that lets developers make complete Create Read Update Delete Search and Report CRUD components using the <?= $system_abbr; ?> generator. Important features that are built into the CRUD process make it possible to automate the code that makes web application functions like <span id="js-rotating">create, retrieve, update, delete, search, report, authentication, configurations, contact management, FAQ management</span> and full form helper features. You only need to set up your database and then <?= $system_abbr; ?> them!
-			</div>
+			<br />
 			<div class="">
 				<p class="text-center">
 					Leading The CRUD Evolution<br>
