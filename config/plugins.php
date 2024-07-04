@@ -17,4 +17,5 @@ return [
     'Tools' => [],
     'Josegonzalez/Upload' => [],
     'ReCrud' => [],
+    'CsvView' => [],
 ];
