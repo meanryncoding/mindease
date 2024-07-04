@@ -85,6 +85,7 @@ class AuditLogsController extends AppController
         //Search
         // $auditLogs = $this->paginate($this->AuditLogs->find('search', ['search' => $this->request->getQuery()]));
         $query = $this->AuditLogs->find('search', search: $this->request->getQueryParams());
+        $auditLogs = $this->paginate($query);
 
         //count
         $this->set('total_auditLogs', $this->AuditLogs->find()->count());
@@ -92,21 +93,65 @@ class AuditLogsController extends AppController
         $this->set('total_auditLogs_active', $this->AuditLogs->find()->where(['status' => 1])->count());
         $this->set('total_auditLogs_disabled', $this->AuditLogs->find()->where(['status' => 0])->count());
 
-        //Count By Month
-        $this->set('january', $this->AuditLogs->find()->where(['MONTH(created)' => date('1'), 'YEAR(created)' => date('Y')])->count());
-        $this->set('february', $this->AuditLogs->find()->where(['MONTH(created)' => date('2'), 'YEAR(created)' => date('Y')])->count());
-        $this->set('march', $this->AuditLogs->find()->where(['MONTH(created)' => date('3'), 'YEAR(created)' => date('Y')])->count());
-        $this->set('april', $this->AuditLogs->find()->where(['MONTH(created)' => date('4'), 'YEAR(created)' => date('Y')])->count());
-        $this->set('may', $this->AuditLogs->find()->where(['MONTH(created)' => date('5'), 'YEAR(created)' => date('Y')])->count());
-        $this->set('jun', $this->AuditLogs->find()->where(['MONTH(created)' => date('6'), 'YEAR(created)' => date('Y')])->count());
-        $this->set('july', $this->AuditLogs->find()->where(['MONTH(created)' => date('7'), 'YEAR(created)' => date('Y')])->count());
-        $this->set('august', $this->AuditLogs->find()->where(['MONTH(created)' => date('8'), 'YEAR(created)' => date('Y')])->count());
-        $this->set('september', $this->AuditLogs->find()->where(['MONTH(created)' => date('9'), 'YEAR(created)' => date('Y')])->count());
-        $this->set('october', $this->AuditLogs->find()->where(['MONTH(created)' => date('10'), 'YEAR(created)' => date('Y')])->count());
-        $this->set('november', $this->AuditLogs->find()->where(['MONTH(created)' => date('11'), 'YEAR(created)' => date('Y')])->count());
-        $this->set('december', $this->AuditLogs->find()->where(['MONTH(created)' => date('12'), 'YEAR(created)' => date('Y')])->count());
+        $query = $this->AuditLogs->find();
 
-        $this->set('auditLogs', $this->paginate($query));
+        $expectedMonths = [];
+        for ($i = 11; $i >= 0; $i--) {
+            $expectedMonths[] = date('M-Y', strtotime("-$i months"));
+        }
+
+        $query->select([
+            'count' => $query->func()->count('*'),
+            'date' => $query->func()->date_format(['created' => 'identifier', "%b-%Y"]),
+            'month' => 'MONTH(created)',
+            'year' => 'YEAR(created)'
+        ])
+            ->where([
+                'created >=' => date('Y-m-01', strtotime('-11 months')),
+                'created <=' => date('Y-m-t')
+            ])
+            ->groupBy(['year', 'month'])
+            ->orderBy(['year' => 'ASC', 'month' => 'ASC']);
+
+        $results = $query->all()->toArray();
+
+        $totalBookByMonth = [];
+        foreach ($expectedMonths as $expectedMonth) {
+            $found = false;
+            $count = 0;
+
+            foreach ($results as $result) {
+                if ($expectedMonth === $result->date) {
+                    $found = true;
+                    $count = $result->count;
+                    break;
+                }
+            }
+
+            $totalBookByMonth[] = [
+                'month' => $expectedMonth,
+                'count' => $count
+            ];
+        }
+
+        $this->set([
+            'results' => $totalBookByMonth,
+            '_serialize' => ['results']
+        ]);
+
+        // JSON arrays
+        $totalBookByMonth = json_encode($totalBookByMonth);
+        $dataArray = json_decode($totalBookByMonth, true);
+        $monthArray = [];
+        $countArray = [];
+        foreach ($dataArray as $data) {
+            $monthArray[] = $data['month'];
+            $countArray[] = $data['count'];
+        }
+
+
+        $this->set(compact('auditLogs', 'monthArray', 'countArray'));
+        //$this->set('auditLogs', $this->paginate($query));
     }
 
     /**
