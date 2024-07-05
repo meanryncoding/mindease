@@ -15,6 +15,9 @@ use Cake\ORM\TableRegistry;
 use Cake\Http\ServerRequest;
 use AuditStash\Meta\ApplicationMetadata;
 use Cake\Event\EventManager;
+use Cake\ORM\Table;
+use Cake\ORM\Locator\LocatorAwareTrait;
+use Cake\Routing\Router;
 
 /**
  * Users Controller
@@ -27,9 +30,9 @@ class UsersController extends AppController
     {
         parent::initialize();
         $this->loadComponent('UserLogs');
-        $this->loadComponent('Search.Search', [
+        /* $this->loadComponent('Search.Search', [
             'actions' => ['index'],
-        ]);
+        ]); */
     }
 
     public function beforeFilter(\Cake\Event\EventInterface $event)
@@ -81,7 +84,10 @@ class UsersController extends AppController
         $this->set('title', 'Forgot Username');
         if ($this->request->is('post')) {
             $email = $this->request->getData('email');
-            $userTable = TableRegistry::get('Users');
+            //$userTable = TableRegistry::get('Users');
+            //$userTable = TableRegistry::getTableLocator()->get('Users');
+            //$userTable = TableRegistry::get('Users');
+            $userTable = TableRegistry::getTableLocator()->get('Users');
 
             if ($email == NULL) {
                 $this->Flash->error(__('Please insert your email address'));
@@ -90,7 +96,7 @@ class UsersController extends AppController
                 $fullname = $user->fullname;
                 if ($userTable->save($user)) {
                     $mailer = new Mailer('default');
-                    $mailer->setTransport('smtp');
+                    $mailer->setTransport('default');
                     $mailer->setFrom(['noreply@codethepixel.com' => 'ReCRUD'])
                         ->setTo($email)
                         ->setEmailFormat('html')
@@ -110,17 +116,19 @@ class UsersController extends AppController
         $this->set('title', 'Forgot Password');
         if ($this->request->is('post')) {
             $email = $this->request->getData('email');
-            $token = Security::hash(Security::randomBytes(25));
-
-            $userTable = TableRegistry::get('Users');
+            //$token = Security::hash(Security::randomBytes(25));
+            $token = Security::hash(Security::randomBytes(32), 'sha256', true);
+            //$userTable = TableRegistry::get('Users');
+            $userTable = TableRegistry::getTableLocator()->get('Users');
             if ($email == NULL) {
                 $this->Flash->error(__('Please insert your email address'));
             }
             if ($user = $userTable->find('all')->where(['email' => $email])->first()) {
                 $user->token = $token;
+                $user->token_created_at = date('Y-m-d H:i:s');
                 if ($userTable->save($user)) {
                     $mailer = new Mailer('default');
-                    $mailer->setTransport('smtp');
+                    $mailer->setTransport('default');
                     $mailer->setFrom(['noreply@codethepixel.com' => 'ReCRUD'])
                         ->setTo($email)
                         ->setEmailFormat('html')
@@ -138,12 +146,28 @@ class UsersController extends AppController
     public function resetPassword($token = null)
     {
         $this->set('title', 'Reset Password');
+        if (!$token) {
+            $this->Flash->error('Invalid token.');
+            return $this->redirect(['action' => 'forgotPassword']);
+        }
+
+        $usersTable = TableRegistry::getTableLocator()->get('Users');
+        $user = $usersTable->find('all', [
+            'conditions' => ['token' => $token, 'token_created_at >' => date('Y-m-d H:i:s', strtotime('-1 hour'))]
+        ])->first();
+
+        if (!$user) {
+            $this->Flash->error('Invalid or expired token.');
+            return $this->redirect(['action' => 'forgotPassword']);
+        }
+
         $user = $this->Users->findByToken($token)->first();
         $password = $this->request->getData('password');
 
         if ($this->request->is(['post'])) {
             $user->password = $password;
-            $user->token = '';
+            $user->token = null;
+            $user->token_created_at = null;
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('Your password has been successfully updated.'));
                 return $this->redirect(['action' => 'login']);
@@ -172,29 +196,10 @@ class UsersController extends AppController
     public function profile($slug = null)
     {
         $this->set('title', 'Account Details');
-        /* $user = $this->Users->get($id, [
-            'contain' => ['UserGroups', 
-			//'Contacts', 'UserLogs'
-			],
-        ]); */
-        //debug($slug);
-        //exit;
-        //$this->loadModel('AuditLogs');
-        $this->fetchTable('AuditLogs');
-        $this->AuditLogs = $this->fetchTable('AuditLogs');
-
-
-        $auditLogs = $this->AuditLogs->find('all')
-            ->where([
-                'primary_key' => 11,
-                //'category_id' => '1',
-            ])
-            ->order(['created' => 'ASC'])
-            ->limit(10);
 
         $user = $this->Users
             ->findBySlug($slug)
-            ->contain(['UserGroups'])
+            ->contain(['UserGroups', 'AuditLogs'])
             ->firstOrFail();
 
         /* $user = $this->Users->get($id, [
@@ -221,22 +226,12 @@ class UsersController extends AppController
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
         $userGroups = $this->Users->UserGroups->find('list', ['limit' => 200])->all();
-        $this->set(compact('user', 'userGroups', 'auditLogs'));
+        $this->set(compact('user', 'userGroups'));
     }
 
     public function update($slug = null, $id = null)
     {
         $this->set('title', 'Update Profile');
-        //$this->loadModel('AuditLogs');
-        /* $this->fetchTable('AuditLogs');
-        $this->AuditLogs = $this->fetchTable('AuditLogs');
-        $auditLogs = $this->AuditLogs->find('all')
-            ->where([
-                'primary_key' => $user['id'],
-                //'category_id' => '1',
-            ])
-            ->order(['created' => 'ASC'])
-            ->limit(10); */
 
         $user = $this->Users
             ->findBySlug($slug)
@@ -257,16 +252,6 @@ class UsersController extends AppController
     public function removeAvatar($slug = null)
     {
         $this->set('title', 'Remove Profile Picture');
-        //$this->loadModel('AuditLogs');
-        $this->fetchTable('AuditLogs');
-        $this->AuditLogs = $this->fetchTable('AuditLogs');
-        $auditLogs = $this->AuditLogs->find('all')
-            ->where([
-                'primary_key' => 11,
-                //'category_id' => '1',
-            ])
-            ->order(['created' => 'ASC'])
-            ->limit(10);
 
         $user = $this->Users
             ->findBySlug($slug)
@@ -282,7 +267,7 @@ class UsersController extends AppController
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
         $userGroups = $this->Users->UserGroups->find('list', ['limit' => 200])->all();
-        $this->set(compact('user', 'userGroups', 'auditLogs'));
+        $this->set(compact('user', 'userGroups'));
     }
 
     public function changePassword($slug = null)
@@ -320,14 +305,22 @@ class UsersController extends AppController
 
         $user = $this->Users
             ->findBySlug($slug)
-            ->contain(['UserGroups'])
+            ->contain(['UserGroups', 'AuditLogs'])
+            ->limit(5)
             ->firstOrFail();
 
-        $this->userLogs = $this->fetchTable('userLogs');
-        $userLogs = $this->userLogs->find('all')
+        //$this->userLogs = $this->fetchTable('userLogs');
+        $userLogs = $this->fetchTable('UserLogs')->find(
+            'all',
+            limit: 5,
+            order: 'UserLogs.created DESC'
+        )
+            ->all();
+
+        /* $userLogs = $this->userLogs->find('all')
             ->where(['user_id' => $user->id])
             ->limit(10)
-            ->orderBy(['created' => 'DESC']);
+            ->orderBy(['created' => 'DESC']); */
 
 
         $this->set(compact('user', 'userLogs'));
