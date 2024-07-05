@@ -68,14 +68,14 @@
                     </ul>
                     <b class="top_menu_separator"></b>
                     <a class="btn btn-sm border-0 transparent" data-bs-toggle="offcanvas" onclick="toggleFull()" role="button"><i class="fa-solid fa-expand"></i></a>
-                    <?php //if ($this->Identity->isLoggedIn()) { 
+                    <?php if ($this->Identity->isLoggedIn()) {
                     ?>
-                    <b class="top_menu_separator"></b>
-                    <a class="btn btn-sm border-0 transparent" data-bs-toggle="offcanvas" href="#offcanvasWithBothOptions" role="button" aria-controls="offcanvasWithBothOptions offcanvasRight"><i class="fa-solid fa-outdent"></i></a>
-                    <b class="top_menu_separator"></b>
-                    <?php echo $this->Html->link('<i class="fa-solid fa-arrow-right-from-bracket"></i>', ['controller' => 'Users', 'action' => 'logout', 'prefix' => false], ['class' => 'btn btn-sm border-0 transparent', 'escape' => false, 'alt' => 'Sign-out']); ?>
+                        <b class="top_menu_separator"></b>
+                        <a class="btn btn-sm border-0 transparent" data-bs-toggle="offcanvas" href="#offcanvasWithBothOptions" role="button" aria-controls="offcanvasWithBothOptions offcanvasRight"><i class="fa-solid fa-outdent"></i></a>
+                        <b class="top_menu_separator"></b>
+                        <?php echo $this->Html->link('<i class="fa-solid fa-arrow-right-from-bracket"></i>', ['controller' => 'Users', 'action' => 'logout', 'prefix' => false], ['class' => 'btn btn-sm border-0 transparent', 'escape' => false, 'alt' => 'Sign-out']); ?>
 
-                    <?php //} 
+                    <?php }
                     ?>
                 </div>
 
