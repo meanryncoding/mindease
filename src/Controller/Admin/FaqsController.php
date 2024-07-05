@@ -91,7 +91,7 @@ class FaqsController extends AppController
 		//->contain(['UserGroups'])
 		//->where(['title IS NOT' => null])
 		//;
-
+		$faqs = $this->paginate($query);
 		//count
 		$this->set('total_faqs', $this->Faqs->find()->count());
 		$this->set('total_faqs_archived', $this->Faqs->find()->where(['status' => 2])->count());
@@ -112,8 +112,65 @@ class FaqsController extends AppController
 		$this->set('november', $this->Faqs->find()->where(['MONTH(created)' => date('11'), 'YEAR(created)' => date('Y')])->count());
 		$this->set('december', $this->Faqs->find()->where(['MONTH(created)' => date('12'), 'YEAR(created)' => date('Y')])->count());
 
+		$query = $this->Faqs->find();
+
+		$expectedMonths = [];
+		for ($i = 11; $i >= 0; $i--) {
+			$expectedMonths[] = date('M-Y', strtotime("-$i months"));
+		}
+
+		$query->select([
+			'count' => $query->func()->count('*'),
+			'date' => $query->func()->date_format(['created' => 'identifier', "%b-%Y"]),
+			'month' => 'MONTH(created)',
+			'year' => 'YEAR(created)'
+		])
+			->where([
+				'created >=' => date('Y-m-01', strtotime('-11 months')),
+				'created <=' => date('Y-m-t')
+			])
+			->groupBy(['year', 'month'])
+			->orderBy(['year' => 'ASC', 'month' => 'ASC']);
+
+		$results = $query->all()->toArray();
+
+		$totalFaqByMonth = [];
+		foreach ($expectedMonths as $expectedMonth) {
+			$found = false;
+			$count = 0;
+
+			foreach ($results as $result) {
+				if ($expectedMonth === $result->date) {
+					$found = true;
+					$count = $result->count;
+					break;
+				}
+			}
+
+			$totalFaqByMonth[] = [
+				'month' => $expectedMonth,
+				'count' => $count
+			];
+		}
+
+		$this->set([
+			'results' => $totalFaqByMonth,
+			'_serialize' => ['results']
+		]);
+
+		// JSON arrays
+		$totalFaqByMonth = json_encode($totalFaqByMonth);
+		$dataArray = json_decode($totalFaqByMonth, true);
+		$monthArray = [];
+		$countArray = [];
+		foreach ($dataArray as $data) {
+			$monthArray[] = $data['month'];
+			$countArray[] = $data['count'];
+		}
+
 		//$this->set(compact('faqs'));
-		$this->set('faqs', $this->paginate($query));
+		//$this->set('faqs', $this->paginate($query));
+		$this->set(compact('faqs', 'monthArray', 'countArray'));
 	}
 
 	/**
