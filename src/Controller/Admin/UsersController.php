@@ -22,6 +22,7 @@ use Cake\Http\ServerRequest;
 use AuditStash\Meta\ApplicationMetadata;
 use Cake\Event\EventManager;
 
+
 /**
  * Users Controller
  *
@@ -37,6 +38,7 @@ class UsersController extends AppController
 		$this->loadComponent('Search.Search', [
 			'actions' => ['index'],
 		]);
+		//$this->addViewClasses(['csv' => 'CsvView.Csv']);
 	}
 
 	public function beforeFilter(\Cake\Event\EventInterface $event)
@@ -46,6 +48,9 @@ class UsersController extends AppController
 		$this->Authentication->allowUnauthenticated(['login', 'registration', 'forgotPassword', 'forgotUsername', 'resetPassword', 'verify']);
 	}
 
+
+
+
 	public function index()
 	{
 		$this->set('title', 'User Management');
@@ -53,13 +58,11 @@ class UsersController extends AppController
 			//'contain' => ['UserGroups'],
 			'maxLimit' => 10,
 		];
-		//$users = $this->paginate($this->Users);
-		//$users = $this->paginate($this->Users->find('search', ['search' => $this->request->getQuery()]));
-		//$users = $this->paginate($this->Users->find('search', search: $this->request->getQueryParams()));
 		$query = $this->Users->find('search', search: $this->request->getQueryParams())
 			->contain(['UserGroups'])
 			//->where(['title IS NOT' => null])
 		;
+		$users = $this->paginate($query);
 
 
 		//count
@@ -68,22 +71,64 @@ class UsersController extends AppController
 		$this->set('total_users_active', $this->Users->find()->where(['status' => 1])->count());
 		$this->set('total_users_disabled', $this->Users->find()->where(['status' => 0])->count());
 
-		//Count By Month
-		$this->set('january', $this->Users->find()->where(['MONTH(created)' => date('1'), 'YEAR(created)' => date('Y')])->count());
-		$this->set('february', $this->Users->find()->where(['MONTH(created)' => date('2'), 'YEAR(created)' => date('Y')])->count());
-		$this->set('march', $this->Users->find()->where(['MONTH(created)' => date('3'), 'YEAR(created)' => date('Y')])->count());
-		$this->set('april', $this->Users->find()->where(['MONTH(created)' => date('4'), 'YEAR(created)' => date('Y')])->count());
-		$this->set('may', $this->Users->find()->where(['MONTH(created)' => date('5'), 'YEAR(created)' => date('Y')])->count());
-		$this->set('jun', $this->Users->find()->where(['MONTH(created)' => date('6'), 'YEAR(created)' => date('Y')])->count());
-		$this->set('july', $this->Users->find()->where(['MONTH(created)' => date('7'), 'YEAR(created)' => date('Y')])->count());
-		$this->set('august', $this->Users->find()->where(['MONTH(created)' => date('8'), 'YEAR(created)' => date('Y')])->count());
-		$this->set('september', $this->Users->find()->where(['MONTH(created)' => date('9'), 'YEAR(created)' => date('Y')])->count());
-		$this->set('october', $this->Users->find()->where(['MONTH(created)' => date('10'), 'YEAR(created)' => date('Y')])->count());
-		$this->set('november', $this->Users->find()->where(['MONTH(created)' => date('11'), 'YEAR(created)' => date('Y')])->count());
-		$this->set('december', $this->Users->find()->where(['MONTH(created)' => date('12'), 'YEAR(created)' => date('Y')])->count());
+		$query = $this->Users->find();
 
-		//$this->set(compact('users'));
-		$this->set('users', $this->paginate($query));
+		$expectedMonths = [];
+		for ($i = 11; $i >= 0; $i--) {
+			$expectedMonths[] = date('M-Y', strtotime("-$i months"));
+		}
+
+		$query->select([
+			'count' => $query->func()->count('*'),
+			'date' => $query->func()->date_format(['created' => 'identifier', "%b-%Y"]),
+			'month' => 'MONTH(created)',
+			'year' => 'YEAR(created)'
+		])
+			->where([
+				'created >=' => date('Y-m-01', strtotime('-11 months')),
+				'created <=' => date('Y-m-t')
+			])
+			->groupBy(['year', 'month'])
+			->orderBy(['year' => 'ASC', 'month' => 'ASC']);
+
+		$results = $query->all()->toArray();
+
+		$totalUserByMonth = [];
+		foreach ($expectedMonths as $expectedMonth) {
+			$found = false;
+			$count = 0;
+
+			foreach ($results as $result) {
+				if ($expectedMonth === $result->date) {
+					$found = true;
+					$count = $result->count;
+					break;
+				}
+			}
+
+			$totalUserByMonth[] = [
+				'month' => $expectedMonth,
+				'count' => $count
+			];
+		}
+
+		$this->set([
+			'results' => $totalUserByMonth,
+			'_serialize' => ['results']
+		]);
+
+		// JSON arrays
+		$totalUserByMonth = json_encode($totalUserByMonth);
+		$dataArray = json_decode($totalUserByMonth, true);
+		$monthArray = [];
+		$countArray = [];
+		foreach ($dataArray as $data) {
+			$monthArray[] = $data['month'];
+			$countArray[] = $data['count'];
+		}
+
+		$this->set(compact('users', 'monthArray', 'countArray'));
+		//$this->set('users', $this->paginate($query));
 	}
 
 
@@ -130,7 +175,8 @@ class UsersController extends AppController
 		$this->set('title', 'Forgot Username');
 		if ($this->request->is('post')) {
 			$email = $this->request->getData('email');
-			$userTable = TableRegistry::get('Users');
+			//$userTable = TableRegistry::get('Users');
+			$userTable = TableRegistry::getTableLocator()->get('Users');
 
 			if ($email == NULL) {
 				$this->Flash->error(__('Please insert your email address'));
@@ -384,6 +430,29 @@ class UsersController extends AppController
 		//$this->set(compact('user', 'userGroups'));
 	}
 
+	public function pdfList()
+	{
+		$this->viewBuilder()->enableAutoLayout(false);
+		//$user = $this->Users->find();
+		$user = $this->Users->find()
+			->contain(['UserGroups'])
+			//->where(['title IS NOT' => null])
+		;
+		$users = $this->paginate($user);
+
+		$this->viewBuilder()->setClassName('CakePdf.Pdf');
+		$this->viewBuilder()->setOption(
+			'pdfConfig',
+			[
+				'orientation' => 'portrait',
+				'download' => true,
+				'filename' => 'User_List.pdf'
+			]
+		);
+		//$this->set('user', $user);
+		$this->set(compact('users'));
+	}
+
 	public function profilePdf($slug = null)
 	{
 		$this->viewBuilder()->enableAutoLayout(false);
@@ -532,5 +601,28 @@ class UsersController extends AppController
 		}
 		return $this->redirect($this->referer());
 		$this->set(compact('user'));
+	}
+
+	public function csv()
+	{
+		$data = $this->Users->find();
+		$header = ['ID', 'Group ID', 'Fullname', 'Email', 'Created', 'Modified'];
+		$extract = ['id', 'user_group_id', 'fullname', 'email', 'created', 'modified'];
+
+		$this->set(compact('data'));
+		$this->viewBuilder()
+			->setClassName('CsvView.Csv')
+			->setOptions([
+				'serialize' => 'data',
+				'header' => $header,
+				'extract' => $extract,
+			]);
+	}
+
+	public function json()
+	{
+		$this->viewBuilder()->enableAutoLayout(false);
+		$users = $this->paginate('Users');
+		$this->set(compact('users'));
 	}
 }
