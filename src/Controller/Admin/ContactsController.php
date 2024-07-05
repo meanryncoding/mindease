@@ -37,28 +37,71 @@ class ContactsController extends AppController
         //$contacts = $this->paginate($this->Contacts);
         //$contacts = $this->paginate($this->Contacts->find('search', ['search' => $this->request->getQuery()]));
         $query = $this->Contacts->find('search', search: $this->request->getQueryParams());
-
+        $contacts = $this->paginate($query);
         //count
         $this->set('total_contacts', $this->Contacts->find()->count());
         $this->set('total_contacts_pending', $this->Contacts->find()->where(['status' => 0])->count());
         $this->set('total_contacts_responded', $this->Contacts->find()->where(['status' => 1])->count());
         $this->set('total_contacts_ignored', $this->Contacts->find()->where(['status' => 2])->count());
 
-        //Count By Month
-        $this->set('january', $this->Contacts->find()->where(['MONTH(created)' => date('1'), 'YEAR(created)' => date('Y')])->count());
-        $this->set('february', $this->Contacts->find()->where(['MONTH(created)' => date('2'), 'YEAR(created)' => date('Y')])->count());
-        $this->set('march', $this->Contacts->find()->where(['MONTH(created)' => date('3'), 'YEAR(created)' => date('Y')])->count());
-        $this->set('april', $this->Contacts->find()->where(['MONTH(created)' => date('4'), 'YEAR(created)' => date('Y')])->count());
-        $this->set('may', $this->Contacts->find()->where(['MONTH(created)' => date('5'), 'YEAR(created)' => date('Y')])->count());
-        $this->set('jun', $this->Contacts->find()->where(['MONTH(created)' => date('6'), 'YEAR(created)' => date('Y')])->count());
-        $this->set('july', $this->Contacts->find()->where(['MONTH(created)' => date('7'), 'YEAR(created)' => date('Y')])->count());
-        $this->set('august', $this->Contacts->find()->where(['MONTH(created)' => date('8'), 'YEAR(created)' => date('Y')])->count());
-        $this->set('september', $this->Contacts->find()->where(['MONTH(created)' => date('9'), 'YEAR(created)' => date('Y')])->count());
-        $this->set('october', $this->Contacts->find()->where(['MONTH(created)' => date('10'), 'YEAR(created)' => date('Y')])->count());
-        $this->set('november', $this->Contacts->find()->where(['MONTH(created)' => date('11'), 'YEAR(created)' => date('Y')])->count());
-        $this->set('december', $this->Contacts->find()->where(['MONTH(created)' => date('12'), 'YEAR(created)' => date('Y')])->count());
 
-        $this->set('contacts', $this->paginate($query));
+        $query = $this->Contacts->find();
+
+        $expectedMonths = [];
+        for ($i = 11; $i >= 0; $i--) {
+            $expectedMonths[] = date('M-Y', strtotime("-$i months"));
+        }
+
+        $query->select([
+            'count' => $query->func()->count('*'),
+            'date' => $query->func()->date_format(['created' => 'identifier', "%b-%Y"]),
+            'month' => 'MONTH(created)',
+            'year' => 'YEAR(created)'
+        ])
+            ->where([
+                'created >=' => date('Y-m-01', strtotime('-11 months')),
+                'created <=' => date('Y-m-t')
+            ])
+            ->groupBy(['year', 'month'])
+            ->orderBy(['year' => 'ASC', 'month' => 'ASC']);
+
+        $results = $query->all()->toArray();
+
+        $totalContactByMonth = [];
+        foreach ($expectedMonths as $expectedMonth) {
+            $found = false;
+            $count = 0;
+
+            foreach ($results as $result) {
+                if ($expectedMonth === $result->date) {
+                    $found = true;
+                    $count = $result->count;
+                    break;
+                }
+            }
+
+            $totalContactByMonth[] = [
+                'month' => $expectedMonth,
+                'count' => $count
+            ];
+        }
+
+        $this->set([
+            'results' => $totalContactByMonth,
+            '_serialize' => ['results']
+        ]);
+
+        // JSON arrays
+        $totalContactByMonth = json_encode($totalContactByMonth);
+        $dataArray = json_decode($totalContactByMonth, true);
+        $monthArray = [];
+        $countArray = [];
+        foreach ($dataArray as $data) {
+            $monthArray[] = $data['month'];
+            $countArray[] = $data['count'];
+        }
+
+        $this->set(compact('contacts', 'monthArray', 'countArray'));
     }
 
     public function view($id = null)
