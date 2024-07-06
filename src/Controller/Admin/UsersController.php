@@ -45,11 +45,8 @@ class UsersController extends AppController
 	{
 		parent::beforeFilter($event);
 
-		$this->Authentication->allowUnauthenticated(['login', 'registration', 'forgotPassword', 'forgotUsername', 'resetPassword', 'verify']);
+		$this->Authentication->allowUnauthenticated(['registration']);
 	}
-
-
-
 
 	public function index()
 	{
@@ -133,120 +130,6 @@ class UsersController extends AppController
 
 
 
-	public function login()
-	{
-		$this->set('title', 'Sign-in');
-		$result = $this->Authentication->getResult();
-		if ($result->isValid()) {
-			$target = $this->Authentication->getLoginRedirect() ?? '/dashboard';
-			$this->UserLogs->userLoginActivity($this->Authentication->getIdentity('id')->getIdentifier('id'));
-			$this->updateLoginFields(); //capture ip and login time
-			$session = $this->request->getSession();
-			return $this->redirect($target);
-		}
-		if ($this->request->is('post')) {
-			$this->Flash->error('Invalid username or password');
-		}
-	}
-
-	protected function updateLoginFields()
-	{
-		//$userTable = TableRegistry::get('Users');
-		$userTable = TableRegistry::getTableLocator()->get('Users');
-		$user = $this->Authentication->getIdentity();
-		$this->request->getSession()->write('User.last_login', date("Y-m-d H:i:s"));
-		$this->request->getSession()->write('User.ip_address', $this->request->clientIp());
-		$updateData = [
-			'last_login' => date("Y-m-d H:i:s"),
-			'ip_address' => $this->request->clientIp(),
-		];
-		$this->Users->updateQuery()->set($updateData)->where(['id' => $user['id']])->execute();
-	}
-
-	public function logout()
-	{
-		$this->UserLogs->userLogoutActivity($this->Authentication->getIdentity('id')->getIdentifier('id'));
-		$this->Authentication->logout();
-		return $this->redirect(['controller' => 'Users', 'action' => 'login']);
-	}
-
-	public function forgotUsername()
-	{
-		$this->set('title', 'Forgot Username');
-		if ($this->request->is('post')) {
-			$email = $this->request->getData('email');
-			//$userTable = TableRegistry::get('Users');
-			$userTable = TableRegistry::getTableLocator()->get('Users');
-
-			if ($email == NULL) {
-				$this->Flash->error(__('Please insert your email address'));
-			}
-			if ($user = $userTable->find('all')->where(['email' => $email])->first()) {
-				$fullname = $user->fullname;
-				if ($userTable->save($user)) {
-					$mailer = new Mailer('default');
-					$mailer->setTransport('smtp');
-					$mailer->setFrom(['noreply@codethepixel.com' => 'ReCRUD'])
-						->setTo($email)
-						->setEmailFormat('html')
-						->setSubject('Forgot Username Request')
-						->deliver('Hi<br/><br/>Your username is ' . $fullname . '</a>');
-				}
-				$this->Flash->success('Your username is sent to ' . $email . ', please check your email');
-			}
-			if ($total = $userTable->find('all')->where(['email' => $email])->count() == 0) {
-				$this->Flash->error(__('Email is not registered in system'));
-			}
-		}
-	}
-
-	public function forgotPassword()
-	{
-		$this->set('title', 'Forgot Password');
-		if ($this->request->is('post')) {
-			$email = $this->request->getData('email');
-			$token = Security::hash(Security::randomBytes(25));
-
-			$userTable = TableRegistry::get('Users');
-			if ($email == NULL) {
-				$this->Flash->error(__('Please insert your email address'));
-			}
-			if ($user = $userTable->find('all')->where(['email' => $email])->first()) {
-				$user->token = $token;
-				if ($userTable->save($user)) {
-					$mailer = new Mailer('default');
-					$mailer->setTransport('smtp');
-					$mailer->setFrom(['noreply@codethepixel.com' => 'ReCRUD'])
-						->setTo($email)
-						->setEmailFormat('html')
-						->setSubject('Forgot Password Request')
-						->deliver('Hello<br/>Please click link below to reset your password<br/><br/><a href="http://localhost/recrud/users/reset_password/' . $token . '">Reset Password</a>');
-				}
-				$this->Flash->success('Reset password link has been sent to your email (' . $email . '), please check your email');
-			}
-			if ($total = $userTable->find('all')->where(['email' => $email])->count() == 0) {
-				$this->Flash->error(__('Email is not registered in system'));
-			}
-		}
-	}
-
-	public function resetPassword($token = null)
-	{
-		$this->set('title', 'Reset Password');
-		$user = $this->Users->findByToken($token)->first();
-		$password = $this->request->getData('password');
-
-		if ($this->request->is(['post'])) {
-			$user->password = $password;
-			$user->token = '';
-			if ($this->Users->save($user)) {
-				$this->Flash->success(__('Your password has been successfully updated.'));
-				return $this->redirect(['action' => 'login']);
-			}
-			$this->Flash->error(__('Your password could not be saved. Please, try again.'));
-		}
-	}
-
 	public function registration()
 	{
 		$this->set('title', 'User Registration');
@@ -267,29 +150,10 @@ class UsersController extends AppController
 	public function profile($slug = null)
 	{
 		$this->set('title', 'Account Details');
-		/* $user = $this->Users->get($id, [
-            'contain' => ['UserGroups', 
-			//'Contacts', 'UserLogs'
-			],
-        ]); */
-		//debug($slug);
-		//exit;
-		//$this->loadModel('AuditLogs');
-		$this->fetchTable('AuditLogs');
-		$this->AuditLogs = $this->fetchTable('AuditLogs');
-
-
-		$auditLogs = $this->AuditLogs->find('all')
-			->where([
-				'primary_key' => 11,
-				//'category_id' => '1',
-			])
-			->order(['created' => 'ASC'])
-			->limit(10);
 
 		$user = $this->Users
 			->findBySlug($slug)
-			->contain(['UserGroups'])
+			->contain(['UserGroups', 'AuditLogs'])
 			->firstOrFail();
 
 		/* $user = $this->Users->get($id, [
@@ -316,26 +180,16 @@ class UsersController extends AppController
 			$this->Flash->error(__('The user could not be saved. Please, try again.'));
 		}
 		$userGroups = $this->Users->UserGroups->find('list', ['limit' => 200])->all();
-		$this->set(compact('user', 'userGroups', 'auditLogs'));
+		$this->set(compact('user', 'userGroups'));
 	}
 
 	public function update($slug = null, $id = null)
 	{
 		$this->set('title', 'Update Profile');
-		//$this->loadModel('AuditLogs');
-		/* $this->fetchTable('AuditLogs');
-        $this->AuditLogs = $this->fetchTable('AuditLogs');
-        $auditLogs = $this->AuditLogs->find('all')
-            ->where([
-                'primary_key' => $user['id'],
-                //'category_id' => '1',
-            ])
-            ->order(['created' => 'ASC'])
-            ->limit(10); */
 
 		$user = $this->Users
 			->findBySlug($slug)
-			->contain(['UserGroups'])
+			->contain(['UserGroups', 'AuditLogs'])
 			->firstOrFail();
 		if ($this->request->is(['patch', 'post', 'put'])) {
 			$user = $this->Users->patchEntity($user, $this->request->getData());
@@ -352,16 +206,6 @@ class UsersController extends AppController
 	public function removeAvatar($slug = null)
 	{
 		$this->set('title', 'Remove Profile Picture');
-		//$this->loadModel('AuditLogs');
-		$this->fetchTable('AuditLogs');
-		$this->AuditLogs = $this->fetchTable('AuditLogs');
-		$auditLogs = $this->AuditLogs->find('all')
-			->where([
-				'primary_key' => 11,
-				//'category_id' => '1',
-			])
-			->order(['created' => 'ASC'])
-			->limit(10);
 
 		$user = $this->Users
 			->findBySlug($slug)
@@ -415,10 +259,11 @@ class UsersController extends AppController
 
 		$user = $this->Users
 			->findBySlug($slug)
-			->contain(['UserGroups'])
+			->contain(['UserGroups', 'AuditLogs'])
 			->firstOrFail();
 
 		$this->userLogs = $this->fetchTable('userLogs');
+		$userLogs = $this->fetchTable('userLogs');
 		$userLogs = $this->userLogs->find('all')
 			->where(['user_id' => $user->id])
 			->limit(10)
@@ -483,7 +328,7 @@ class UsersController extends AppController
 
 		$user = $this->Users
 			->findBySlug($slug)
-			->contain(['UserGroups'])
+			->contain(['UserGroups', 'AuditLogs'])
 			->firstOrFail();
 
 		$this->fetchTable('AuditLogs');
@@ -578,30 +423,6 @@ class UsersController extends AppController
 		}
 	}
 
-	public function resetToken($slug = null)
-	{
-		$user = $this->Users->get($slug, [
-			'contain' => [],
-		]);
-		$this->request->allowMethod(['post']);
-		$user = $this->Users->get($slug);
-		$token = $user->token;
-
-		if ($token == NULL) {
-			$this->Flash->error(__('No token detected'));
-			return $this->redirect($this->referer());
-		}
-
-		if ($token != NULL) {
-			$user->token = '';
-		}
-
-		if ($this->Users->save($user)) {
-			$this->Flash->success(__('Token reset succesful'));
-		}
-		return $this->redirect($this->referer());
-		$this->set(compact('user'));
-	}
 
 	public function csv()
 	{
