@@ -7,12 +7,41 @@ $c_name = $this->request->getParam('controller');
 $a_name = $this->request->getParam('action');
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <?= $this->Html->charset() ?>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="content-language" content="en">
+
+    <!-- Basic Meta Tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="<?php echo $meta_desc; ?>">
+    <meta name="keywords" content="<?php echo $meta_keyword; ?>">
+    <meta name="author" content="<?php echo $author; ?>">
+
+    <!-- Subject and Copyright Meta Tags -->
+    <meta name="subject" content="<?php echo $meta_subject; ?>">
+    <meta name="copyright" content="<?php echo $meta_copyright; ?>">
+
+    <!-- Open Graph Meta Tags for Social Media -->
+    <meta property="og:title" content="<?php echo $meta_title; ?>">
+    <meta property="og:description" content="<?php echo $meta_desc; ?>">
+    <meta property="og:image" content="URL to your image">
+    <meta property="og:url" content="https://<?php echo $domain_name; ?>">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<?php echo $meta_title; ?>">
+    <meta name="twitter:description" content="<?php echo $meta_desc; ?>">
+    <meta name="twitter:image" content="URL to your image">
+    <meta name="twitter:site" content="@yourtwitterhandle">
+
+
+
     <title><?= $system_abbr ?>: <?= $this->fetch('title') ?></title>
     <?= $this->Html->meta('icon') ?>
     <!-- Fonts -->
@@ -22,7 +51,7 @@ $a_name = $this->request->getParam('action');
     <!-- Core CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <?php
     //Meta info
     //echo $this->Html->meta('title', $meta_title, ['block' => true]);
@@ -30,8 +59,8 @@ $a_name = $this->request->getParam('action');
     //echo $this->Html->meta('subject', $meta_subject, ['block' => true]);
     //echo $this->Html->meta('copyright', $meta_copyright, ['block' => true]);
     //echo $this->Html->meta('description', $meta_desc, ['block' => true]);
-    //echo $this->Html->css('core');
-    //echo $this->Html->css('theme-default');
+    echo $this->Html->css('core');
+    echo $this->Html->css('theme-default');
     echo $this->Html->css('style');
     //Vendors
     //echo $this->Html->css('perfect-scrollbar.css');
@@ -105,13 +134,14 @@ $a_name = $this->request->getParam('action');
                         </div>
 
                         <div class="col-6 col-md-2 mb-3">
-                            <h5>Others</h5>
-                            <ul class="nav flex-column">
-                                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Reserved</a></li>
-                                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Reserved</a></li>
-                                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Reserved</a></li>
-                                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Reserved</a></li>
-                            </ul>
+                            <a class="hover-fx"><i class="fa-brands fa-facebook fs-4"></i></a>
+                            <a class="hover-fx"><i class="fa-brands fa-instagram fs-4"></i></a>
+                            <a class="hover-fx"><i class="fa-brands fa-x-twitter fs-4"></i></a>
+                            <a class="hover-fx"><i class="fa-brands fa-linkedin fs-4"></i></a>
+                            <a class="hover-fx"><i class="fa-brands fa-threads fs-4"></i></a>
+                            <a class="hover-fx"><i class="fa-brands fa-github fs-4"></i></a>
+                            <a class="hover-fx"><i class="fa-brands fa-gitlab fs-4"></i></a>
+                            <a class="hover-fx"><i class="fa-brands fa-codepen fs-4"></i></a>
                         </div>
 
                         <div class="col-md-5 offset-md-1 mb-3">
