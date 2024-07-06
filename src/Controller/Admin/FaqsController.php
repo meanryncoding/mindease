@@ -98,20 +98,6 @@ class FaqsController extends AppController
 		$this->set('total_faqs_active', $this->Faqs->find()->where(['status' => 1])->count());
 		$this->set('total_faqs_disabled', $this->Faqs->find()->where(['status' => 0])->count());
 
-		//Count By Month
-		$this->set('january', $this->Faqs->find()->where(['MONTH(created)' => date('1'), 'YEAR(created)' => date('Y')])->count());
-		$this->set('february', $this->Faqs->find()->where(['MONTH(created)' => date('2'), 'YEAR(created)' => date('Y')])->count());
-		$this->set('march', $this->Faqs->find()->where(['MONTH(created)' => date('3'), 'YEAR(created)' => date('Y')])->count());
-		$this->set('april', $this->Faqs->find()->where(['MONTH(created)' => date('4'), 'YEAR(created)' => date('Y')])->count());
-		$this->set('may', $this->Faqs->find()->where(['MONTH(created)' => date('5'), 'YEAR(created)' => date('Y')])->count());
-		$this->set('jun', $this->Faqs->find()->where(['MONTH(created)' => date('6'), 'YEAR(created)' => date('Y')])->count());
-		$this->set('july', $this->Faqs->find()->where(['MONTH(created)' => date('7'), 'YEAR(created)' => date('Y')])->count());
-		$this->set('august', $this->Faqs->find()->where(['MONTH(created)' => date('8'), 'YEAR(created)' => date('Y')])->count());
-		$this->set('september', $this->Faqs->find()->where(['MONTH(created)' => date('9'), 'YEAR(created)' => date('Y')])->count());
-		$this->set('october', $this->Faqs->find()->where(['MONTH(created)' => date('10'), 'YEAR(created)' => date('Y')])->count());
-		$this->set('november', $this->Faqs->find()->where(['MONTH(created)' => date('11'), 'YEAR(created)' => date('Y')])->count());
-		$this->set('december', $this->Faqs->find()->where(['MONTH(created)' => date('12'), 'YEAR(created)' => date('Y')])->count());
-
 		$query = $this->Faqs->find();
 
 		$expectedMonths = [];
