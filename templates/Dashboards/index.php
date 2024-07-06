@@ -14,7 +14,6 @@ echo $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/
 <div class="row text-body-secondary">
 	<div class="col-10">
 		<h1 class="my-0 page_title"><?php echo $title; ?></h1>
-		<h6 class="sub_title text-body-secondary"><?php echo $system_name; ?></h6>
 	</div>
 	<div class="col-2 text-end">
 
@@ -29,7 +28,20 @@ echo $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/
 
 	</div>
 </div>
-<div class="line mb-4"></div>
+
+<div class="horizontal-tabs border-bottom my-4">
+	<?= $this->Html->link(__('Dashboard'), ['controller' => 'Dashboards', 'action' => 'index', 'prefix' => false], ['class' => 'topMenu active', 'escape' => false]) ?>
+	<?= $this->Html->link(__('Site Configuration'), ['prefix' => 'Admin', 'controller' => 'Settings', 'action' => 'update', 'recrud'], ['class' => 'topMenu', 'escape' => false]) ?>
+	<?= $this->Html->link(__('User Management'), ['prefix' => 'Admin', 'controller' => 'Users', 'action' => 'index'], ['class' => 'topMenu', 'escape' => false]) ?>
+	<?= $this->Html->link(__('To Do'), ['prefix' => 'Admin', 'controller' => 'Todos', 'action' => 'index'], ['class' => 'topMenu', 'escape' => false]) ?>
+	<?= $this->Html->link(__('Contacts'), ['prefix' => 'Admin', 'controller' => 'Contacts', 'action' => 'index'], ['class' => 'topMenu', 'escape' => false]) ?>
+	<?= $this->Html->link(__('Audit Trail'), [
+		'prefix' => 'Admin',
+		'controller' => 'auditLogs', 'action' => 'index',
+		//'?' => ['limit' => '25', 'status' => '1']
+	], ['class' => 'topMenu', 'escape' => false]) ?>
+	<?= $this->Html->link(__('FAQ'), ['prefix' => 'Admin', 'controller' => 'Faqs', 'action' => 'index'], ['class' => 'topMenu', 'escape' => false]) ?>
+</div>
 
 <div class="row">
 	<div class="col-md-9 border-end">
