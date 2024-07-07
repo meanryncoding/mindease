@@ -259,15 +259,27 @@ class UsersController extends AppController
 
 		$user = $this->Users
 			->findBySlug($slug)
-			->contain(['UserGroups', 'AuditLogs'])
+			->contain([
+				'UserGroups',
+				'AuditLogs' => function ($q) {
+					return $q->order(['AuditLogs.created' => 'DESC'])->limit(5); // Limit to 5 auditlog 
+				}
+			])
+			->limit(5)
 			->firstOrFail();
 
-		$this->userLogs = $this->fetchTable('userLogs');
+		$userLogs = $this->fetchTable('UserLogs')->find(
+			'all',
+			limit: 5,
+			order: 'UserLogs.created DESC'
+		)
+			->all();
+		/* $this->userLogs = $this->fetchTable('userLogs');
 		$userLogs = $this->fetchTable('userLogs');
 		$userLogs = $this->userLogs->find('all')
 			->where(['user_id' => $user->id])
 			->limit(10)
-			->orderBy(['created' => 'DESC']);
+			->orderBy(['created' => 'DESC']); */
 
 
 		$this->set(compact('user', 'userLogs'));
@@ -298,7 +310,7 @@ class UsersController extends AppController
 		$this->set(compact('users'));
 	}
 
-	public function profilePdf($slug = null)
+	public function pdfProfile($slug = null)
 	{
 		$this->viewBuilder()->enableAutoLayout(false);
 		//$user = $this->Users->get($slug);
