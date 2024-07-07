@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Controller\Controller;
+use Cake\ORM\Locator\LocatorAwareTrait;
 
 /**
  * Application Controller
@@ -35,8 +36,10 @@ class AppController extends Controller
         //parent::beforeFilter($event);
 
         $this->fetchTable('Settings');
-        $this->Settings = $this->fetchTable('Settings');
-        $config = $this->Settings->find('all')->first();
+        //$this->Settings = $this->fetchTable('Settings');
+        $settings = $this->fetchTable('Settings');
+        //$config = $this->Settings->find('all')->first();
+        $config = $settings->find('all')->first();
         $this->set('system_name', $config->get('system_name'));
         $this->set('system_abbr', $config->get('system_abbr'));
         $this->set('system_slogan', $config->get('system_slogan'));
@@ -64,6 +67,8 @@ class AppController extends Controller
         $this->set('recrud', '1.0.7');
         $this->set('telegram_bot_token', $config->get('telegram_bot_token'));
         $this->set('telegram_chat_id', $config->get('telegram_chat_id'));
+
+        //$this->set(compact('settings'));
     }
     /**
      * Initialization hook method.
