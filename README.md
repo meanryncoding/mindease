@@ -45,7 +45,7 @@ Re-CRUD 2.X enable the developer to create the fundamental web application funct
 
 ![App Screenshot](https://github.com/Asyraf-wa/recrud/blob/2.x/webroot/img/ss/ReCRUD_Dashboard.png)
 
-![App Screenshot](https://github.com/Asyraf-wa/recrud/blob/main/webroot/img/ss/ss_profile.jpg)
+![App Screenshot](https://github.com/Asyraf-wa/recrud/blob/2.x/webroot/img/ss/ReCRUD_Setting.png)
 
 ## Roadmap
 
