@@ -14,7 +14,7 @@ Re-CRUD 2.X enable the developer to create the fundamental web application funct
 
 -   [CakePHP](https://cakephp.org)
 -   [Bootstrap](https://getbootstrap.com)
--   [Sneat Template](https://themewagon.com/themes/free-responsive-bootstrap-5-html5-admin-template-sneat/)
+-   ~~[Sneat Template](https://themewagon.com/themes/free-responsive-bootstrap-5-html5-admin-template-sneat/)~~
 -   [jQuery](https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js)
 -   [Search Plugin](https://github.com/FriendsOfCake/search)
 -   [Tools Plugin](https://github.com/dereuromark/cakephp-tools)
