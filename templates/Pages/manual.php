@@ -1,4 +1,6 @@
 <?php
+echo $this->Html->css('prism');
+echo $this->Html->script('prism');
 
 use Cake\Cache\Cache;
 use Cake\Core\Configure;
@@ -40,7 +42,6 @@ if (!Configure::read('debug')) :
 		'Please replace templates/Pages/home.php with your own version or re-enable debug mode.'
 	);
 endif;
-
 ?>
 
 <h1 class="m-0 me-2 page_title">Re-CRUD Documentation</h1>
@@ -63,10 +64,12 @@ endif;
 	}
 </style>
 
+
+
 <div class="row">
 	<div class="col-md-3">
-		<div class="card shadow">
-			<div class="card-body">
+		<div class="card bg-body-tertiary border-0 shadow">
+			<div class="card-body text-body-secondary">
 
 				INITIAL CONFIGURATION
 				<ul>
@@ -119,20 +122,21 @@ endif;
 					<li><?php echo $this->Html->link('Save PDF to Server', '#f7', ['class' => '']); ?></li>
 					<li><?php echo $this->Html->link('Email Saved PDF as Email Attachment', '#f8', ['class' => '']); ?></li>
 				</ul>
+
+				META TAG
+				<ul>
+					<li><?php echo $this->Html->link('Customize Meta Tag', '#g1', ['class' => '']); ?></li>
+				</ul>
 			</div>
 		</div>
 
 	</div>
 	<div class="col-md-9">
-		<div class="card shadow">
-			<div class="card-header d-flex align-items-center justify-content-between border-bottom">
-				<div class="card-title mb-0">
-					<h1 class="m-0 me-2 page_title">Initial Configuration</h1>
-					<small class="text-muted"><?php echo $system_name; ?></small>
-				</div>
-			</div>
-			<div class="card-body mt-4">
-				<div class="fw-bold fs-5" id="a1">Basic Requirements</div>
+
+		<div class="card bg-body-tertiary border-0 shadow mb-4">
+			<div class="card-body">
+				<div class="card-title mb-0">Basic Requirements</div>
+				<div class="tricolor_line mb-3"></div>
 				<?php Debugger::checkSecurityKeys(); ?>
 				<div class="row">
 					<div class="col">
@@ -189,8 +193,7 @@ endif;
 						</ul>
 					</div>
 				</div>
-
-				<hr>
+				<hr />
 				<div class="row">
 					<div class="col">
 						Database:<br>
@@ -253,26 +256,32 @@ endif;
 					</div>
 				</div>
 
-				<br />
-				<div class="fw-bold fs-5" id="a2">Clone Repository</div>
-				<div class="fw-light" id="a2">
+			</div>
+		</div>
+
+		<div class="card bg-body-tertiary border-0 shadow mb-4">
+			<div class="card-body">
+				<div class="card-title mb-0">Initial Setup</div>
+				<div class="tricolor_line mb-3"></div>
+				<div class="fw-bold" id="a2">Clone Repository</div>
+				<div id="a2">
 					Clone Re-CRUD using composer:<br />
-					<pre class="bg-light-gray">composer create-project recrud/recrud</pre>
+					<pre class="border"><code class="language-html line-numbers">composer create-project recrud/recrud</code></pre>
 					or
 					<br />
 					Clone Re-CRUD using git:<br />
-					<pre class="bg-light-gray">git clone https://github.com/Asyraf-wa/recrud.git</pre>
+					<pre class="border"><code class="language-html line-numbers">git clone https://github.com/Asyraf-wa/recrud.git</code></pre>
 				</div>
 				<br />
-				<div class="fw-bold fs-5" id="a3">Database</div>
-				<div class="fw-light" id="a3">
+				<div class="fw-bold" id="a3">Database</div>
+				<div id="a3">
 					Rename file <kbd>app_local_example.php</kbd> to <kbd>app_local.php</kbd> in config folder
 					<br />
 					Create database in <kbd>phpmyadmin</kbd>
 					<br />
 					Configure database:
 					<br />
-					<pre class="bg-light-gray">
+					<pre class="border"><code class="language-php line-numbers">
 'Datasources' => [
 	'default' => [
 		'host' => 'localhost',
@@ -283,25 +292,25 @@ endif;
 		'url' => env('DATABASE_URL', null),
 	],
 ]
-</pre>
+					</code></pre>
 				</div>
 				<br />
-				<div class="fw-bold fs-5" id="a4">Database Migration</div>
-				<div class="fw-light" id="a4">
+				<div class="fw-bold" id="a4">Database Migration</div>
+				<divid="a4">
 					Database migration
-					<pre class="bg-light-gray">bin/cake migrations migrate</pre>
-				</div>
-				<br />
-				<div class="fw-bold fs-5" id="a5">Database Seeding</div>
-				<div class="fw-light" id="a5">
-					Database seeding
-					<pre class="bg-light-gray">bin/cake migrations seed</pre>
-				</div>
-				<br />
-				<div class="fw-bold fs-5" id="a6">Email Configuration</div>
-				<div class="fw-light" id="a6">
-					open <kbd>app_local.php</kbd> and add the following SMTP email configuration:
-					<pre class="bg-light-gray">
+					<pre class="border"><code class="language-html line-numbers">bin/cake migrations migrate</code></pre>
+					</divid=>
+					<br />
+					<div class="fw-bold" id="a5">Database Seeding</div>
+					<div id="a5">
+						Database seeding
+						<pre class="border"><code class="language-html line-numbers">bin/cake migrations seed</code></pre>
+					</div>
+					<br />
+					<div class="fw-bold" id="a6">Email Configuration</div>
+					<div id="a6">
+						open <kbd>app_local.php</kbd> and add the following SMTP email configuration:
+						<pre class="border"><code class="language-php line-numbers">
 'EmailTransport' => [
 	'smtp' => [
 		'host' => 'YourHost',
@@ -313,107 +322,94 @@ endif;
 		'url' => env('EMAIL_TRANSPORT_DEFAULT_URL', null),
 	],
 ],
-</pre>
-				</div>
+					</code></pre>
+
+					</div>
 			</div>
 		</div>
 
-
-		<div class="card shadow mt-4">
-			<div class="card-header d-flex align-items-center justify-content-between border-bottom">
-				<div class="card-title mb-0">
-					<h1 class="m-0 me-2 page_title">CRUD Operation</h1>
-					<small class="text-muted"><?php echo $system_name; ?></small>
-				</div>
-			</div>
-			<div class="card-body mt-4">
-				<div class="fw-bold fs-5" id="b1">Change Directory</div>
-				<div class="fw-light" id="b1">
+		<div class="card bg-body-tertiary border-0 shadow mb-4">
+			<div class="card-body">
+				<div class="card-title mb-0">CRUD Operation</div>
+				<div class="tricolor_line mb-3"></div>
+				<div class="fw-bold" id="b1">Change Directory</div>
+				<div id="b1">
 					Change to the target directory. Depend on your webserver directory. This is the example of XAMPP directory installed in drive C, Windows environment:
-					<pre class="bg-light-gray">cd c:/xampp/htdocs</pre>
+					<pre class="border"><code class="language-html line-numbers">cd c:/xampp/htdocs</code></pre>
 					If using WAMP 64bit, installed in drive C, windows environment, the directory is:
-					<pre class="bg-light-gray">cd c:/wamp64/htdocs</pre>
+					<pre class="border"><code class="language-html line-numbers">cd c:/wamp64/htdocs</code></pre>
 					To create CRUD, the directory should target the bin folder in the root directory eg:<br />
 					<em>Note: You can rename the recrud folder according to your system abbreviation.</em>
-					<pre class="bg-light-gray">cd c:/wamp64/htdocs/recrud/bin</pre>
+					<pre class="border"><code class="language-html line-numbers">cd c:/wamp64/htdocs/recrud/bin</code></pre>
 				</div>
 
-				<div class="fw-bold fs-5" id="b2">Generate CRUD</div>
-				<div class="fw-light" id="b2">
+				<div class="fw-bold" id="b2">Generate CRUD</div>
+				<div id="b2">
 					Run the following command to generate the CRUD
-					<pre class="bg-light-gray">cake bake all tableName</pre>
+					<pre class="border"><code class="language-html line-numbers">cake bake all tableName</code></pre>
 				</div>
 			</div>
 		</div>
 
-
-
-		<div class="card shadow mt-4">
-			<div class="card-header d-flex align-items-center justify-content-between border-bottom">
-				<div class="card-title mb-0">
-					<h1 class="m-0 me-2 page_title">Authentication &amp; Authorization</h1>
-					<small class="text-muted"><?php echo $system_name; ?></small>
-				</div>
-			</div>
-			<div class="card-body mt-4">
-				<div class="fw-bold fs-5" id="c1">Default Authentication Information</div>
-				<div class="fw-light" id="c1">
+		<div class="card bg-body-tertiary border-0 shadow mb-4">
+			<div class="card-body">
+				<div class="card-title mb-0">Authentication &amp; Authorization</div>
+				<div class="tricolor_line mb-3"></div>
+				<div class="fw-bold" id="c1">Default Authentication Information</div>
+				<div id="c1">
 					Default authentication information / user account:
-					Email: <kbd>recrud@recrud.com</kbd> Password: <kbd>123456</kbd>
+					Email: <kbd>recrud@codethepixel.com</kbd> Password: <kbd>123456</kbd>
 				</div>
-
 				<br />
-				<div class="fw-bold fs-5" id="c2">Allow Unauthorized Page</div>
-				<div class="fw-light" id="c2">
+				<div class="fw-bold" id="c2">Allow Unauthorized Page</div>
+				<div id="c2">
 					By default, the authentication plugin will block all pages. To allow unauthenticated page, insert the following code in the controller:
-					<pre class="bg-light-gray">
+					<pre class="border"><code class="language-php line-numbers">
 public function beforeFilter(\Cake\Event\EventInterface $event)
 {
-    parent::beforeFilter($event);
-    $this->Authentication->addUnauthenticatedActions(['login','add']);
+parent::beforeFilter($event);
+$this->Authentication->addUnauthenticatedActions(['login','add']);
 }
-</pre>
+				</code></pre>
 				</div>
 
-				<div class="fw-bold fs-5" id="c3">Print Auth Info</div>
-				<div class="fw-light" id="c3">
+				<div class="fw-bold" id="c3">Print Auth Info</div>
+				<div id="c3">
 					To print the current authenticated information eg, fullname, use the following code:
-					<pre class="bg-light-gray">echo $this->Identity->get('username');</pre>
+					<pre class="border"><code class="language-php line-numbers">echo $this->Identity->get('username');</code></pre>
 				</div>
 
-				<div class="fw-bold fs-5" id="c4">Conditional Checking</div>
-				<div class="fw-light" id="c4">
+				<div class="fw-bold" id="c4">Conditional Checking</div>
+				<div id="c4">
 					Simple conditional checking:
-					<pre class="bg-light-gray">
+					<pre class="border"><code class="language-php line-numbers">
 if ($this->Identity->isLoggedIn()) {
 	echo 'User Logged in';
 }
-</pre>
+</code></pre>
 				</div>
 
-				<div class="fw-bold fs-5" id="c5">Capture User ID</div>
-				<div class="fw-light" id="c5">
+				<div class="fw-bold" id="c5">Capture User ID</div>
+				<div id="c5">
 					To capture currently authenticated user ID in the controller, simply use the following code before save in the controller:
-					<pre class="bg-light-gray">$article->user_id = $this->Authentication->getIdentity('id')->getIdentifier('id');</pre>
+					<pre class="border"><code class="language-php line-numbers">$article->user_id = $this->Authentication->getIdentity('id')->getIdentifier('id');</code></pre>
 				</div>
+
+
+
 			</div>
 		</div>
 
 
-		<div class="card shadow mt-4">
-			<div class="card-header d-flex align-items-center justify-content-between border-bottom">
-				<div class="card-title mb-0">
-					<h1 class="m-0 me-2 page_title">Search</h1>
-					<small class="text-muted"><?php echo $system_name; ?></small>
-				</div>
-			</div>
-			<div class="card-body mt-4">
-
-				<div class="fw-bold fs-5" id="d1">Search Manager</div>
-				<div class="fw-light" id="d1">
+		<div class="card bg-body-tertiary border-0 shadow mb-4">
+			<div class="card-body">
+				<div class="card-title mb-0">Search</div>
+				<div class="tricolor_line mb-3"></div>
+				<div class="fw-bold" id="d1">Search Manager</div>
+				<div id="d1">
 					File Location: ...\src\Model\Table\YoursTable.php<br />
 					If you need need to search more fields, add more attributes in the fields array.
-					<pre class="bg-light-gray">
+					<pre class="border"><code class="language-php line-numbers">
 public function initialize(array $config): void
 {
 	parent::initialize($config);
@@ -434,82 +430,73 @@ public function initialize(array $config): void
 			'fields' => ['name','email','role'],
 		]);
 }
-</pre>
+</code></pre>
 				</div>
 			</div>
 		</div>
 
-
-
-		<div class="card shadow mt-4">
-			<div class="card-header d-flex align-items-center justify-content-between border-bottom">
-				<div class="card-title mb-0">
-					<h1 class="m-0 me-2 page_title">Form and Others</h1>
-					<small class="text-muted"><?php echo $system_name; ?></small>
-				</div>
-			</div>
-			<div class="card-body mt-4">
-
-				<div class="fw-bold fs-5" id="e1">Button Style</div>
-				<div class="fw-light" id="e1">
+		<div class="card bg-body-tertiary border-0 shadow mb-4">
+			<div class="card-body">
+				<div class="card-title mb-0">Form and Others</div>
+				<div class="tricolor_line mb-3"></div>
+				<div class="fw-bold" id="e1">Button Style</div>
+				<div id="e1">
 					Button with outline primary style
-					<pre class="bg-light-gray">
+					<pre class="border"><code class="language-php line-numbers">
 $this->Html->link(__('<i class="fa-solid fa-plus"></i> Register'), ['action' => 'add'], ['class' => 'btn btn-sm btn-outline-primary', 'escapeTitle' => false])
-</pre>
+</code></pre>
 				</div>
 
-				<div class="fw-bold fs-5" id="e2">Card</div>
-				<div class="fw-light" id="e2">
+				<div class="fw-bold" id="e2">Card</div>
+				<div id="e2">
 					Example of default card used in this project
-					<pre class="bg-light-gray">
-< div class="card shadow">
-	< div class="card-body">
-
-	< /div>
-< /div >
-</pre>
+					<pre class="border"><code class="language-html line-numbers">
+&lt;div class="card bg-body-tertiary border-0 shadow mb-4"&gt
+	&lt;div class="card-body"&gt
+		&lt;div class="card-title mb-0"&gtSearch&lt;/div&gt
+			&lt;div class="tricolor_line mb-3"&gt&lt;/div&gt
+			
+	&lt;/div&gt
+&lt;/div&gt
+</code></pre>
 				</div>
 
-				<div class="fw-bold fs-5" id="e3">Link</div>
-				<div class="fw-light" id="e3">
+				<div class="fw-bold" id="e3">Link</div>
+				<div id="e3">
 					External Link:
-					<pre class="bg-light-gray">
+					<pre class="border"><code class="language-php line-numbers">
 echo $this->Html->link('Enter','/pages/home', ['class' => 'button', 'target' => '_blank']);
-</pre>
+</code></pre>
 					Internal Link:
-					<pre class="bg-light-gray">
+					<pre class="border"><code class="language-php line-numbers">
 $this->Html->link(__('<i class="fa-solid fa-plus"></i> Register'), ['action' => 'add'], ['class' => '', 'escapeTitle' => false])
-</pre>
+</code></pre>
 				</div>
 
-				<div class="fw-bold fs-5" id="e4">Image</div>
-				<div class="fw-light" id="e4">
+				<div class="fw-bold" id="e4">Image</div>
+				<div id="e4">
 					Put your image in .../webroot/img and load the following script:
-					<pre class="bg-light-gray">echo $this->Html->image('logo.png', ['alt' => 'ReCRUD']);</pre>
+					<pre class="border"><code class="language-php line-numbers">
+echo $this->Html->image('logo.png', ['alt' => 'ReCRUD']);</code></pre>
 				</div>
 
-				<div class="fw-bold fs-5" id="e5">Date Time Format</div>
-				<div class="fw-light" id="e5">
+				<div class="fw-bold" id="e5">Date Time Format</div>
+				<div id="e5">
 					Sample code for rendering the date and time into readable format.
-					<pre class="bg-light-gray">echo date('M d, Y (h:i A)', strtotime($user->created));</pre>
+					<pre class="border"><code class="language-php line-numbers">
+echo date('M d, Y (h:i A)', strtotime($user->created));</code></pre>
 				</div>
 			</div>
 		</div>
 
 
-		<div class="card shadow mt-4">
-			<div class="card-header d-flex align-items-center justify-content-between border-bottom">
-				<div class="card-title mb-0">
-					<h1 class="m-0 me-2 page_title">PDF Related</h1>
-					<small class="text-muted"><?php echo $system_name; ?></small>
-				</div>
-			</div>
-			<div class="card-body mt-4">
-
-				<div class="fw-bold fs-5" id="f1">PDF Controller</div>
-				<div class="fw-light" id="f1">
-					PDf controller used to generate the PDF:
-					<pre class="bg-light-gray">
+		<div class="card bg-body-tertiary border-0 shadow mb-4">
+			<div class="card-body">
+				<div class="card-title mb-0">PDF Related</div>
+				<div class="tricolor_line mb-3"></div>
+				<div id="f1">
+					PDF controller used to generate the PDF:
+					<pre class="border"><code class="language-php line-numbers">
 public function pdf($id = null)
 {
     $this->viewBuilder()->enableAutoLayout(false); 
@@ -525,22 +512,20 @@ public function pdf($id = null)
     );
     $this->set('report', $report);
 }
-	</pre>
+	</code></pre>
 				</div>
 
-				<div class="fw-bold fs-5" id="f1">PDF</div>
-				<div class="fw-light" id="f2">
-					<pre class="bg-light-gray">
-
-	</pre>
+				<div class="fw-bold" id="f1">PDF</div>
+				<div id="f2">
+					<pre class="border"><code class="language-html line-numbers">xxx</code></pre>
 				</div>
 
 
-				<div class="fw-bold fs-5" id="f1">PDF</div>
-				<div class="fw-light" id="f3">
+				<div class="fw-bold" id="f1">PDF</div>
+				<div id="f3">
 					File Location: ...\src\Model\Table\YoursTable.php<br />
 					If you need need to search more fields, add more attributes in the fields array.
-					<pre class="bg-light-gray">
+					<pre class="border"><code class="language-html line-numbers">
 &lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
@@ -556,46 +541,65 @@ public function pdf($id = null)
 	Content
 &lt;/body&gt;
 &lt;/html&gt;
-</pre>
+</code></pre>
 				</div>
 
-				<div class="fw-bold fs-5" id="f1">PDF</div>
-				<div class="fw-light" id="f4">
-					<pre class="bg-light-gray">
-
-	</pre>
+				<div class="fw-bold" id="f1">PDF</div>
+				<div id="f4">
+					<pre class="border"><code class="language-html line-numbers">xxx</code></pre>
 				</div>
 
-				<div class="fw-bold fs-5" id="f1">PDF</div>
-				<div class="fw-light" id="f5">
-					<pre class="bg-light-gray">
-
-	</pre>
+				<div class="fw-bold" id="f1">PDF</div>
+				<div id="f5">
+					<pre class="border"><code class="language-html line-numbers">xxx</code></pre>
 				</div>
 
-				<div class="fw-bold fs-5" id="f1">PDF</div>
-				<div class="fw-light" id="f6">
-					<pre class="bg-light-gray">
-
-	</pre>
+				<div class="fw-bold" id="f1">PDF</div>
+				<div id="f6">
+					<pre class="border"><code class="language-html line-numbers">xxx</code></pre>
 				</div>
 
-				<div class="fw-bold fs-5" id="f1">PDF</div>
-				<div class="fw-light" id="f7">
-					<pre class="bg-light-gray">
-
-	</pre>
+				<div class="fw-bold" id="f1">PDF</div>
+				<div id="f7">
+					<pre class="border"><code class="language-html line-numbers">xxx</code></pre>
 				</div>
 
-				<div class="fw-bold fs-5" id="f1">PDF</div>
-				<div class="fw-light" id="f8">
-					<pre class="bg-light-gray">
-
-	</pre>
+				<div class="fw-bold" id="f1">PDF</div>
+				<div id="f8">
+					<pre class="border"><code class="language-html line-numbers">xxx</code></pre>
 				</div>
-
 			</div>
 		</div>
+
+
+		<div class="card bg-body-tertiary border-0 shadow mb-4">
+			<div class="card-body">
+				<div class="card-title mb-0">Meta Tag</div>
+				<div class="tricolor_line mb-3"></div>
+				<div class="fw-bold" id="g1">Meta Tag</div>
+				<div id="g1">
+					If have custom meta tags, include the following code to the controller. The default meta tag will be overwrite.
+					<pre class="border"><code class="language-php line-numbers">
+        $this->set('title', 'Sign-in');
+        $this->set('metaTitle', 'Re-CRUD Login');
+        $this->set('metaKeywords', 'recrud, re-crud, login, auth');
+        $this->set('metaSubject', 'Learning Coding');
+        $this->set('metaCopyright', 'Re-CRUD');
+        $this->set('metaDescription', 'This is a login page only');
+	</code></pre>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="card bg-body-tertiary border-0 shadow mb-4">
+			<div class="card-body">
+				<div class="card-title mb-0">Content</div>
+				<div class="tricolor_line mb-3"></div>
+				<pre class="border"><code class="language-html line-numbers">code</code></pre>
+			</div>
+		</div>
+
 
 
 	</div>
