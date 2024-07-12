@@ -504,23 +504,7 @@ echo $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/
 						}
 					};
 
-					var chart = new ApexCharts(document.querySelector("#chart"), options);
-					chart.render();
-
-
-					window.setInterval(function() {
-						getNewSeries(lastDate, {
-							min: 10,
-							max: 90
-						})
-
-						chart.updateSeries([{
-							data: data
-						}])
-					}, 1000)
-
 					var chart = new ApexCharts(document.querySelector("#chart_tree"), options);
-
 					chart.render();
 				</script>
 			</div>
