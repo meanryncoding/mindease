@@ -27,10 +27,11 @@
 			</li>
 		</ul>
 		<div class="card bg-body-tertiary border-0 mb-4">
-			<div class="p-3">
-
+			<div class="card-body">
+				<div class="card-title mb-0">Account Activity</div>
+				<div class="tricolor_line mb-3"></div>
 				<div class="table-responsive">
-					<table class="table table-sm table-hover">
+					<table class="table table-sm table-border mb-0 table_transparent table-hover">
 						<tr>
 							<th>Action</th>
 							<th>Agent</th>
@@ -59,11 +60,16 @@
 						<?php endforeach; ?>
 					</table>
 				</div>
+			</div>
+		</div>
 
 
-				<h4>Audit Logs</h4>
+		<div class="card bg-body-tertiary border-0 mb-4">
+			<div class="card-body">
+				<div class="card-title mb-0">Audit Log</div>
+				<div class="tricolor_line mb-3"></div>
 				<div class="table-responsive">
-					<table class="table table-sm table-hover">
+					<table class="table table-sm table-border mb-0 table_transparent table-hover">
 						<thead>
 							<tr>
 								<th>ID</th>
@@ -78,14 +84,14 @@
 									<td><?= h($log->id) ?></td>
 									<td><?= h($log->type) ?></td>
 									<td><?= h($log->source) ?></td>
-									<td><?= h($log->created) ?></td>
+									<td><?php echo date('M d, Y (h:i A)', strtotime($log->created)); ?></td>
 								</tr>
 							<?php endforeach; ?>
 						</tbody>
 					</table>
 				</div>
-
 			</div>
 		</div>
+
 	</div>
 </div>
