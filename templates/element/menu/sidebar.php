@@ -37,8 +37,9 @@ $a_name = $this->request->getParam('action');
                 </li>
                 <?php if ($this->Identity->isLoggedIn() && $this->Identity->get('user_group_id') == '1') { ?>
                     <!-- Administrator -->
-                    <li class="menu-header small text-uppercase">
-                        <span class="menu-header-text">Administrator</span>
+                    <li class="menu-header fw-bold text-uppercase mt-4 mb-3">
+                        <span class="menu-header-text ps-4">Administrator</span>
+                        <div class="tricolor_line mb-3"></div>
                     </li>
                     <li class="menu-item <?= $c_name == 'Settings' && $a_name == 'update' ? 'active' : '' ?>">
                         <?= $this->Html->link(__('<i class="menu-icon fa-solid fa-gear"></i> Site Configuration'), ['prefix' => 'Admin', 'controller' => 'Settings', 'action' => 'update', 'recrud'], ['class' => 'menu-link', 'escape' => false]) ?>
@@ -53,9 +54,10 @@ $a_name = $this->request->getParam('action');
                         <?= $this->Html->link(__('<i class="menu-icon fa-regular fa-message"></i> Contacts'), ['prefix' => 'Admin', 'controller' => 'Contacts', 'action' => 'index'], ['class' => 'menu-link', 'escape' => false]) ?>
                     </li>
                     <li class="menu-item <?= $c_name == 'AuditLogs' && $a_name == 'index' ? 'active' : '' ?>">
-                        <?= $this->Html->link(__('<i class="menu-icon fa-solid fa-timeline"></i> Audit Trail'), ['prefix' => 'Admin', 
-                        'controller' => 'auditLogs', 'action' => 'index', 
-                        //'?' => ['limit' => '25', 'status' => '1']
+                        <?= $this->Html->link(__('<i class="menu-icon fa-solid fa-timeline"></i> Audit Trail'), [
+                            'prefix' => 'Admin',
+                            'controller' => 'auditLogs', 'action' => 'index',
+                            //'?' => ['limit' => '25', 'status' => '1']
                         ], ['class' => 'menu-link', 'escape' => false]) ?>
                     </li>
                     <li class="menu-item <?= $c_name == 'Faqs' && $a_name == 'index' ? 'active' : '' ?>">
