@@ -67,6 +67,12 @@ class AppController extends Controller
         $this->set('recrud', '1.0.7');
         $this->set('telegram_bot_token', $config->get('telegram_bot_token'));
         $this->set('telegram_chat_id', $config->get('telegram_chat_id'));
+        //default metatag
+        $this->set('metaTitle', $config->get('meta_title'));
+        $this->set('metaKeywords', $config->get('meta_keyword'));
+        $this->set('metaSubject', $config->get('meta_subject'));
+        $this->set('metaCopyright', $config->get('meta_copyright'));
+        $this->set('metaDescription', $config->get('meta_desc'));
 
         //$this->set(compact('settings'));
     }
