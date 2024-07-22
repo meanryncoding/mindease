@@ -17,10 +17,19 @@ $a_name = $this->request->getParam('action');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
+    <meta name="title" content="<?= $this->fetch($meta_title) ?: $metaTitle ?>">
+    <meta name="keyword" content="<?= $this->fetch($meta_keyword) ?: $metaKeywords ?>">
+    <meta name="subject" content="<?= $this->fetch($meta_subject) ?: $metaSubject ?>">
+    <meta name="copyright" content="<?= $this->fetch($meta_copyright) ?: $metaCopyright ?>">
+    <meta name="description" content="<?= $this->fetch($meta_desc) ?: $metaDescription ?>">
     <!-- SEO Meta Tags -->
-    <meta name="description" content="<?php echo $meta_desc; ?>">
-    <meta name="keywords" content="<?php echo $meta_keyword; ?>">
-    <meta name="author" content="<?php echo $author; ?>">
+    <?php
+    echo $this->Html->meta('title', $meta_title) . "\n";
+    echo $this->Html->meta('keyword', $meta_keyword) . "\n";
+    echo $this->Html->meta('subject', $meta_subject) . "\n";
+    echo $this->Html->meta('copyright', $meta_copyright) . "\n";
+    echo $this->Html->meta('description', $meta_desc) . "\n";
+    ?>
 
     <!-- Subject and Copyright Meta Tags -->
     <meta name="subject" content="<?php echo $meta_subject; ?>">
@@ -59,8 +68,8 @@ $a_name = $this->request->getParam('action');
     //echo $this->Html->meta('subject', $meta_subject, ['block' => true]);
     //echo $this->Html->meta('copyright', $meta_copyright, ['block' => true]);
     //echo $this->Html->meta('description', $meta_desc, ['block' => true]);
-    echo $this->Html->css('core');
-    echo $this->Html->css('theme-default');
+    //echo $this->Html->css('core');
+    //echo $this->Html->css('theme-default');
     echo $this->Html->css('style');
     //Vendors
     //echo $this->Html->css('perfect-scrollbar.css');
@@ -70,7 +79,7 @@ $a_name = $this->request->getParam('action');
     //Bottom JS
     echo $this->Html->script('https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js', ['block' => 'scriptBottom']);
     //echo $this->Html->script('custom.js', ['block' => 'scriptBottom']);
-    echo $this->fetch('meta');
+    //echo $this->fetch('meta');
     echo $this->fetch('css');
     echo $this->fetch('script');
     ?>
