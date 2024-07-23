@@ -4,19 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use Cake\Event\EventInterface;
 
-use Cake\Mailer\Email;
 use Cake\Mailer\Mailer;
-use Cake\Mailer\TransportFactory;
-use Cake\Auth\DefaultPasswordHasher;
 use Cake\Utility\Security;
 use Cake\ORM\TableRegistry;
-use Cake\Http\ServerRequest;
-use AuditStash\Meta\ApplicationMetadata;
 use Cake\Event\EventManager;
-use Cake\ORM\Table;
-use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\Routing\Router;
 
 /**
@@ -45,13 +37,23 @@ class UsersController extends AppController
     public function login()
     {
         $this->set('title', 'Sign-in');
+        $this->set('metaTitle', 'Re-CRUD Login');
+        $this->set('metaKeywords', 'recrud, re-crud, login, auth');
+        $this->set('metaSubject', 'Learning Coding');
+        $this->set('metaCopyright', 'Re-CRUD');
+        $this->set('metaDescription', 'This is a login page only');
+
         $result = $this->Authentication->getResult();
         if ($result->isValid()) {
-            $target = $this->Authentication->getLoginRedirect() ?? '/dashboard';
+            //$target = $this->Authentication->getLoginRedirect() ?? '/dashboard';
+            $redirect = $this->request->getQuery('redirect', [
+                'controller' => 'Dashboards',
+                'action' => 'index',
+            ]);
             $this->UserLogs->userLoginActivity($this->Authentication->getIdentity('id')->getIdentifier('id'));
             $this->updateLoginFields(); //capture ip and login time
             $session = $this->request->getSession();
-            return $this->redirect($target);
+            return $this->redirect($redirect);
         }
         if ($this->request->is('post')) {
             $this->Flash->error('Invalid username or password');
@@ -305,11 +307,16 @@ class UsersController extends AppController
 
         $user = $this->Users
             ->findBySlug($slug)
-            ->contain(['UserGroups', 'AuditLogs'])
+            ->contain([
+                'UserGroups',
+                'AuditLogs' => function ($q) {
+                    return $q->order(['AuditLogs.created' => 'DESC'])->limit(5); // Limit to 5 auditlog 
+                }
+            ])
             ->limit(5)
             ->firstOrFail();
 
-        //$this->userLogs = $this->fetchTable('userLogs');
+
         $userLogs = $this->fetchTable('UserLogs')->find(
             'all',
             limit: 5,
@@ -317,7 +324,16 @@ class UsersController extends AppController
         )
             ->all();
 
-        /* $userLogs = $this->userLogs->find('all')
+        /*  $auditLogs = $this->AuditLogs->find('all')
+            ->contain([
+                'Comments' => function ($q) {
+                    return $q->limit(5); // Limit to 5 comments per article
+                }
+            ])
+            ->toList(); */
+
+        /* $this->userLogs = $this->fetchTable('userLogs');
+        $userLogs = $this->userLogs->find('all')
             ->where(['user_id' => $user->id])
             ->limit(10)
             ->orderBy(['created' => 'DESC']); */
@@ -328,7 +344,7 @@ class UsersController extends AppController
         //$this->set(compact('user', 'userGroups'));
     }
 
-    public function profilePdf($slug = null)
+    public function pdfProfile($slug = null)
     {
         $this->viewBuilder()->enableAutoLayout(false);
         //$user = $this->Users->get($slug);
@@ -349,177 +365,4 @@ class UsersController extends AppController
         );
         $this->set('user', $user);
     }
-    /* 
-    public function json()
-    {
-        $this->viewBuilder()->setLayout('json');
-        $this->set('users', $this->paginate());
-        $this->viewBuilder()->setOption('serialize', 'users');
-    }
-
-    public function csv()
-    {
-        $this->response = $this->response->withDownload('users.csv');
-        $users = $this->Users->find();
-        $_serialize = 'users';
-
-        $this->viewBuilder()->setClassName('CsvView.Csv');
-        $this->set(compact('users', '_serialize'));
-    }
-
-    public function pdfList()
-    {
-        $this->viewBuilder()->enableAutoLayout(false);
-        $this->paginate = [
-            'contain' => ['UserGroups'],
-            'maxLimit' => 10,
-        ];
-        $users = $this->paginate($this->Users);
-        $this->viewBuilder()->setClassName('CakePdf.Pdf');
-        $this->viewBuilder()->setOption(
-            'pdfConfig',
-            [
-                'orientation' => 'portrait',
-                'download' => true,
-                'filename' => 'users_List.pdf'
-            ]
-        );
-        $this->set(compact('users'));
-    }
-    
-    public function index()
-    {
-        $this->set('title', 'Users List');
-        $this->paginate = [
-            'maxLimit' => 10,
-        ];
-        $query = $this->Users->find('search', search: $this->request->getQueryParams())
-            ->contain(['UserGroups']);
-        //->where(['title IS NOT' => null])
-        $users = $this->paginate($query);
-
-        //count
-        $this->set('total_users', $this->Users->find()->count());
-        $this->set('total_users_archived', $this->Users->find()->where(['status' => 2])->count());
-        $this->set('total_users_active', $this->Users->find()->where(['status' => 1])->count());
-        $this->set('total_users_disabled', $this->Users->find()->where(['status' => 0])->count());
-
-        //Count By Month
-        $this->set('january', $this->Users->find()->where(['MONTH(created)' => date('1'), 'YEAR(created)' => date('Y')])->count());
-        $this->set('february', $this->Users->find()->where(['MONTH(created)' => date('2'), 'YEAR(created)' => date('Y')])->count());
-        $this->set('march', $this->Users->find()->where(['MONTH(created)' => date('3'), 'YEAR(created)' => date('Y')])->count());
-        $this->set('april', $this->Users->find()->where(['MONTH(created)' => date('4'), 'YEAR(created)' => date('Y')])->count());
-        $this->set('may', $this->Users->find()->where(['MONTH(created)' => date('5'), 'YEAR(created)' => date('Y')])->count());
-        $this->set('jun', $this->Users->find()->where(['MONTH(created)' => date('6'), 'YEAR(created)' => date('Y')])->count());
-        $this->set('july', $this->Users->find()->where(['MONTH(created)' => date('7'), 'YEAR(created)' => date('Y')])->count());
-        $this->set('august', $this->Users->find()->where(['MONTH(created)' => date('8'), 'YEAR(created)' => date('Y')])->count());
-        $this->set('september', $this->Users->find()->where(['MONTH(created)' => date('9'), 'YEAR(created)' => date('Y')])->count());
-        $this->set('october', $this->Users->find()->where(['MONTH(created)' => date('10'), 'YEAR(created)' => date('Y')])->count());
-        $this->set('november', $this->Users->find()->where(['MONTH(created)' => date('11'), 'YEAR(created)' => date('Y')])->count());
-        $this->set('december', $this->Users->find()->where(['MONTH(created)' => date('12'), 'YEAR(created)' => date('Y')])->count());
-
-        $this->set(compact('users'));
-    }
-
-    
-    public function view($id = null)
-    {
-        $this->set('title', 'Users Details');
-        $user = $this->Users->get($id, contain: ['UserGroups', 'Contacts', 'Todos', 'UserLogs']);
-        $this->set(compact('user'));
-
-        $this->set(compact('user'));
-    }
-
-    
-    public function add()
-    {
-        $this->set('title', 'New Users');
-        
-        $user = $this->Users->newEmptyEntity();
-        if ($this->request->is('post')) {
-            $user = $this->Users->patchEntity($user, $this->request->getData());
-            if ($this->Users->save($user)) {
-                $this->Flash->success(__('The user has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The user could not be saved. Please, try again.'));
-        }
-        $userGroups = $this->Users->UserGroups->find('list', ['limit' => 200])->all();
-        $this->set(compact('user', 'userGroups'));
-    }
-
-    
-    public function edit($id = null)
-    {
-        $this->set('title', 'Users Edit');
-       
-        
-        $user = $this->Users->get($id, [
-            'contain' => [],
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $user = $this->Users->patchEntity($user, $this->request->getData());
-            if ($this->Users->save($user)) {
-                $this->Flash->success(__('The user has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The user could not be saved. Please, try again.'));
-        }
-        $userGroups = $this->Users->UserGroups->find('list', limit: 200)->all();
-        $this->set(compact('user', 'userGroups'));
-    }
-
-    
-    public function delete($id = null)
-    {
-        EventManager::instance()->on('AuditStash.beforeLog', function ($event, array $logs) {
-            foreach ($logs as $log) {
-                $log->setMetaInfo($log->getMetaInfo() + ['a_name' => 'Delete']);
-                $log->setMetaInfo($log->getMetaInfo() + ['c_name' => 'Users']);
-                $log->setMetaInfo($log->getMetaInfo() + ['ip' => $this->request->clientIp()]);
-                $log->setMetaInfo($log->getMetaInfo() + ['url' => Router::url(null, true)]);
-                $log->setMetaInfo($log->getMetaInfo() + ['slug' => $this->Authentication->getIdentity('slug')->getIdentifier('slug')]);
-            }
-        });
-        $this->request->allowMethod(['post', 'delete']);
-        $user = $this->Users->get($id);
-        if ($this->Users->delete($user)) {
-            $this->Flash->success(__('The user has been deleted.'));
-        } else {
-            $this->Flash->error(__('The user could not be deleted. Please, try again.'));
-        }
-
-        return $this->redirect(['action' => 'index']);
-    }
-
-    public function archived($id = null)
-    {
-        $this->set('title', 'Users Edit');
-        EventManager::instance()->on('AuditStash.beforeLog', function ($event, array $logs) {
-            foreach ($logs as $log) {
-                $log->setMetaInfo($log->getMetaInfo() + ['a_name' => 'Archived']);
-                $log->setMetaInfo($log->getMetaInfo() + ['c_name' => 'Users']);
-                $log->setMetaInfo($log->getMetaInfo() + ['ip' => $this->request->clientIp()]);
-                $log->setMetaInfo($log->getMetaInfo() + ['url' => Router::url(null, true)]);
-                $log->setMetaInfo($log->getMetaInfo() + ['slug' => $this->Authentication->getIdentity('slug')->getIdentifier('slug')]);
-            }
-        });
-        $user = $this->Users->get($id, [
-            'contain' => [],
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $user = $this->Users->patchEntity($user, $this->request->getData());
-            $user->status = 2; //archived
-            if ($this->Users->save($user)) {
-                $this->Flash->success(__('The user has been archived.'));
-
-                return $this->redirect($this->referer());
-            }
-            $this->Flash->error(__('The user could not be archived. Please, try again.'));
-        }
-        $this->set(compact('user'));
-    } */
 }
