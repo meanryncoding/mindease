@@ -169,10 +169,10 @@ echo $this->Html->script('bootstrapModal', ['block' => 'scriptBottom']);
 									const monthly = new Chart(ctx, {
 										type: 'bar',
 										data: {
-											labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+											labels: <?php echo json_encode($monthArray); ?>,
 											datasets: [{
-												label: '# of Faqs(s)',
-												data: [<?= json_encode($january); ?>, <?= json_encode($february); ?>, <?= json_encode($march); ?>, <?= json_encode($april); ?>, <?= json_encode($may); ?>, <?= json_encode($jun); ?>, <?= json_encode($july); ?>, <?= json_encode($august); ?>, <?= json_encode($september); ?>, <?= json_encode($october); ?>, <?= json_encode($november); ?>, <?= json_encode($december); ?>],
+												label: '# of User(s)',
+												data: <?php echo json_encode($countArray); ?>,
 												backgroundColor: [
 													'rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(89, 233, 28, 0.2)', 'rgba(255, 5, 5, 0.2)', 'rgba(255, 128, 0, 0.2)', 'rgba(153, 153, 153, 0.2)', 'rgba(15, 207, 210, 0.2)', 'rgba(44, 13, 181, 0.2)', 'rgba(86, 172, 12, 0.2)'
 												],
@@ -288,7 +288,7 @@ echo $this->Html->script('bootstrapModal', ['block' => 'scriptBottom']);
 							<div class="card border-0 shadow bg-body-tertiary">
 								<div class="card-body">
 									<div class="row mx-0">
-										<div class="col-5 text-center mt-3 mb-3"><i class="fa-solid fa-file-csv fa-2x text-primary" style=""></i></div>
+										<div class="col-5 text-center mt-3 mb-3"><i class="fa-solid fa-file-csv fa-2x text-primary"></i></div>
 										<div class="col-7 text-end m-auto">
 											<div class="fs-4 fw-bold">CSV</div>
 											<div class="small-text"><i class="fa-solid fa-angles-down fa-flip"></i> Download</div>
@@ -303,7 +303,7 @@ echo $this->Html->script('bootstrapModal', ['block' => 'scriptBottom']);
 							<div class="card border-0 shadow bg-body-tertiary">
 								<div class="card-body">
 									<div class="row mx-0">
-										<div class="col-5 text-center mt-3 mb-3"><i class="fa-solid fa-braille fa-2x text-warning" style=""></i></div>
+										<div class="col-5 text-center mt-3 mb-3"><i class="fa-solid fa-braille fa-2x text-warning"></i></div>
 										<div class="col-7 text-end m-auto">
 											<div class="fs-4 fw-bold">JSON</div>
 											<div class="small-text"><i class="fa-solid fa-angles-down fa-flip"></i> Download</div>
@@ -318,7 +318,7 @@ echo $this->Html->script('bootstrapModal', ['block' => 'scriptBottom']);
 							<div class="card border-0 shadow bg-body-tertiary">
 								<div class="card-body">
 									<div class="row mx-0">
-										<div class="col-5 text-center mt-3 mb-3"><i class="fa-regular fa-file-pdf fa-2x text-danger" style=""></i></div>
+										<div class="col-5 text-center mt-3 mb-3"><i class="fa-regular fa-file-pdf fa-2x text-danger"></i></div>
 										<div class="col-7 text-end m-auto">
 											<div class="fs-4 fw-bold">PDF</div>
 											<div class="small-text"><i class="fa-solid fa-angles-down fa-flip"></i> Download</div>
