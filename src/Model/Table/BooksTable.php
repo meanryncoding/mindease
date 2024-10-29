@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace App\Model\Table;
@@ -45,22 +44,21 @@ class BooksTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
-        $this->addBehavior('AuditStash.AuditLog');
-
-        $this->addBehavior('Search.Search');
-        $this->searchManager()
-            ->value('id')
-            ->add('search', 'Search.Like', [
-                //'before' => true,
-                //'after' => true,
-                'fieldMode' => 'OR',
-                'multiValue' => true,
-                'multiValueSeparator' => '|',
-                'comparison' => 'LIKE',
-                'wildcardAny' => '*',
-                'wildcardOne' => '?',
-                'fields' => ['id'],
-            ]);
+		$this->addBehavior('AuditStash.AuditLog');
+		$this->addBehavior('Search.Search');
+		$this->searchManager()
+			->value('id')
+				->add('search', 'Search.Like', [
+					//'before' => true,
+					//'after' => true,
+					'fieldMode' => 'OR',
+					'multiValue' => true,
+					'multiValueSeparator' => '|',
+					'comparison' => 'LIKE',
+					'wildcardAny' => '*',
+					'wildcardOne' => '?',
+					'fields' => ['id'],
+				]);
     }
 
     /**

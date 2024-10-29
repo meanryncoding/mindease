@@ -23,8 +23,8 @@ class BooksFixture extends TestFixture
                 'title' => 'Lorem ipsum dolor sit amet',
                 'author' => 'Lorem ipsum dolor sit amet',
                 'status' => 1,
-                'created' => '2024-05-30 13:04:40',
-                'modified' => '2024-05-30 13:04:40',
+                'created' => '2024-07-04 10:39:31',
+                'modified' => '2024-07-04 10:39:31',
             ],
         ];
         parent::init();

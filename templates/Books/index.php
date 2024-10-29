@@ -35,24 +35,28 @@
 <div class="row">
 	<div class="col-md-9">
 		<!-- Nav tabs -->
-		<ul class="nav nav-tabs nav-fill border-bottom mb-4">
-			<li class="nav-item">
-				<a class="nav-link active" data-bs-toggle="tab" href="#list"><i class="fa-solid fa-bars-staggered"></i> List</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" data-bs-toggle="tab" href="#report"><i class="fa-solid fa-chart-line"></i> Report</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" data-bs-toggle="tab" href="#export"><i class="fa-solid fa-download"></i> Export</a>
-			</li>
-		</ul>
-<div class="card rounded-0 mb-3 bg-body-tertiary border-0 shadow">
-	<div class="card-body text-body-secondary px-0">
+		<div class="nav-align-top mb-4">
+			<ul class="nav nav-tabs nav-fill border-bottom mb-4" role="tablist">
+				<li class="nav-item">
+					<a class="nav-link active" data-bs-toggle="tab" href="#list"><i class="fa-solid fa-bars-staggered"></i> List</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" data-bs-toggle="tab" href="#report"><i class="fa-solid fa-chart-line"></i> Report</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" data-bs-toggle="tab" href="#export"><i class="fa-solid fa-download"></i> Export</a>
+				</li>
+			</ul>
+		</div>
+		
+		
+		<div class="tab-content px-0">
+		<div class="tab-pane fade active show" id="list">
+    <div class="card bg-body-tertiary border-0 shadow mb-4">
+	<div class="card-body text-body-secondary">
 	<!-- Tab panes -->
-	<div class="tab-content">
-		<div class="tab-pane container active" id="list">
-    <div class="table-responsive">
-        <table class="table">
+	<div class="table-responsive">
+        <table class="table table-sm table-border mb-4 table_transparent table-hover">
             <thead>
 		<?php
 			$page = $this->Paginator->counter('{{page}}');
@@ -116,8 +120,10 @@
     </ul>
     <div class="text-end"><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></div>
 </div>
+	</div>
+</div>
 		</div>
-		<div class="tab-pane container fade" id="report">
+		<div class="tab-pane container fade px-0" id="report">
 			<div class="row pb-3">
 				<div class="col-md-4">
 				  <div class="stat_card card-1 bg-body-tertiary">
@@ -139,22 +145,24 @@
 				</div>
 			</div>
 			
-			<hr/>
-
 <div class="row">
 	<div class="col-md-6">
-<div class="chart-container" style="position: relative;">
-    <canvas id="monthly"></canvas>
-</div>
+	<div class="card bg-body-tertiary border-0 shadow mb-4">
+		<div class="card-body">
+			<div class="card-title mb-0">Books (Monthly)</div>
+			<div class="tricolor_line mb-3"></div>
+				<div class="chart-container" style="position: relative;">
+					<canvas id="monthly"></canvas>
+				</div>
 <script>
 const ctx = document.getElementById('monthly');
 const monthly = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        labels: <?php echo json_encode($monthArray); ?>,
         datasets: [{
             label: '# of Books(s)',
-			data: [<?= json_encode($january); ?>, <?= json_encode($february); ?>, <?= json_encode($march); ?>, <?= json_encode($april); ?>, <?= json_encode($may); ?>, <?= json_encode($jun); ?>, <?= json_encode($july); ?>, <?= json_encode($august); ?>, <?= json_encode($september); ?>, <?= json_encode($october); ?>, <?= json_encode($november); ?>, <?= json_encode($december); ?>],
+			data: <?php echo json_encode($countArray); ?>,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)','rgba(54, 162, 235, 0.2)','rgba(255, 206, 86, 0.2)','rgba(75, 192, 192, 0.2)','rgba(153, 102, 255, 0.2)','rgba(89, 233, 28, 0.2)','rgba(255, 5, 5, 0.2)','rgba(255, 128, 0, 0.2)','rgba(153, 153, 153, 0.2)','rgba(15, 207, 210, 0.2)','rgba(44, 13, 181, 0.2)','rgba(86, 172, 12, 0.2)'
             ],
@@ -172,14 +180,14 @@ const monthly = new Chart(ctx, {
         },
 		plugins: {
             title: {
-                display: true,
+                display: false,
                 text: 'Books (Monthly)',
 				font: {
 				  size: 15
 					}
 				},
 			subtitle: {
-                display: true,
+                display: false,
                 text: '<?php echo $system_name; ?>'
 				},
 			legend: {
@@ -192,9 +200,15 @@ const monthly = new Chart(ctx, {
     }
 });
 </script>
+		</div>
+	</div>
 	</div>
 	<div class="col-md-6">
-<div class="chart-container" style="position: relative;">
+	<div class="card bg-body-tertiary border-0 shadow mb-4">
+		<div class="card-body">
+		<div class="card-title mb-0">Books by Status</div>
+			<div class="tricolor_line mb-3"></div>
+		<div class="chart-container" style="position: relative;">
     <canvas id="status"></canvas>
 </div>
 <script>
@@ -223,14 +237,14 @@ const status = new Chart(ctx_2, {
         },
 		plugins: {
             title: {
-                display: true,
+                display: false,
                 text: 'Books by Status',
 				font: {
 				  size: 15
 					}
 				},
 			subtitle: {
-                display: true,
+                display: false,
                 text: '<?php echo $system_name; ?>'
 				},
 			legend: {
@@ -243,12 +257,14 @@ const status = new Chart(ctx_2, {
     }
 });
 </script>
+		</div>
+	</div>
 	</div>
 </div>
 		</div>
 
 			
-		<div class="tab-pane container fade" id="export">
+		<div class="tab-pane container fade px-0" id="export">
 			<?php
 				$domain = Router::url("/", true);
 				$sub = 'books';
@@ -257,39 +273,45 @@ const status = new Chart(ctx_2, {
 			<div class="row pb-3">
 				<div class="col-md-3 mb-2">
 				<a href='<?php echo $combine; ?>/csv' class="kosong">
-					<div class="card border shadow">
+					<div class="card bg-body-tertiary border-0 shadow">
+							<div class="card-body">
 						<div class="row mx-0">
-							<div class="col-5 text-center mt-3 mb-3"><i class="fa-solid fa-file-csv fa-2x text-primary" style=""></i></div>
+							<div class="col-5 text-center mt-3 mb-3"><i class="fa-solid fa-file-csv fa-2x text-primary"></i></div>
 							<div class="col-7 text-end m-auto">
 								<div class="fs-4 fw-bold">CSV</div>
 								<div class="small-text"><i class="fa-solid fa-angles-down fa-flip"></i> Download</div>
 							</div>
 						</div>
 					</div>
+						</div>
 				</a>
 				</div>
 				<div class="col-md-3 mb-2">
 					<a href='<?php echo $combine; ?>/json' class="kosong" target="_blank">
-					<div class="card border shadow">
+					<div class="card bg-body-tertiary border-0 shadow">
+							<div class="card-body">
 						<div class="row mx-0">
-							<div class="col-5 text-center mt-3 mb-3"><i class="fa-solid fa-braille fa-2x text-warning" style=""></i></div>
+							<div class="col-5 text-center mt-3 mb-3"><i class="fa-solid fa-braille fa-2x text-warning"></i></div>
 							<div class="col-7 text-end m-auto">
 								<div class="fs-4 fw-bold">JSON</div>
 								<div class="small-text"><i class="fa-solid fa-angles-down fa-flip"></i> Download</div>
 							</div>
+						</div>
 						</div>
 					</div>
 					</a>
 				</div>
 				<div class="col-md-3 mb-2">
 					<a href='<?php echo $combine; ?>/pdfList' class="kosong">
-					<div class="card border shadow">
+					<div class="card bg-body-tertiary border-0 shadow">
+							<div class="card-body">
 						<div class="row mx-0">
-							<div class="col-5 text-center mt-3 mb-3"><i class="fa-regular fa-file-pdf fa-2x text-danger" style=""></i></div>
+							<div class="col-5 text-center mt-3 mb-3"><i class="fa-regular fa-file-pdf fa-2x text-danger"></i></div>
 							<div class="col-7 text-end m-auto">
 								<div class="fs-4 fw-bold">PDF</div>
 								<div class="small-text"><i class="fa-solid fa-angles-down fa-flip"></i> Download</div>
 							</div>
+						</div>
 						</div>
 					</div>
 					</a>
@@ -297,15 +319,15 @@ const status = new Chart(ctx_2, {
 			</div>	
 		</div>
 	</div>
-	</div>
-</div>
+		
+		
+
 	</div>
 	<div class="col-md-3">
-<div class="card rounded-0 mb-3 bg-body-tertiary border-0 shadow">
-	<div class="card-body text-body-secondary">
+<div class="card bg-body-tertiary border-0 shadow mb-4">
+	<div class="card-body">
 		<div class="card-title mb-0">Search</div>
-		<div class="card-subtitle mb-0"><?php echo $system_name; ?></div>
-		<div class="line mb-4 small-text pt-0"></div>
+			<div class="tricolor_line mb-3"></div>
 			<?php echo $this->Form->create(null, ['valueSources' => 'query', 'url' => ['controller' => 'Books','action' => 'index']]); ?>
 				<fieldset>
 					<div class="mb-1"><?php echo $this->Form->control('id',['required' => false]); ?></div>
