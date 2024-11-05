@@ -6,5 +6,3 @@
 /config/Migrations/schema-dump-default.lock
 /vendor/
 /.idea/
-/webroot/files/*
-/config/app_local.php
