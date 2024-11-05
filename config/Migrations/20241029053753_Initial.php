@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 use Migrations\AbstractMigration;
@@ -130,43 +131,6 @@ class Initial extends AbstractMigration
                     'name' => 'created',
                 ]
             )
-            ->create();
-
-        $this->table('books')
-            ->addColumn('id', 'integer', [
-                'autoIncrement' => true,
-                'default' => null,
-                'limit' => null,
-                'null' => false,
-                'signed' => true,
-            ])
-            ->addPrimaryKey(['id'])
-            ->addColumn('title', 'string', [
-                'default' => null,
-                'limit' => 255,
-                'null' => false,
-            ])
-            ->addColumn('author', 'string', [
-                'default' => null,
-                'limit' => 255,
-                'null' => false,
-            ])
-            ->addColumn('status', 'integer', [
-                'default' => '1',
-                'limit' => null,
-                'null' => false,
-                'signed' => true,
-            ])
-            ->addColumn('created', 'datetime', [
-                'default' => null,
-                'limit' => null,
-                'null' => false,
-            ])
-            ->addColumn('modified', 'datetime', [
-                'default' => null,
-                'limit' => null,
-                'null' => false,
-            ])
             ->create();
 
         $this->table('contacts')
@@ -862,7 +826,6 @@ class Initial extends AbstractMigration
     public function down(): void
     {
         $this->table('audit_logs')->drop()->save();
-        $this->table('books')->drop()->save();
         $this->table('contacts')->drop()->save();
         $this->table('faqs')->drop()->save();
         $this->table('menus')->drop()->save();
