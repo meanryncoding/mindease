@@ -22,6 +22,10 @@
     classImports: (plugin or prefix) ? ["#{baseNamespace}\\Controller\\AppController"] : [],
 }) }}
 
+use AuditStash\Meta\RequestMetadata;
+use Cake\Event\EventManager;
+use Cake\Routing\Router;
+
 /**
  * {{ name }} Controller
  *

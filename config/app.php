@@ -409,7 +409,7 @@ return [
         'defaults' => 'php',
     ],
     'AuditStash' => [
-        'persister' => 'AuditStash\Persister\TablePersister'
+        'persister' => \AuditStash\Persister\TablePersister::class,
     ]
 
 ];
