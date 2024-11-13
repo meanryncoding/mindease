@@ -40,7 +40,7 @@ class DashboardsController extends AppController
 			$pending_contact_percent = $pending_contact * 100 / $total_contact;
 
 		//count auditlog
-		$auditLogs = $this->fetchTable('auditLogs');
+		$auditLogs = $this->fetchTable('AuditLogs');
 		$total_auditlog = $auditLogs->find()->all()->count();
 
 		//count to do task
@@ -65,7 +65,7 @@ class DashboardsController extends AppController
 		$userdetail = $this->request->getAttribute('identity');
 		$userID = $userdetail->id;
 
-		$userLogs = $this->fetchTable('userLogs');
+		$userLogs = $this->fetchTable('UserLogs');
 		//publish activity user (for module)
 		$userLogs = $userLogs->find('all')
 			->where(['user_id' => $userID])
