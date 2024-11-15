@@ -14,6 +14,7 @@ use Cake\View\XmlView;
 use AuditStash\Meta\ApplicationMetadata;
 use Cake\Event\EventManager;
 
+
 /**
  * Faqs Controller
  *
@@ -170,18 +171,13 @@ class FaqsController extends AppController
 	{
 		$this->set('title', 'Faqs Details');
 
-		$this->loadModel('AuditLogs');
-
-		$auditLogs = $this->AuditLogs->find('all')
+		$auditLogs = $this->fetchTable('AuditLogs');
+		$auditLogs->find()
 			->where([
 				'primary_key' => $id,
-				//'category_id' => '1',
 			])
-			->order(['created' => 'ASC'])
+			->orderBy(['created' => 'ASC'])
 			->limit(10);
-
-		//$ayam = $this->request->getData('id');
-
 
 
 		$faq = $this->Faqs->get($id, [

@@ -103,14 +103,14 @@
 					<div class="mt-3">
 						<!--Badge-->
 						<?php if ($todo->urgency == 'High') {
-							echo '<span class="badge bg-label-danger">High</span>';
+							echo '<span class="badge text-bg-danger">High</span>';
 						} elseif ($todo->urgency == 'Medium') {
-							echo '<span class="badge bg-label-warning">Medium</span>';
+							echo '<span class="badge text-bg-warning">Medium</span>';
 						} else
-							echo '<span class="badge bg-label-primary">Low</span>';
+							echo '<span class="badge text-bg-primary">Low</span>';
 						?>
 
-						<span class="badge bg-label-secondary"><?= date('F, d Y', strtotime($todo->created)); ?></span>
+						<span class="badge text-bg-secondary"><?= date('F, d Y', strtotime($todo->created)); ?></span>
 
 					</div>
 
@@ -160,14 +160,14 @@
 					<div class="mt-3">
 						<!--Badge-->
 						<?php if ($todo->urgency == 'High') {
-							echo '<span class="badge bg-label-danger">High</span>';
+							echo '<span class="badge text-bg-danger">High</span>';
 						} elseif ($todo->urgency == 'Medium') {
-							echo '<span class="badge bg-label-warning">Medium</span>';
+							echo '<span class="badge text-bg-warning">Medium</span>';
 						} else
-							echo '<span class="badge bg-label-primary">Low</span>';
+							echo '<span class="badge text-bg-primary">Low</span>';
 						?>
 
-						<span class="badge bg-label-secondary"><?= date('F, d Y', strtotime($todo->created)); ?></span>
+						<span class="badge text-bg-secondary"><?= date('F, d Y', strtotime($todo->created)); ?></span>
 					</div>
 				</div>
 			</div>
@@ -206,14 +206,14 @@
 					<div class="mt-3">
 						<!--Badge-->
 						<?php if ($todo->urgency == 'High') {
-							echo '<span class="badge bg-label-danger">High</span>';
+							echo '<span class="badge text-bg-danger">High</span>';
 						} elseif ($todo->urgency == 'Medium') {
-							echo '<span class="badge bg-label-warning">Medium</span>';
+							echo '<span class="badge text-bg-warning">Medium</span>';
 						} else
-							echo '<span class="badge bg-label-primary">Low</span>';
+							echo '<span class="badge text-bg-primary">Low</span>';
 						?>
 
-						<span class="badge bg-label-secondary"><?= date('F, d Y', strtotime($todo->created)); ?></span>
+						<span class="badge text-bg-secondary"><?= date('F, d Y', strtotime($todo->created)); ?></span>
 					</div>
 				</div>
 			</div>
@@ -240,14 +240,14 @@
 					<div class="mt-3">
 						<!--Badge-->
 						<?php if ($todo->urgency == 'High') {
-							echo '<span class="badge bg-label-danger">High</span>';
+							echo '<span class="badge text-bg-danger">High</span>';
 						} elseif ($todo->urgency == 'Medium') {
-							echo '<span class="badge bg-label-warning">Medium</span>';
+							echo '<span class="badge text-bg-warning">Medium</span>';
 						} else
-							echo '<span class="badge bg-label-primary">Low</span>';
+							echo '<span class="badge text-bg-primary">Low</span>';
 						?>
 
-						<span class="badge bg-label-secondary"><?= date('F, d Y', strtotime($todo->created)); ?></span>
+						<span class="badge text-bg-secondary"><?= date('F, d Y', strtotime($todo->created)); ?></span>
 					</div>
 				</div>
 			</div>

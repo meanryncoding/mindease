@@ -63,8 +63,9 @@ return function (RouteBuilder $routes): void {
          * ...and connect the rest of 'Pages' controller's URLs.
          */
         $builder->connect('/pages/*', 'Pages::display');
-		$builder->connect('/contact/*', ['controller' => 'Contacts', 'action' => 'add']);
+        $builder->connect('/contact/*', ['controller' => 'Contacts', 'action' => 'add']);
         $builder->connect('/dashboard/*', ['controller' => 'Dashboards', 'action' => 'index']);
+        $builder->connect('/admin', ['controller' => 'Users', 'action' => 'login']);
 
         /*
          * Connect catchall routes for all controllers.
@@ -91,14 +92,14 @@ return function (RouteBuilder $routes): void {
     }); */
 
     $routes->prefix('Admin', function (RouteBuilder $routes) {
-    // Because you are in the admin scope,
-    // you do not need to include the /admin prefix
-    // or the Admin route element.
-    //$routes->connect('/', ['controller' => 'Pages', 'action' => 'index']);
-    $routes->connect('/users', ['controller' => 'Users', 'action' => 'index']);
-    $routes->connect('/settings', ['prefix' => 'admin', 'controller' => 'Settings', 'action' => 'update']);
-    $routes->fallbacks(DashedRoute::class);
-});
+        // Because you are in the admin scope,
+        // you do not need to include the /admin prefix
+        // or the Admin route element.
+        //$routes->connect('/', ['controller' => 'Pages', 'action' => 'index']);
+        $routes->connect('/users', ['controller' => 'Users', 'action' => 'index']);
+        $routes->connect('/settings', ['prefix' => 'admin', 'controller' => 'Settings', 'action' => 'update']);
+        $routes->fallbacks(DashedRoute::class);
+    });
     /*
      * If you need a different set of middleware or none at all,
      * open new scope and define routes there.
