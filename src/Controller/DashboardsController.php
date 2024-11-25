@@ -104,7 +104,7 @@ class DashboardsController extends AppController
 		])
 			->groupBy(['month' => 'MONTH(created)']);
 
-		$results = $query->all()->toArray();
+		//$results = $query->all()->toArray();
 
 		$totalActivityByMonth = [];
 		foreach ($results as $result) {
