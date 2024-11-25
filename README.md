@@ -117,6 +117,12 @@ Database seeding
   bin/cake migrations seed
 ```
 
+Default account Info
+
+```bash
+  admin@localhost.com | 123456
+```
+
 ## 🛠 Requirements
 
 PHP 8+
@@ -125,17 +131,17 @@ intl extension
 
 Table should contain attribute: status(int) 1 with default value 1. This is used to tag active records as active(1), disabled(0) and archived(2). It also will be used for reporting charts.
 
-## 🔗 Webserver Links
-
-[![XAMPP](https://img.shields.io/badge/XAMPP-000?style=for-the-badge&logoColor=white)](https://www.apachefriends.org/download.html)
-[![WAMP](https://img.shields.io/badge/WAMP-0A66C2?style=for-the-badge&logoColor=white)](https://www.wampserver.com/en/)
-[![MAMP](https://img.shields.io/badge/MAMP-1DA1F2?style=for-the-badge&logoColor=white)](https://www.mamp.info/en/windows/)
-
 Set SQL Mode (Edit my.ini)
 
 ```bash
   sql-mode = ""
 ```
+
+## 🔗 Webserver Links
+
+[![XAMPP](https://img.shields.io/badge/XAMPP-000?style=for-the-badge&logoColor=white)](https://www.apachefriends.org/download.html)
+[![WAMP](https://img.shields.io/badge/WAMP-0A66C2?style=for-the-badge&logoColor=white)](https://www.wampserver.com/en/)
+[![MAMP](https://img.shields.io/badge/MAMP-1DA1F2?style=for-the-badge&logoColor=white)](https://www.mamp.info/en/windows/)
 
 ## Usage/Examples
 
