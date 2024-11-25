@@ -131,6 +131,12 @@ Table should contain attribute: status(int) 1 with default value 1. This is used
 [![WAMP](https://img.shields.io/badge/WAMP-0A66C2?style=for-the-badge&logoColor=white)](https://www.wampserver.com/en/)
 [![MAMP](https://img.shields.io/badge/MAMP-1DA1F2?style=for-the-badge&logoColor=white)](https://www.mamp.info/en/windows/)
 
+Set SQL Mode (Edit my.ini)
+
+```bash
+  sql-mode = ""
+```
+
 ## Usage/Examples
 
 Generate CRUD with ReCrud features:
