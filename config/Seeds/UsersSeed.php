@@ -31,7 +31,7 @@ class UsersSeed extends AbstractSeed
                 'avatar' => '',
                 'avatar_dir' => '',
                 'token' => NULL,
-                'token_created_at' => '0000-00-00 00:00:00',
+                'token_created_at' => '2024-07-10 20:30:04',
                 'status' => '1',
                 'is_email_verified' => 1,
                 'last_login' => '2024-07-10 20:30:04',
