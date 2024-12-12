@@ -5,7 +5,7 @@ $a_name = $this->request->getParam('action');
 <!-- Menu -->
 <nav id="sidebar" class="bg-body-tertiary shadow">
     <div class="sidebar-header pt-2 ps-3">
-        <b class="gradient-animate-small"><b class="logo-small">&lt;&#47;&gt;</b> Re-CRUD</b>
+        <b class="gradient-animate-small"><b class="logo-small">&lt;&#47;&gt;</b> <?php echo $system_abbr; ?></b>
     </div>
     <div class="px-0">
         <ul class="list-unstyled components">
@@ -56,7 +56,8 @@ $a_name = $this->request->getParam('action');
                     <li class="menu-item <?= $c_name == 'AuditLogs' && $a_name == 'index' ? 'active' : '' ?>">
                         <?= $this->Html->link(__('<i class="menu-icon fa-solid fa-timeline"></i> Audit Trail'), [
                             'prefix' => 'Admin',
-                            'controller' => 'auditLogs', 'action' => 'index',
+                            'controller' => 'auditLogs',
+                            'action' => 'index',
                             //'?' => ['limit' => '25', 'status' => '1']
                         ], ['class' => 'menu-link', 'escape' => false]) ?>
                     </li>
