@@ -50,82 +50,88 @@ class UsersController extends AppController
 
 	public function index()
 	{
-		$this->set('title', 'User Management');
-		$this->paginate = [
-			//'contain' => ['UserGroups'],
-			'maxLimit' => 10,
-		];
-		$query = $this->Users->find('search', search: $this->request->getQueryParams())
-			->contain(['UserGroups'])
-			//->where(['title IS NOT' => null])
-		;
-		$users = $this->paginate($query);
+		$user_group = $this->Authentication->getIdentity('user_group_id')->getIdentifier('user_group_id');
+		if ($user_group == 1) {
+			$this->set('title', 'User Management');
+			$this->paginate = [
+				//'contain' => ['UserGroups'],
+				'maxLimit' => 10,
+			];
+			$query = $this->Users->find('search', search: $this->request->getQueryParams())
+				->contain(['UserGroups'])
+				//->where(['title IS NOT' => null])
+			;
+			$users = $this->paginate($query);
 
 
-		//count
-		$this->set('total_users', $this->Users->find()->count());
-		$this->set('total_users_archived', $this->Users->find()->where(['status' => 2])->count());
-		$this->set('total_users_active', $this->Users->find()->where(['status' => 1])->count());
-		$this->set('total_users_disabled', $this->Users->find()->where(['status' => 0])->count());
+			//count
+			$this->set('total_users', $this->Users->find()->count());
+			$this->set('total_users_archived', $this->Users->find()->where(['status' => 2])->count());
+			$this->set('total_users_active', $this->Users->find()->where(['status' => 1])->count());
+			$this->set('total_users_disabled', $this->Users->find()->where(['status' => 0])->count());
 
-		$query = $this->Users->find();
+			$query = $this->Users->find();
 
-		$expectedMonths = [];
-		for ($i = 11; $i >= 0; $i--) {
-			$expectedMonths[] = date('M-Y', strtotime("-$i months"));
-		}
-
-		$query->select([
-			'count' => $query->func()->count('*'),
-			'date' => $query->func()->date_format(['created' => 'identifier', "%b-%Y"]),
-			'month' => 'MONTH(created)',
-			'year' => 'YEAR(created)'
-		])
-			->where([
-				'created >=' => date('Y-m-01', strtotime('-11 months')),
-				'created <=' => date('Y-m-t')
-			])
-			->groupBy(['year', 'month'])
-			->orderBy(['year' => 'ASC', 'month' => 'ASC']);
-
-		$results = $query->all()->toArray();
-
-		$totalUserByMonth = [];
-		foreach ($expectedMonths as $expectedMonth) {
-			$found = false;
-			$count = 0;
-
-			foreach ($results as $result) {
-				if ($expectedMonth === $result->date) {
-					$found = true;
-					$count = $result->count;
-					break;
-				}
+			$expectedMonths = [];
+			for ($i = 11; $i >= 0; $i--) {
+				$expectedMonths[] = date('M-Y', strtotime("-$i months"));
 			}
 
-			$totalUserByMonth[] = [
-				'month' => $expectedMonth,
-				'count' => $count
-			];
+			$query->select([
+				'count' => $query->func()->count('*'),
+				'date' => $query->func()->date_format(['created' => 'identifier', "%b-%Y"]),
+				'month' => 'MONTH(created)',
+				'year' => 'YEAR(created)'
+			])
+				->where([
+					'created >=' => date('Y-m-01', strtotime('-11 months')),
+					'created <=' => date('Y-m-t')
+				])
+				->groupBy(['year', 'month'])
+				->orderBy(['year' => 'ASC', 'month' => 'ASC']);
+
+			$results = $query->all()->toArray();
+
+			$totalUserByMonth = [];
+			foreach ($expectedMonths as $expectedMonth) {
+				$found = false;
+				$count = 0;
+
+				foreach ($results as $result) {
+					if ($expectedMonth === $result->date) {
+						$found = true;
+						$count = $result->count;
+						break;
+					}
+				}
+
+				$totalUserByMonth[] = [
+					'month' => $expectedMonth,
+					'count' => $count
+				];
+			}
+
+			$this->set([
+				'results' => $totalUserByMonth,
+				'_serialize' => ['results']
+			]);
+
+			// JSON arrays
+			$totalUserByMonth = json_encode($totalUserByMonth);
+			$dataArray = json_decode($totalUserByMonth, true);
+			$monthArray = [];
+			$countArray = [];
+			foreach ($dataArray as $data) {
+				$monthArray[] = $data['month'];
+				$countArray[] = $data['count'];
+			}
+
+			$this->set(compact('users', 'monthArray', 'countArray'));
+			//$this->set('users', $this->paginate($query));
+		} else {
+			$this->Flash->error(__('Not allowed'));
+			return $this->redirect($this->referer());
 		}
-
-		$this->set([
-			'results' => $totalUserByMonth,
-			'_serialize' => ['results']
-		]);
-
-		// JSON arrays
-		$totalUserByMonth = json_encode($totalUserByMonth);
-		$dataArray = json_decode($totalUserByMonth, true);
-		$monthArray = [];
-		$countArray = [];
-		foreach ($dataArray as $data) {
-			$monthArray[] = $data['month'];
-			$countArray[] = $data['count'];
-		}
-
-		$this->set(compact('users', 'monthArray', 'countArray'));
-		//$this->set('users', $this->paginate($query));
 	}
 
 
