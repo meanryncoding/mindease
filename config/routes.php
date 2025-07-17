@@ -66,6 +66,8 @@ return function (RouteBuilder $routes): void {
         $builder->connect('/contact/*', ['controller' => 'Contacts', 'action' => 'add']);
         $builder->connect('/dashboard/*', ['controller' => 'dashboards', 'action' => 'index']);
         $builder->connect('/admin', ['controller' => 'Users', 'action' => 'login']);
+        $builder->connect('/crud', ['plugin' => 'ReCrud', 'controller' => 'Bake', 'action' => 'index']);
+        $builder->connect('/manage-crud', ['plugin' => 'ReCrud', 'controller' => 'Bake', 'action' => 'manage']);
 
         /*
          * Connect catchall routes for all controllers.
@@ -83,22 +85,22 @@ return function (RouteBuilder $routes): void {
         $builder->fallbacks();
     });
 
-    /* $routes->prefix('Admin', function (RouteBuilder $routes) {
-        $routes->connect('/users', ['controller' => 'Users', 'action' => 'index']);
-        //$routes->connect('/login', ['controller' => 'Users', 'action' => 'login']);
-        $routes->connect('/settings', ['prefix' => 'admin', 'controller' => 'Settings', 'action' => 'update']);
-        $routes->connect('/audit-logs', ['controller' => 'auditLogs', 'action' => 'index', '?' => ['limit' => '25', 'status' => '1']]);
-        $routes->fallbacks(DashedRoute::class);
+    /* $routes->prefix('Admin', function (RouteBuilder $builder) {
+        $builder->connect('/users', ['controller' => 'Users', 'action' => 'index']);
+        //$builder->connect('/login', ['controller' => 'Users', 'action' => 'login']);
+        $builder->connect('/settings', ['prefix' => 'admin', 'controller' => 'Settings', 'action' => 'update']);
+        $builder->connect('/audit-logs', ['controller' => 'auditLogs', 'action' => 'index', '?' => ['limit' => '25', 'status' => '1']]);
+        $builder->fallbacks(DashedRoute::class);
     }); */
 
-    $routes->prefix('Admin', function (RouteBuilder $routes) {
+    $routes->prefix('Admin', function (RouteBuilder $builder) {
         // Because you are in the admin scope,
         // you do not need to include the /admin prefix
         // or the Admin route element.
-        //$routes->connect('/', ['controller' => 'Pages', 'action' => 'index']);
-        $routes->connect('/users', ['controller' => 'Users', 'action' => 'index']);
-        $routes->connect('/settings', ['prefix' => 'admin', 'controller' => 'Settings', 'action' => 'update']);
-        $routes->fallbacks(DashedRoute::class);
+        //$builder->connect('/', ['controller' => 'Pages', 'action' => 'index']);
+        $builder->connect('/users', ['controller' => 'Users', 'action' => 'index']);
+        $builder->connect('/settings', ['prefix' => 'admin', 'controller' => 'Settings', 'action' => 'update']);
+        $builder->fallbacks(DashedRoute::class);
     });
     /*
      * If you need a different set of middleware or none at all,

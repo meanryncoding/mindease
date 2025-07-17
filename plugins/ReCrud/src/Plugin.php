@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace ReCrud;
@@ -13,7 +14,7 @@ use Cake\Routing\RouteBuilder;
 /**
  * Plugin for ReCrud
  */
-class ReCrudPlugin extends BasePlugin
+class Plugin extends BasePlugin
 {
     /**
      * Load all the plugin configuration and bootstrap logic.
@@ -24,9 +25,7 @@ class ReCrudPlugin extends BasePlugin
      * @param \Cake\Core\PluginApplicationInterface $app The host application
      * @return void
      */
-    public function bootstrap(PluginApplicationInterface $app): void
-    {
-    }
+    public function bootstrap(PluginApplicationInterface $app): void {}
 
     /**
      * Add routes for the plugin.
@@ -43,7 +42,13 @@ class ReCrudPlugin extends BasePlugin
             'ReCrud',
             ['path' => '/re-crud'],
             function (RouteBuilder $builder) {
-                // Add custom routes here
+                // Bake interface routes
+                $builder->connect('/', ['controller' => 'Bake', 'action' => 'index']);
+                $builder->connect('/bake', ['controller' => 'Bake', 'action' => 'index']);
+                $builder->connect('/bake/execute', ['controller' => 'Bake', 'action' => 'execute']);
+                $builder->connect('/manage', ['controller' => 'Bake', 'action' => 'manage']);
+                $builder->connect('/bake/manage', ['controller' => 'Bake', 'action' => 'manage']);
+                $builder->connect('/bake/delete', ['controller' => 'Bake', 'action' => 'delete']);
 
                 $builder->fallbacks();
             }
