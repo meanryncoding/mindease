@@ -1,124 +1,124 @@
 <?php
-
 declare(strict_types=1);
 
 namespace App\Controller;
 
-use Authentication\IdentityInterface;
-use Cake\ORM\Table;
-use Cake\ORM\TableRegistry;
-
+/**
+ * Dashboards Controller
+ * Role-aware dashboard:
+ * - Student (3)  : personal stats & own latest assessments
+ * - Counselor (2) & Admin (1) : system stats, charts, attention cases
+ */
 class DashboardsController extends AppController
 {
-	public function initialize(): void
-	{
-		parent::initialize();
-	}
+    public function index()
+    {
+        $this->set('title', 'Dashboard');
 
-	public function beforeFilter(\Cake\Event\EventInterface $event)
-	{
-		parent::beforeFilter($event);
-		//$this->Authentication->allowUnauthenticated(['view']);
-	}
-	public function index()
-	{
-		$this->set('title', 'Dashboard');
+        $assessmentsTable = $this->fetchTable('Assessments');
 
-		//count user
-		$users = $this->fetchTable('Users');
-		$total_user = $users->find()->all()->count();
-		$active_user = $users->find()->where(['status' => 1])->count();
-		$user_percent = $active_user * 100 / $total_user;
+        $identity    = $this->Authentication->getIdentity();
+        $userGroupId = $identity->get('user_group_id');
+        $userId      = $identity->getIdentifier('id');
+        $this->set('userGroupId', $userGroupId);
+        $this->set('userFullname', $identity->get('fullname'));
 
-		//count contact
-		$contacts = $this->fetchTable('Contacts');
-		$total_contact = $contacts->find()->all()->count();
-		$pending_contact = $contacts->find()->where(['status' => 0])->count();
-		if ($pending_contact == 0) {
-			$pending_contact_percent = 0;
-		} else
-			$pending_contact_percent = $pending_contact * 100 / $total_contact;
+        // ═══════════════ STUDENT DASHBOARD (group 3) ═══════════════
+        if ($userGroupId == 3) {
 
-		//count auditlog
-		$auditLogs = $this->fetchTable('AuditLogs');
-		$total_auditlog = $auditLogs->find()->all()->count();
+            // Personal stats
+            $this->set('my_total', $assessmentsTable->find()->where(['user_id' => $userId])->count());
+            $this->set('my_flagged', $assessmentsTable->find()->where(['user_id' => $userId, 'is_flagged' => 1])->count());
 
-		//count to do task
-		$todos = $this->fetchTable('Todos');
-		$total_todo = $todos->find()->all()->count();
-		$pending_todo = $todos->find()->where(['status' => 'Pending'])->count();
-		$pending_todo_percent = $pending_todo * 100 / $total_todo;
+            // Latest assessment
+            $latest = $assessmentsTable->find()
+                ->where(['user_id' => $userId])
+                ->orderBy(['submitted_at' => 'DESC'])
+                ->first();
+            $this->set('latest', $latest);
 
-		//to do task list
-		$todo_list = $todos->find('all')
-			->where(['status IN' => ['Pending', 'In Progress']])
-			->limit(5)
-			->orderBy(['created' => 'DESC']);
+            // Personal history (last 5)
+            $myHistory = $assessmentsTable->find()
+                ->where(['user_id' => $userId])
+                ->orderBy(['submitted_at' => 'DESC'])
+                ->limit(5)
+                ->all();
+            $this->set('myHistory', $myHistory);
 
-		//count FAQ
-		$faqs = $this->fetchTable('Faqs');
-		$total_faq = $faqs->find()->all()->count();
-		$pending_faq = $faqs->find()->where(['status' => 1])->count();
-		$pending_faq_percent = $pending_faq * 100 / $total_faq;
+            // Personal score trend (last 6 assessments, oldest first)
+            $trendQuery = $assessmentsTable->find()
+                ->where(['user_id' => $userId])
+                ->orderBy(['submitted_at' => 'DESC'])
+                ->limit(6)
+                ->all()
+                ->toArray();
+            $trendQuery = array_reverse($trendQuery);
 
-		//get current authenticate user
-		$userdetail = $this->request->getAttribute('identity');
-		$userID = $userdetail->id;
+            $trendLabels = [];
+            $trendPhq9   = [];
+            $trendGad7   = [];
+            $trendPss4   = [];
+            foreach ($trendQuery as $t) {
+                $trendLabels[] = !empty($t->submitted_at) ? $t->submitted_at->format('d M') : '';
+                $trendPhq9[]   = $t->phq9_score;
+                $trendGad7[]   = $t->gad7_score;
+                $trendPss4[]   = $t->pss4_score;
+            }
+            $this->set(compact('trendLabels', 'trendPhq9', 'trendGad7', 'trendPss4'));
 
-		$userLogs = $this->fetchTable('UserLogs');
-		//publish activity user (for module)
-		$userLogs = $userLogs->find('all')
-			->where(['user_id' => $userID])
-			->limit(5)
-			->orderBy(['created' => 'DESC']);
+            return; // Student tak perlu data admin
+        }
 
-		//count all user activities and group by date for heatmap
-		$userLogsTable = TableRegistry::getTableLocator()->get('UserLogs');
-		$query = $userLogsTable->find();
-		$query->select([
-			'count' => $query->func()->count('*'),
-			'date' => $query->func()->date_format(['created' => 'identifier', "%Y-%m-%d"])
-		])
-			->groupBy(['date']);
+        // ═══════════ COUNSELOR / ADMIN DASHBOARD (group 1 & 2) ═══════════
 
-		$results = $query->all()->toArray();
+        // Stat cards
+        $this->set('total_assessments', $assessmentsTable->find()->count());
+        $this->set('flagged_cases',     $assessmentsTable->find()->where(['is_flagged' => 1])->count());
+        $this->set('critical_risk',     $assessmentsTable->find()->where(['overall_risk' => 'critical'])->count());
 
-		$formattedResults = [];
-		foreach ($results as $result) {
-			$formattedResults[] = [
-				'date' => $result->date,
-				'count' => $result->count
-			];
-		}
+        // Cases requiring attention
+        $attentionCases = $assessmentsTable->find()
+            ->contain(['Users'])
+            ->where(['is_flagged' => 1])
+            ->orderBy(['Assessments.submitted_at' => 'DESC'])
+            ->limit(10)
+            ->all();
+        $this->set(compact('attentionCases'));
 
-		$this->set([
-			'results' => $formattedResults,
-			'_serialize' => ['results']
-		]);
+        // Chart 1: Risk Distribution
+        $riskCritical = $assessmentsTable->find()->where(['overall_risk' => 'critical'])->count();
+        $riskHigh     = $assessmentsTable->find()->where(['overall_risk' => 'high'])->count();
+        $riskModerate = $assessmentsTable->find()->where(['overall_risk' => 'moderate'])->count();
+        $riskMild     = $assessmentsTable->find()->where(['overall_risk' => 'mild'])->count();
+        $riskLow      = $assessmentsTable->find()->where(['overall_risk' => 'low'])->count();
+        $this->set(compact('riskCritical', 'riskHigh', 'riskModerate', 'riskMild', 'riskLow'));
 
-		//count all user activities and group by month for bar chart
-		$query = $userLogsTable->find();
-		$query->select([
-			'count' => $query->func()->count('*'),
-			'date' => $query->func()->date_format(['created' => 'identifier', "%b-%Y"])
-		])
-			->groupBy(['month' => 'MONTH(created)']);
+        // Chart 2: Assessments per month (last 6 months)
+        $monthLabels = [];
+        $monthCounts = [];
+        for ($i = 5; $i >= 0; $i--) {
+            $monthStart = date('Y-m-01', strtotime("-$i months"));
+            $monthEnd   = date('Y-m-t',  strtotime("-$i months"));
+            $monthLabels[] = date('M Y', strtotime("-$i months"));
+            $monthCounts[] = $assessmentsTable->find()
+                ->where([
+                    'created >=' => $monthStart . ' 00:00:00',
+                    'created <=' => $monthEnd . ' 23:59:59',
+                ])
+                ->count();
+        }
+        $this->set(compact('monthLabels', 'monthCounts'));
 
-		//$results = $query->all()->toArray();
+        // Chart 3: Average scores
+        $avgQuery = $assessmentsTable->find();
+        $avgResult = $avgQuery->select([
+            'avg_phq9' => $avgQuery->func()->avg('phq9_score'),
+            'avg_gad7' => $avgQuery->func()->avg('gad7_score'),
+            'avg_pss4' => $avgQuery->func()->avg('pss4_score'),
+        ])->first();
 
-		$totalActivityByMonth = [];
-		foreach ($results as $result) {
-			$totalActivityByMonth[] = [
-				'month' => $result->date,
-				'count' => $result->count
-			];
-		}
-
-		$this->set([
-			'results' => $totalActivityByMonth,
-			'_serialize' => ['results']
-		]);
-
-		$this->set(compact('total_user', 'total_contact', 'total_auditlog', 'total_todo', 'user_percent', 'pending_todo_percent', 'pending_faq_percent', 'pending_contact_percent', 'userLogs', 'formattedResults', 'totalActivityByMonth', 'todo_list'));
-	}
+        $this->set('avgPhq9', round((float)($avgResult->avg_phq9 ?? 0), 1));
+        $this->set('avgGad7', round((float)($avgResult->avg_gad7 ?? 0), 1));
+        $this->set('avgPss4', round((float)($avgResult->avg_pss4 ?? 0), 1));
+    }
 }

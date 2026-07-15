@@ -243,7 +243,7 @@ class UsersController extends AppController
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('Account details updated'));
-                return $this->redirect($this->referer());
+                return $this->redirect(['action' => 'profile', $user->slug]);
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }

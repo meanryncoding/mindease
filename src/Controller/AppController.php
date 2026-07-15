@@ -1,44 +1,15 @@
 <?php
-
 declare(strict_types=1);
-
-/**
- * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
- *
- * Licensed under The MIT License
- * For full copyright and license information, please see the LICENSE.txt
- * Redistributions of files must retain the above copyright notice.
- *
- * @copyright Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
- * @link      https://cakephp.org CakePHP(tm) Project
- * @since     0.2.9
- * @license   https://opensource.org/licenses/mit-license.php MIT License
- */
 
 namespace App\Controller;
 
 use Cake\Controller\Controller;
-use Cake\ORM\Locator\LocatorAwareTrait;
 
-/**
- * Application Controller
- *
- * Add your application-wide methods in the class below, your controllers
- * will inherit them.
- *
- * @link https://book.cakephp.org/4/en/controllers.html#the-app-controller
- */
 class AppController extends Controller
 {
     public function beforeFilter(\Cake\Event\EventInterface $event)
     {
-        //parent::beforeFilter($event);
-
-        $this->fetchTable('Settings');
-        //$this->Settings = $this->fetchTable('Settings');
         $settings = $this->fetchTable('Settings');
-        //$config = $this->Settings->find('all')->first();
         $config = $settings->find('all')->first();
         $this->set('system_name', $config->get('system_name'));
         $this->set('system_abbr', $config->get('system_abbr'));
@@ -67,36 +38,41 @@ class AppController extends Controller
         $this->set('recrud', '2.1.3');
         $this->set('telegram_bot_token', $config->get('telegram_bot_token'));
         $this->set('telegram_chat_id', $config->get('telegram_chat_id'));
-        //default metatag
         $this->set('metaTitle', $config->get('meta_title'));
         $this->set('metaKeywords', $config->get('meta_keyword'));
         $this->set('metaSubject', $config->get('meta_subject'));
         $this->set('metaCopyright', $config->get('meta_copyright'));
         $this->set('metaDescription', $config->get('meta_desc'));
 
-        //$this->set(compact('settings'));
+        // ── MindEase Role Control ──────────────────────
+        $identity = $this->Authentication->getIdentity();
+        if ($identity) {
+            $userGroupId = $identity->get('user_group_id');
+            $this->set('user_group_id', $userGroupId);
+            $controllerName = $this->request->getParam('controller');
+
+            if ($userGroupId == 3) {
+                $allowed = ['Assessments', 'Dashboards', 'Users', 'Faqs', 'Contact', 'Contacts'];
+                if (!in_array($controllerName, $allowed)) {
+                    $this->Flash->error('You do not have permission to access that page.');
+                    return $this->redirect(['controller' => 'Assessments', 'action' => 'add']);
+                }
+            }
+
+            if ($userGroupId == 2) {
+                $allowed = ['Assessments', 'CounselorNotes', 'Dashboards', 'Users', 'Responses', 'Faqs', 'Contact', 'Contacts'];
+                if (!in_array($controllerName, $allowed)) {
+                    $this->Flash->error('You do not have permission to access that page.');
+                    return $this->redirect(['controller' => 'Assessments', 'action' => 'index']);
+                }
+            }
+        }
     }
-    /**
-     * Initialization hook method.
-     *
-     * Use this method to add common initialization code like loading components.
-     *
-     * e.g. `$this->loadComponent('FormProtection');`
-     *
-     * @return void
-     */
+
     public function initialize(): void
     {
         parent::initialize();
-
         $this->loadComponent('Authentication.Authentication');
-
         $this->loadComponent('Flash');
-
-        /*
-         * Enable the following component for recommended CakePHP form protection settings.
-         * see https://book.cakephp.org/4/en/controllers/components/form-protection.html
-         */
-        //$this->loadComponent('FormProtection');
     }
 }

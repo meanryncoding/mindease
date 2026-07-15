@@ -376,16 +376,19 @@ body {
 #sidebar ul li a:hover {
     text-decoration: none;
     border-radius: 0.375rem;
-    background-color: rgba(255, 255, 255, 0.2) !important;
+    background-color: #E1F5EE !important;
+    color: #0F6E56 !important;
 }
 
+/* MindEase — Active menu item */
+.menu-item .menu-link:hover,
+.menu-item .menu-link.active,
 #sidebar ul li.active > a,
 a[aria-expanded="true"] {
-    color: #ffffff;
-    font-weight: bold;
-    background-color: rgba(255, 255, 255, 0.2) !important;
-    text-decoration: none;
+    color: #0F6E56 !important;
+    background-color: #E1F5EE !important;
     border-radius: 0.375rem;
+    font-weight: 500;
 }
 
 a[data-toggle="collapse"] {
@@ -393,11 +396,11 @@ a[data-toggle="collapse"] {
 }
 
 .dropdown-toggle::after {
-    /*     display: block;
+        display: block;
     position: absolute;
     top: 22px;
     right: 20px;
-    transform: translateY(-50%);  */
+    transform: translateY(-50%);  
 }
 
 .dropdown-toggle2::after {

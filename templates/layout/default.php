@@ -104,7 +104,9 @@ $a_name = $this->request->getParam('action');
     <!-- Wrapper -->
     <div class="wrapper text-body-secondary">
         <!-- Sidebar -->
-        <?php echo $this->element('menu/sidebar'); ?>
+<?php if ($this->Identity->isLoggedIn()): ?>
+    <?php echo $this->element('menu/sidebar'); ?>
+<?php endif; ?>
         <!-- Page Content -->
         <div class="content-fluid">
             <!-- Navbar -->
@@ -123,70 +125,13 @@ $a_name = $this->request->getParam('action');
 
 
             <!-- Footer -->
-            <div class="container-fluid bd-footer px-5 bg-body-tertiary">
-                <footer class="py-5">
-                    <div class="row">
-                        <div class="col-6 col-md-2 mb-3">
-                            <h5>Internal Links</h5>
-                            <ul class="nav flex-column">
-                                <li class="nav-item mb-2">
-                                    <?= $this->Html->link(__('Dashboard'), ['controller' => 'Dashboards', 'action' => 'index', 'prefix' => false], ['class' => 'nav-link p-0 text-muted', 'escape' => false]) ?>
-                                </li>
-                                <li class="nav-item mb-2"><?= $this->Html->link(__('Frequently Asked Questions'), ['controller' => 'Faqs', 'action' => 'index', 'prefix' => false], ['class' => 'nav-link p-0 text-muted', 'escape' => false]) ?></li>
-                                <li class="nav-item mb-2"><?= $this->Html->link(__('Contact'), ['controller' => 'Contacts', 'action' => 'add', 'prefix' => false], ['class' => 'nav-link p-0 text-muted', 'escape' => false]) ?></li>
-                                <li class="nav-item mb-2"><?= $this->Html->link(__('Documentation Manual'), ['controller' => 'Pages', 'action' => 'manual', 'prefix' => false], ['class' => 'nav-link p-0 text-muted', 'escape' => false]) ?></li>
-                            </ul>
-                        </div>
-
-                        <div class="col-6 col-md-2 mb-3">
-                            <h5>Important Links</h5>
-                            <ul class="nav flex-column">
-                                <li class="nav-item mb-2"><a href="https://github.com/Asyraf-wa" class="nav-link p-0 text-muted" target="_blank">ReCRUD Github</a></li>
-                                <li class="nav-item mb-2"><a href="https:/codethepixel.com" class="nav-link p-0 text-muted" target="_blank">Code The Pixel</a></li>
-                                <li class="nav-item mb-2"><a href="hhttps://getbootstrap.com/" class="nav-link p-0 text-muted" target="_blank">Bootstrap</a></li>
-                                <li class="nav-item mb-2"><a href="https://cakephp.org/" class="nav-link p-0 text-muted" target="_blank">CakePHP</a></li>
-                            </ul>
-                        </div>
-
-                        <div class="col-6 col-md-2 mb-3">
-                            <a class="hover-fx"><i class="fa-brands fa-facebook fs-4"></i></a>
-                            <a class="hover-fx"><i class="fa-brands fa-instagram fs-4"></i></a>
-                            <a class="hover-fx"><i class="fa-brands fa-x-twitter fs-4"></i></a>
-                            <a class="hover-fx"><i class="fa-brands fa-linkedin fs-4"></i></a>
-                            <a class="hover-fx"><i class="fa-brands fa-threads fs-4"></i></a>
-                            <a class="hover-fx"><i class="fa-brands fa-github fs-4"></i></a>
-                            <a class="hover-fx"><i class="fa-brands fa-gitlab fs-4"></i></a>
-                            <a class="hover-fx"><i class="fa-brands fa-codepen fs-4"></i></a>
-                        </div>
-
-                        <div class="col-md-5 offset-md-1 mb-3">
-                            <form>
-                                <h5>Subscribe to our newsletter</h5>
-                                <p>Monthly digest of what's new and exciting from us.</p>
-                                <div class="d-flex flex-column flex-sm-row w-100 gap-2">
-                                    <label for="newsletter1" class="visually-hidden">Email address</label>
-                                    <input id="newsletter1" type="text" class="form-control" placeholder="Email address">
-                                    <button class="btn btn-primary" type="button">Subscribe</button>
-                                </div>
-                            </form>
-                            <div class="text-end pt-3">
-                                <!-- Github Tag -->
-                                <a class="github-button" href="https://github.com/Asyraf-wa/recrud" data-icon="octicon-star" data-show-count="true" aria-label="Star buttons/github-buttons on GitHub">Star</a>
-                                <a class="github-button" href="https://github.com/Asyraf-wa/recrud" data-icon="octicon-repo-forked" data-show-count="true" aria-label="Fork buttons/github-buttons on GitHub">Fork</a>
-                                <a class="github-button" href="https://github.com/Asyraf-wa/recrud" aria-label="Follow @recrud on GitHub">Follow @recrud</a>
-                                <a class="github-button" href="https://github.com/Asyraf-wa/recrud/archive/refs/heads/main.zip" data-icon="octicon-download" aria-label="Download buttons/github-buttons on GitHub">Download</a>
-                                <script async defer src="https://buttons.github.io/buttons.js"></script>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="d-flex flex-column flex-sm-row justify-content-between pt-4  border-top">
-                        <p>© <?php echo date('Y'); ?> <?php echo $system_name; ?>. <i class="fa-solid fa-code"></i> with ❤️ by
-                            <a href="https://codethepixel.com" target="_blank" class="footer-link fw-bolder">Code The Pixel</a>
-                        </p>
-                    </div>
-                </footer>
-            </div>
+           <footer class="pt-4 pb-3">
+    <div class="text-center border-top pt-3">
+        <p class="text-muted mb-0" style="font-size: 0.85rem;">
+            © <?php echo date('Y'); ?> <?php echo $system_name; ?> — UiTM Student Mental Wellness Portal
+        </p>
+    </div>
+</footer>
             <!-- / Footer -->
         </div>
     </div>

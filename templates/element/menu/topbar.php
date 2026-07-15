@@ -2,10 +2,14 @@
     <div class="content-fluid">
         <nav class="navbar bg-body-tertiary">
             <div class="container-fluid">
-                <button type="button" id="sidebarCollapse" class="btn btn-sm text-light border-0">
-                    <i class="fa-solid fa-bars"></i>
-                    <span></span>
-                </button>
+                <?php if ($this->Identity->isLoggedIn()): ?>
+<button type="button" id="sidebarCollapse" class="btn btn-sm text-body border-0">
+    <i class="fa-solid fa-bars"></i>
+    <span></span>
+</button>
+<?php else: ?>
+<span></span>
+<?php endif; ?>
 
                 <!-- SVG ICON -->
                 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
@@ -25,7 +29,7 @@
                 </svg>
 
                 <div class="dropdown pe-x-3">
-                    <a class="btn dropdown-toggle btn-sm border-0 transparent" id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown" aria-label="Toggle theme (auto)">
+                    <a class="btn dropdown-toggle btn-sm border-0 transparent" id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown" aria-label="Toggle theme (auto)" style="--bs-caret-width:0">
                         <svg class="bi my-1 theme-icon-active" width="1em" height="1em">
                             <use href="#circle-half"></use>
                         </svg>
@@ -88,6 +92,9 @@
     </div>
 </div>
 
+<style>
+    #bd-theme::after { display: none !important; }
+</style>
 
 <script>
     // full screen toggle
